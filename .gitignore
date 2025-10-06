@@ -1,0 +1,9 @@
+# Node / Next
+node_modules/
+.next/
+out/
+dist/
+# OS/editor
+.DS_Store
+.env
+.env.*
