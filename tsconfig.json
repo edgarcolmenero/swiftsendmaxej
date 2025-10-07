@@ -1,47 +1,31 @@
+// SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 {
   "compilerOptions": {
-    "strict": true,
-    "noEmit": true,
+    "target": "ES2020",
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
-    "resolveJsonModule": true,
+    "allowJs": false,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
+    "resolveJsonModule": true,
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "incremental": true,
-    "esModuleInterop": true
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
   },
   "include": [
     "next-env.d.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "components/**/*.ts",
-    "components/**/*.tsx",
-    "features/**/*.ts",
-    "features/**/*.tsx",
-    "lib/**/*.ts",
-    "lib/**/*.tsx",
-    "styles/**/*.ts",
-    "styles/**/*.tsx",
-    "types/**/*.ts",
-    "types/**/*.tsx",
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [
