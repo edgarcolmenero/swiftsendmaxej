@@ -44,7 +44,10 @@ body {
 
 /* ===== Header styles (overlay, transparent, micro-fade) ===== */
 .ss-header{
-  position: fixed; inset: 0 0 auto 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 50; width: 100%;
   background: transparent;
   border: none;

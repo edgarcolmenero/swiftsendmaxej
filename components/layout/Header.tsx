@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import type { MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent, MouseEventHandler } from "react";
 
 type NavLink = {
   href: string;
@@ -10,11 +10,11 @@ type NavLink = {
 
 const NAV_LINKS: NavLink[] = [
   { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#work", label: "Work" },
+  { href: "#portfolio", label: "Portfolio" },
   { href: "#labs", label: "Labs" },
   { href: "#packs", label: "Packs" },
-  { href: "#about", label: "About" },
   { href: "#contact", label: "Contact" }
 ];
 
@@ -24,31 +24,49 @@ export default function Header() {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
   const previousOverflow = useRef<string>("");
   const hasOpenedOnce = useRef(false);
 
   useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const headerElement = headerRef.current;
+    if (!headerElement) {
+      return;
+    }
+
+    heroRef.current =
+      document.querySelector<HTMLElement>("[data-hero]") ??
+      document.querySelector<HTMLElement>("#home");
 
     const HEADER_FADE_MIN = 120;
     const HEADER_FADE_MAX = 220;
     const HEADER_FADE_THRESHOLD = 220;
-    const SAFE = Math.min(Math.max(HEADER_FADE_THRESHOLD, HEADER_FADE_MIN), HEADER_FADE_MAX);
+    const SAFE = Math.min(
+      Math.max(HEADER_FADE_THRESHOLD, HEADER_FADE_MIN),
+      HEADER_FADE_MAX
+    );
 
-    const onScroll = () => {
+    let frame = 0;
+
+    const updateHeaderFade = () => {
+      frame = 0;
       const y = window.scrollY || document.documentElement.scrollTop;
       let shouldFade = y > SAFE;
 
-      const hero =
-        document.querySelector<HTMLElement>("[data-hero]") ??
-        document.querySelector<HTMLElement>("#home");
+      if (!heroRef.current) {
+        heroRef.current =
+          document.querySelector<HTMLElement>("[data-hero]") ??
+          document.querySelector<HTMLElement>("#home");
+      }
 
-      if (hero) {
-        const headerHeight = el.offsetHeight || 72;
-        const heroRect = hero.getBoundingClientRect();
-        const heroCoversHeader = heroRect.top <= headerHeight && heroRect.bottom > headerHeight;
-        if (heroCoversHeader) {
+      const heroElement = heroRef.current;
+      if (heroElement) {
+        const heroRect = heroElement.getBoundingClientRect();
+        if (heroRect.bottom > 72) {
           shouldFade = false;
         }
       }
@@ -57,33 +75,50 @@ export default function Header() {
         shouldFade = false;
       }
 
-      el.classList.toggle("header-fade", shouldFade);
+      headerElement.classList.toggle("header-fade", shouldFade);
     };
 
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    const scheduleUpdate = () => {
+      if (frame) {
+        return;
+      }
+      frame = window.requestAnimationFrame(updateHeaderFade);
+    };
+
+    updateHeaderFade();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      heroRef.current = null;
     };
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const setActive = () => {
-      const hash = window.location.hash || "#home";
-      document
-        .querySelectorAll<HTMLAnchorElement>(".nav-pill")
-        .forEach((el) => {
-          el.classList.remove("is-active");
-          el.removeAttribute("aria-current");
-        });
-      const target = document.querySelector<HTMLAnchorElement>(`.nav-pill[href="${hash}"]`);
-      if (target) {
-        target.classList.add("is-active");
-        target.setAttribute("aria-current", "page");
+      const headerElement = headerRef.current;
+      if (!headerElement) {
+        return;
       }
+      const hash = window.location.hash || "#home";
+      const navLinks = headerElement.querySelectorAll<HTMLAnchorElement>(".nav-pill");
+      navLinks.forEach((anchor) => {
+        anchor.classList.remove("is-active");
+        anchor.removeAttribute("aria-current");
+        if (anchor.getAttribute("href") === hash) {
+          anchor.classList.add("is-active");
+          anchor.setAttribute("aria-current", "page");
+        }
+      });
     };
 
     setActive();
@@ -92,18 +127,29 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const body = document.body;
-    if (!body) return;
+    const overlayElement = overlayRef.current;
+    if (!body || !overlayElement) {
+      return;
+    }
 
     if (open) {
       previousOverflow.current = body.style.overflow;
       body.style.overflow = "hidden";
+      overlayElement.hidden = false;
+      overlayElement.removeAttribute("hidden");
       hasOpenedOnce.current = true;
 
       requestAnimationFrame(() => {
         closeButtonRef.current?.focus({ preventScroll: true });
       });
     } else {
+      overlayElement.hidden = true;
+      overlayElement.setAttribute("hidden", "");
       body.style.overflow = previousOverflow.current;
       if (hasOpenedOnce.current) {
         requestAnimationFrame(() => {
@@ -138,12 +184,22 @@ export default function Header() {
     };
   }, [open]);
 
-  const closeOverlay = () => setOpen(false);
+  const openMenu = useCallback(() => {
+    setOpen(true);
+  }, []);
 
-  const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
+  const closeMenu = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleOverlayClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      closeOverlay();
+      closeMenu();
     }
+  };
+
+  const handleOverlayLinkClick: MouseEventHandler<HTMLAnchorElement> = () => {
+    closeMenu();
   };
 
   return (
@@ -156,7 +212,12 @@ export default function Header() {
 
         <nav className="nav-desktop" aria-label="Primary">
           {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="nav-pill">
+            <a
+              key={link.href}
+              href={link.href}
+              className={`nav-pill${link.href === "#home" ? " is-active" : ""}`}
+              aria-current={link.href === "#home" ? "page" : undefined}
+            >
               <span>{link.label}</span>
             </a>
           ))}
@@ -176,10 +237,10 @@ export default function Header() {
             ref={hamburgerRef}
             className="hamburger"
             aria-label="Open menu"
-            aria-expanded={open}
+            aria-expanded={open ? "true" : "false"}
             aria-controls="mobileMenu"
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={openMenu}
           >
             <span />
             <span />
@@ -191,7 +252,7 @@ export default function Header() {
       <div
         id="mobileMenu"
         className="mobile-overlay"
-        hidden={!open}
+        hidden
         ref={overlayRef}
         onClick={handleOverlayClick}
         role="dialog"
@@ -208,7 +269,7 @@ export default function Header() {
               className="overlay-close"
               aria-label="Close menu"
               type="button"
-              onClick={closeOverlay}
+              onClick={closeMenu}
             >
               ✕
             </button>
@@ -216,20 +277,20 @@ export default function Header() {
 
           <nav className="overlay-nav" aria-label="Mobile">
             {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} onClick={closeOverlay}>
+              <a key={link.href} href={link.href} onClick={handleOverlayLinkClick}>
                 {link.label}
               </a>
             ))}
           </nav>
 
           <div className="overlay-icons">
-            <button type="button" className="icon-btn" aria-label="Search (mobile)">
+            <button type="button" className="icon-btn" aria-label="Search">
               {SearchIcon}
             </button>
-            <a className="icon-btn" aria-label="Call (mobile)" href="tel:+1">
+            <a className="icon-btn" aria-label="Call" href="tel:+1">
               {PhoneIcon}
             </a>
-            <button type="button" className="icon-btn" aria-label="Account (mobile)">
+            <button type="button" className="icon-btn" aria-label="Account">
               {UserIcon}
             </button>
           </div>
