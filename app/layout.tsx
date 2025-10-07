@@ -1,16 +1,25 @@
+// SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 import "../styles/globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "SwiftSend — Your Software. Your Stack. Your Savings.",
-  description:
-    "We craft software, engineer data, automate with AI, and grow digital presence — clean, modern, fee-smart.",
-  themeColor: "#d63cff"
+import Header from "../components/Header";
+
+export const metadata: Metadata = {
+  title: "SwiftSend",
+  description: "SwiftSend placeholder experience while the full app is under construction."
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        <main>{children}</main>
+      </body>
     </html>
   );
 }

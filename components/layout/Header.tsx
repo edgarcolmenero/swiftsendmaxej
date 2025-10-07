@@ -1,3 +1,5 @@
+// SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
+// TODO: consolidate with components/Header.tsx placeholder before production launch
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
