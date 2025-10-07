@@ -3,10 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 
-const NAV_LINKS = [
+type NavLink = {
+  href: string;
+  label: string;
+};
+
+const NAV_LINKS: NavLink[] = [
   { href: "#home", label: "Home" },
   { href: "#services", label: "Services" },
-  { href: "#portfolio", label: "Work" },
+  { href: "#work", label: "Work" },
   { href: "#labs", label: "Labs" },
   { href: "#packs", label: "Packs" },
   { href: "#about", label: "About" },
@@ -16,6 +21,11 @@ const NAV_LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
+  const previousOverflow = useRef<string>("");
+  const hasOpenedOnce = useRef(false);
 
   useEffect(() => {
     const el = headerRef.current;
@@ -28,11 +38,26 @@ export default function Header() {
 
     const onScroll = () => {
       const y = window.scrollY || document.documentElement.scrollTop;
-      if (y <= HEADER_FADE_MIN) {
-        el.classList.remove("header-fade");
-        return;
+      let shouldFade = y > SAFE;
+
+      const hero =
+        document.querySelector<HTMLElement>("[data-hero]") ??
+        document.querySelector<HTMLElement>("#home");
+
+      if (hero) {
+        const headerHeight = el.offsetHeight || 72;
+        const heroRect = hero.getBoundingClientRect();
+        const heroCoversHeader = heroRect.top <= headerHeight && heroRect.bottom > headerHeight;
+        if (heroCoversHeader) {
+          shouldFade = false;
+        }
       }
-      el.classList.toggle("header-fade", y > SAFE);
+
+      if (y <= HEADER_FADE_MIN) {
+        shouldFade = false;
+      }
+
+      el.classList.toggle("header-fade", shouldFade);
     };
 
     onScroll();
@@ -48,9 +73,17 @@ export default function Header() {
   useEffect(() => {
     const setActive = () => {
       const hash = window.location.hash || "#home";
-      document.querySelectorAll<HTMLAnchorElement>(".nav-pill").forEach((el) => el.classList.remove("is-active"));
+      document
+        .querySelectorAll<HTMLAnchorElement>(".nav-pill")
+        .forEach((el) => {
+          el.classList.remove("is-active");
+          el.removeAttribute("aria-current");
+        });
       const target = document.querySelector<HTMLAnchorElement>(`.nav-pill[href="${hash}"]`);
-      if (target) target.classList.add("is-active");
+      if (target) {
+        target.classList.add("is-active");
+        target.setAttribute("aria-current", "page");
+      }
     };
 
     setActive();
@@ -58,9 +91,58 @@ export default function Header() {
     return () => window.removeEventListener("hashchange", setActive);
   }, []);
 
+  useEffect(() => {
+    const body = document.body;
+    if (!body) return;
+
+    if (open) {
+      previousOverflow.current = body.style.overflow;
+      body.style.overflow = "hidden";
+      hasOpenedOnce.current = true;
+
+      requestAnimationFrame(() => {
+        closeButtonRef.current?.focus({ preventScroll: true });
+      });
+    } else {
+      body.style.overflow = previousOverflow.current;
+      if (hasOpenedOnce.current) {
+        requestAnimationFrame(() => {
+          hamburgerRef.current?.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    return () => {
+      body.style.overflow = previousOverflow.current;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        const activeEl = document.activeElement;
+        if (!activeEl) return;
+        const overlayElement = overlayRef.current;
+        if (overlayElement && overlayElement.contains(activeEl)) {
+          event.preventDefault();
+          setOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  const closeOverlay = () => setOpen(false);
+
   const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      setOpen(false);
+      closeOverlay();
     }
   };
 
@@ -81,20 +163,22 @@ export default function Header() {
         </nav>
 
         <div className="header-icons">
-          <button className="icon-btn" aria-label="Search">
+          <button type="button" className="icon-btn" aria-label="Search">
             {SearchIcon}
           </button>
           <a className="icon-btn" aria-label="Call" href="tel:+1">
             {PhoneIcon}
           </a>
-          <button className="icon-btn" aria-label="Account">
+          <button type="button" className="icon-btn" aria-label="Account">
             {UserIcon}
           </button>
           <button
+            ref={hamburgerRef}
             className="hamburger"
             aria-label="Open menu"
-            aria-expanded={open ? "true" : "false"}
+            aria-expanded={open}
             aria-controls="mobileMenu"
+            type="button"
             onClick={() => setOpen(true)}
           >
             <span />
@@ -108,34 +192,44 @@ export default function Header() {
         id="mobileMenu"
         className="mobile-overlay"
         hidden={!open}
+        ref={overlayRef}
         onClick={handleOverlayClick}
+        role="dialog"
+        aria-modal="true"
+        aria-label="SwiftSend navigation"
       >
         <div className="overlay-panel">
           <div className="overlay-top">
             <span className="brand-badge" aria-hidden="true">
               S
             </span>
-            <button className="overlay-close" aria-label="Close menu" onClick={() => setOpen(false)}>
+            <button
+              ref={closeButtonRef}
+              className="overlay-close"
+              aria-label="Close menu"
+              type="button"
+              onClick={closeOverlay}
+            >
               ✕
             </button>
           </div>
 
           <nav className="overlay-nav" aria-label="Mobile">
             {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
+              <a key={link.href} href={link.href} onClick={closeOverlay}>
                 {link.label}
               </a>
             ))}
           </nav>
 
           <div className="overlay-icons">
-            <button className="icon-btn" aria-label="Search (mobile)">
+            <button type="button" className="icon-btn" aria-label="Search (mobile)">
               {SearchIcon}
             </button>
             <a className="icon-btn" aria-label="Call (mobile)" href="tel:+1">
               {PhoneIcon}
             </a>
-            <button className="icon-btn" aria-label="Account (mobile)">
+            <button type="button" className="icon-btn" aria-label="Account (mobile)">
               {UserIcon}
             </button>
           </div>
