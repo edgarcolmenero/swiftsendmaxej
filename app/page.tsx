@@ -1,5 +1,6 @@
 "use client";
 
+import Labs from "@/features/labs/LabsGlow";
 import { useEffect, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
@@ -271,13 +272,7 @@ export default function HomePage() {
           is finalized.
         </p>
       </section>
-      <section id="labs" className="section-shell">
-        <h2>Labs</h2>
-        <p>
-          Labs will showcase SwiftSend experiments, prototypes, and research snapshots for early
-          feedback.
-        </p>
-      </section>
+      <Labs />
       <section id="packs" className="section-shell">
         <h2>Packs</h2>
         <p>
