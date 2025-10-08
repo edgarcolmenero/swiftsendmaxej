@@ -208,6 +208,337 @@ export default function HomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Contact section: starfield + form UX + savings estimator
+    (() => {
+      const section = document.querySelector<HTMLElement>('[data-contact-section]');
+      if (!section) return;
+      const sectionEl = section;
+
+      const prefersReducedMotion =
+        typeof window.matchMedia === 'function'
+          ? window.matchMedia('(prefers-reduced-motion: reduce)')
+          : (null as unknown as MediaQueryList);
+
+      const reduceMotion = () => !!prefersReducedMotion && prefersReducedMotion.matches;
+
+      // ---------- Starfield (canvas) ----------
+      const canvas = sectionEl.querySelector<HTMLCanvasElement>('#contact-stars');
+      const ctx = canvas ? canvas.getContext('2d') : null;
+
+      interface Star {
+        x: number;
+        y: number;
+        radius: number;
+        speed: number;
+        drift: number;
+        parallax: number;
+        color: string;
+        alpha: number;
+      }
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let stars: Star[] = [];
+      let rafId: number | null = null;
+      let isInView = false;
+      let scrollOffset = 0;
+      let resizeTimer: number | null = null;
+      let observer: IntersectionObserver | null = null;
+      let scrollScheduled = false;
+
+      const STAR_COLORS = [
+        'rgba(255,255,255,0.85)',
+        'rgba(214,60,255,0.78)',
+        'rgba(255,150,43,0.72)',
+      ] as const;
+
+      function initStars(): void {
+        const count = 80 + Math.floor(Math.random() * 41); // 80–121
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: 0.6 + Math.random() * 1.6,
+          speed: 0.08 + Math.random() * 0.12,
+          drift: (Math.random() - 0.5) * 0.05,
+          parallax: 0.04 + Math.random() * 0.18,
+          color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
+          alpha: 0.45 + Math.random() * 0.45,
+        }));
+      }
+
+      function sizeCanvas(): void {
+        if (!canvas || !ctx) return;
+        const rect = sectionEl.getBoundingClientRect();
+        width = Math.max(1, Math.floor(rect.width));
+        height = Math.max(1, Math.floor(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.max(1, Math.floor(width * dpr));
+        canvas.height = Math.max(1, Math.floor(height * dpr));
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        initStars();
+        renderFrame(true);
+      }
+
+      function renderFrame(skipUpdate = false): void {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        const parallaxShift = scrollOffset * 0.12;
+
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+
+          if (!skipUpdate && !reduceMotion()) {
+            s.y += s.speed;
+            s.x += s.drift;
+
+            if (s.y > height + 20) s.y = -20;
+            if (s.x > width + 20) s.x = -20;
+            else if (s.x < -20) s.x = width + 20;
+          }
+
+          const drawY = s.y + parallaxShift * s.parallax;
+          ctx.globalAlpha = s.alpha;
+          ctx.beginPath();
+          ctx.fillStyle = s.color;
+          ctx.arc(s.x, drawY, s.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+
+        if (!skipUpdate && !reduceMotion() && isInView) {
+          rafId = window.requestAnimationFrame(() => renderFrame(false));
+        }
+      }
+
+      function startStars(): void {
+        if (reduceMotion()) {
+          renderFrame(true);
+          return;
+        }
+        if (rafId == null) {
+          rafId = window.requestAnimationFrame(() => renderFrame(false));
+        }
+      }
+
+      function stopStars(): void {
+        if (rafId != null) {
+          window.cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      function handleScroll(): void {
+        if (reduceMotion() || !isInView) return;
+        if (scrollScheduled) return;
+        scrollScheduled = true;
+        window.requestAnimationFrame(() => {
+          scrollScheduled = false;
+          const rect = sectionEl.getBoundingClientRect();
+          const visible = Math.max(0, Math.min(rect.height, window.innerHeight - rect.top));
+          scrollOffset = visible * 0.2;
+        });
+      }
+
+      function handleResize(): void {
+        if (resizeTimer) window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => sizeCanvas(), 150) as unknown as number;
+      }
+
+      if (canvas && ctx) {
+        sizeCanvas();
+
+        if (!reduceMotion()) {
+          observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.target !== sectionEl) continue;
+                isInView = entry.isIntersecting;
+                if (isInView) startStars();
+                else stopStars();
+              }
+            },
+            { threshold: 0.15 }
+          );
+          observer.observe(sectionEl);
+        } else {
+          renderFrame(true);
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleResize);
+      }
+
+      const handleMotionChange = (): void => {
+        stopStars();
+        sizeCanvas();
+        if (!reduceMotion() && isInView) startStars();
+      };
+
+      if (prefersReducedMotion) {
+        // modern + legacy listeners
+        (prefersReducedMotion as any).addEventListener?.('change', handleMotionChange);
+        (prefersReducedMotion as any).addListener?.(handleMotionChange);
+      }
+
+      // ---------- Card hover polish ----------
+      sectionEl.querySelectorAll<HTMLElement>('.cardlike').forEach((card) => {
+        const enter = () => card.classList.add('is-hover');
+        const leave = (e?: FocusEvent) => {
+          if (e && e.relatedTarget && card.contains(e.relatedTarget as Node)) return;
+          card.classList.remove('is-hover');
+        };
+        card.addEventListener('mouseenter', enter);
+        card.addEventListener('mouseleave', () => leave());
+        card.addEventListener('focusin', enter);
+        card.addEventListener('focusout', leave);
+      });
+
+      // ---------- Form validation + shimmer ----------
+      const form = sectionEl.querySelector<HTMLFormElement>('#build-form');
+      const statusEl = sectionEl.querySelector<HTMLElement>('#form-status');
+      const submitBtn = form?.querySelector<HTMLButtonElement>('.cform__submit') || null;
+      const inputs = form
+        ? Array.from(
+            form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+              '.cform__input'
+            )
+          )
+        : [];
+
+      function setStatus(message: string, variant?: 'is-success' | 'is-error'): void {
+        if (!statusEl) return;
+        statusEl.textContent = message;
+        statusEl.classList.remove('is-success', 'is-error');
+        if (variant) statusEl.classList.add(variant);
+      }
+
+      function validateForm(): boolean {
+        if (!form) return false;
+        const nameField = form.querySelector<HTMLInputElement>('#name');
+        const emailField = form.querySelector<HTMLInputElement>('#email');
+
+        if (nameField && nameField.value.trim() === '') {
+          nameField.setAttribute('aria-invalid', 'true');
+          setStatus('Please enter your name.', 'is-error');
+          nameField.focus();
+          return false;
+        }
+
+        if (emailField) {
+          const emailValue = emailField.value.trim();
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(emailValue)) {
+            emailField.setAttribute('aria-invalid', 'true');
+            setStatus('Enter a valid email address.', 'is-error');
+            emailField.focus();
+            return false;
+          }
+        }
+
+        setStatus('Thanks! We’ll be in touch within 24 hours.', 'is-success');
+        return true;
+      }
+
+      function clearFieldState(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
+        field.removeAttribute('aria-invalid');
+      }
+
+      if (form) {
+        form.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          inputs.forEach(clearFieldState);
+          const ok = validateForm();
+          if (ok && submitBtn && !reduceMotion()) {
+            submitBtn.classList.add('is-shimmer');
+            window.setTimeout(() => submitBtn.classList.remove('is-shimmer'), 1200);
+          }
+        });
+
+        form.addEventListener('input', (ev) => {
+          const t = ev.target as EventTarget | null;
+          if (
+            t &&
+            (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement)
+          ) {
+            t.removeAttribute('aria-invalid');
+            if (statusEl) {
+              statusEl.textContent = '';
+              statusEl.classList.remove('is-success', 'is-error');
+            }
+          }
+        });
+      }
+
+      if (submitBtn) {
+        const triggerShimmer = () => {
+          if (reduceMotion()) return;
+          submitBtn.classList.add('is-shimmer');
+          window.setTimeout(() => submitBtn.classList.remove('is-shimmer'), 1200);
+        };
+        submitBtn.addEventListener('mouseenter', triggerShimmer);
+        submitBtn.addEventListener('focus', triggerShimmer);
+      }
+
+      // ---------- Savings Estimator ----------
+      const estimatorSelect = sectionEl.querySelector<HTMLSelectElement>('#ptype');
+      const estimatorPlaceholder = sectionEl.querySelector<HTMLElement>('.est__placeholder');
+      const estimatorResult = sectionEl.querySelector<HTMLElement>('.est__result');
+      const estimatorPill = sectionEl.querySelector<HTMLElement>('[data-est-pill]');
+
+      const savingsMap: Record<string, { text: string; tone: 'gold' | 'green' }> = {
+        Starter: { text: 'Save ~10–20%', tone: 'gold' },
+        Builder: { text: 'Save ~25–35%', tone: 'green' },
+        Engine: { text: 'Save ~20–30%', tone: 'green' },
+        Growth: { text: 'Save ~15–25%', tone: 'gold' },
+      };
+
+      function updateEstimator(value: string): void {
+        if (!estimatorPlaceholder || !estimatorResult || !estimatorPill) return;
+        const info = savingsMap[value];
+        if (!info) {
+          estimatorPlaceholder.hidden = false;
+          estimatorResult.hidden = true;
+          estimatorPill.textContent = '';
+          estimatorPill.classList.remove('est__pill--gold', 'est__pill--green');
+          return;
+        }
+        estimatorPlaceholder.hidden = true;
+        estimatorResult.hidden = false;
+        estimatorPill.textContent = info.text;
+        estimatorPill.classList.remove('est__pill--gold', 'est__pill--green');
+        estimatorPill.classList.add(info.tone === 'green' ? 'est__pill--green' : 'est__pill--gold');
+      }
+
+      if (estimatorSelect) {
+        estimatorSelect.addEventListener('change', (e) => {
+          const val = (e.target as HTMLSelectElement).value;
+          updateEstimator(val);
+        });
+      }
+
+      // ---------- Cleanup ----------
+      function cleanup(): void {
+        stopStars();
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+        observer?.disconnect();
+        if (prefersReducedMotion) {
+          (prefersReducedMotion as any).removeEventListener?.('change', handleMotionChange);
+          (prefersReducedMotion as any).removeListener?.(handleMotionChange);
+        }
+      }
+      window.addEventListener('pagehide', cleanup, { once: true });
+    })();
+  }, []);
+
   return (
     <>
       <section id="home" data-hero className="hero">
@@ -274,12 +605,177 @@ export default function HomePage() {
       </section>
       <Labs />
       <Packs />
-      <section id="contact" className="section-shell">
-        <h2>Contact</h2>
-        <p>
-          Reach out to the SwiftSend crew to start a conversation about your upcoming launches and
-          the support you need.
-        </p>
+      <section id="contact" className="contact" aria-labelledby="contact-title" data-contact-section>
+        <canvas id="contact-stars" aria-hidden="true" />
+
+        <div className="contact__inner">
+          <header className="contact__head">
+            <h2 id="contact-title" className="contact__title">
+              Let’s Build <span className="grad-word">Together</span>
+            </h2>
+            <p className="contact__lede">
+              Ready to transform your vision into reality? Get in touch and let’s start building.
+            </p>
+          </header>
+
+          <div className="contact__grid">
+            {/* Form */}
+            <form className="cform cardlike" id="build-form" noValidate aria-describedby="form-status">
+              <div className="cform__row">
+                <label className="cform__label" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  className="cform__input"
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                  autoComplete="name"
+                  required
+                />
+              </div>
+
+              <div className="cform__row">
+                <label className="cform__label" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  className="cform__input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  required
+                />
+              </div>
+
+              <div className="cform__row">
+                <label className="cform__label" htmlFor="ptype">
+                  Project Type
+                </label>
+                <div className="cform__selectWrap">
+                  <select
+                    className="cform__input cform__select"
+                    id="ptype"
+                    name="ptype"
+                    required
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Select project type
+                    </option>
+                    <option>Starter</option>
+                    <option>Builder</option>
+                    <option>Engine</option>
+                    <option>Growth</option>
+                  </select>
+                  <svg className="cform__chev" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M7 10l5 5 5-5z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="cform__row">
+                <label className="cform__label" htmlFor="industry">
+                  Industry <span className="cform__opt">(optional)</span>
+                </label>
+                <input
+                  className="cform__input"
+                  id="industry"
+                  name="industry"
+                  type="text"
+                  placeholder="e.g., Real Estate, E-commerce, Healthcare"
+                />
+              </div>
+
+              <div className="cform__row cform__row--area">
+                <label className="cform__label" htmlFor="message">
+                  Message
+                </label>
+                <textarea
+                  className="cform__input cform__area"
+                  id="message"
+                  name="message"
+                  placeholder="Tell us about your project..."
+                  rows={6}
+                />
+              </div>
+
+              <p id="form-status" className="cform__status" aria-live="polite" />
+
+              <button className="cform__submit" type="submit">
+                <span>Start a Build</span>
+                <svg viewBox="0 0 24 24" className="cform__spark" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"
+                  />
+                </svg>
+              </button>
+            </form>
+
+            {/* Right stack */}
+            <div className="contact__stack">
+              {/* Estimator */}
+              <section className="est cardlike" aria-labelledby="est-title">
+                <div className="est__icon" aria-hidden="true">
+                  <span className="est__iconWrap">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        fill="currentColor"
+                        d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 4v2h8V6H8zm0 4v2h8v-2H8zm0 4v2h5v-2H8z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <h3 id="est-title" className="est__title">
+                  Savings Estimator
+                </h3>
+                <p className="est__lede">See how much you could save with SwiftSend</p>
+
+                <div className="est__panel" aria-live="polite">
+                  <p className="est__placeholder">
+                    Select a project type above to estimate your savings
+                  </p>
+                  <div className="est__result" hidden>
+                    <span className="est__pill" data-est-pill />
+                    <p className="est__note">Estimated savings vs. typical agency rates</p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Get in Touch */}
+              <section className="touch cardlike" aria-labelledby="touch-title">
+                <h3 id="touch-title" className="touch__title">
+                  Get in Touch
+                </h3>
+                <dl className="touch__list">
+                  <div>
+                    <dt>Email</dt>
+                    <dd>
+                      <a href="mailto:hello@swiftsend.dev">hello@swiftsend.dev</a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Instagram</dt>
+                    <dd>
+                      <a href="https://instagram.com/swiftsend.dev" target="_blank" rel="noopener">
+                        @swiftsend.dev
+                      </a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Response Time</dt>
+                    <dd>Within 24 hours</dd>
+                  </div>
+                </dl>
+                <blockquote className="touch__quote">“Building the future, one project at a time.”</blockquote>
+              </section>
+            </div>
+          </div>
+        </div>
       </section>
     </>
   );
