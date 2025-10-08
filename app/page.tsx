@@ -211,6 +211,171 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Portfolio section: starfield + reveals + hover polish
+    (() => {
+      const section = document.getElementById("portfolio") as HTMLElement | null;
+      if (!section) return;
+
+      if (section.dataset.portfolioInit === "done") return;
+      section.dataset.portfolioInit = "done";
+
+      const mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const prefersReduced = () => mqReduce.matches;
+
+      const starRoot =
+        (section.querySelector(".pf-stars") as HTMLDivElement | null) ??
+        (() => {
+          const n = document.createElement("div");
+          n.className = "pf-stars";
+          section.insertBefore(n, section.firstChild);
+          return n;
+        })();
+
+      const makeStars = () => {
+        if (!starRoot) return;
+        starRoot.innerHTML = "";
+        const wide = window.matchMedia("(min-width: 720px)").matches;
+        const count = wide ? 110 : 70;
+
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement("span");
+          s.className = "pf-star";
+          const left = Math.random() * 120 - 10;
+          const top = Math.random() * 120 - 10;
+          const size = (Math.random() * 1.6 + 0.8).toFixed(2);
+          const d = (Math.random() * 4 + 3).toFixed(2);
+          const delay = (Math.random() * 3).toFixed(2);
+          const min = (Math.random() * 0.35 + 0.25).toFixed(2);
+          const max = (Number(min) + Math.random() * 0.4 + 0.25).toFixed(2);
+          const palette = [
+            "rgba(255,255,255,0.95)",
+            "rgba(214,60,255,0.85)",
+            "rgba(255,140,64,0.75)",
+            "rgba(123,206,255,0.85)",
+          ];
+          s.style.setProperty("--left", `${left}%`);
+          s.style.setProperty("--top", `${top}%`);
+          s.style.setProperty("--size", `${size}px`);
+          s.style.setProperty("--twinkle-duration", `${d}s`);
+          s.style.setProperty("--twinkle-delay", `${delay}s`);
+          s.style.setProperty("--twinkle-min", min);
+          s.style.setProperty("--twinkle-max", max);
+          s.style.setProperty("--color", palette[(Math.random() * palette.length) | 0]);
+          frag.appendChild(s);
+        }
+        starRoot.appendChild(frag);
+      };
+
+      let rafId: number | null = null;
+      const parallax = () => {
+        rafId = null;
+        if (!starRoot) return;
+        if (prefersReduced()) {
+          starRoot.style.transform = "translate3d(0,0,0)";
+          return;
+        }
+        const r = section.getBoundingClientRect();
+        const vh = Math.max(1, window.innerHeight);
+        const centerProgress = 1 - (r.top + r.height * 0.5) / (vh + r.height);
+        const y = Math.max(-10, Math.min(10, centerProgress * 10));
+        const x = Math.max(-6, Math.min(6, centerProgress * 6));
+        starRoot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      };
+      const scheduleParallax = () => {
+        if (rafId !== null) return;
+        rafId = window.requestAnimationFrame(parallax);
+      };
+
+      makeStars();
+      window.addEventListener("scroll", scheduleParallax, { passive: true });
+      window.addEventListener("resize", () => {
+        makeStars();
+        scheduleParallax();
+      });
+      if (typeof mqReduce.addEventListener === "function") {
+        mqReduce.addEventListener("change", () => {
+          makeStars();
+          scheduleParallax();
+        });
+      } else if (typeof (mqReduce as any).addListener === "function") {
+        (mqReduce as any).addListener(() => {
+          makeStars();
+          scheduleParallax();
+        });
+      }
+
+      const cards = Array.from(section.querySelectorAll<HTMLElement>(".pf-card"));
+      const title = section.querySelector<HTMLElement>(".portfolio__title");
+      const lede = section.querySelector<HTMLElement>(".portfolio__lede");
+      const revealables = [title, lede, ...cards].filter(Boolean) as HTMLElement[];
+
+      if (!revealables.length) return;
+
+      section.classList.add("is-enhanced");
+
+      const STAGGER_STEP = 0.07;
+      revealables.forEach((el, i) => el.style.setProperty("--io-delay", `${(i * STAGGER_STEP).toFixed(2)}s`));
+
+      const FILL_BASE_DELAY = 140;
+      const FILL_STAGGER_MS = 70;
+      cards.forEach((card, i) => {
+        const target = card as HTMLElement & { dataset: DOMStringMap & { fillDelay?: string } };
+        target.dataset.fillDelay = String(i * FILL_STAGGER_MS);
+      });
+
+      const pending = new Set<HTMLElement>(revealables);
+
+      const onIntersect: IntersectionObserverCallback = (entries, obs) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const tgt = entry.target as HTMLElement;
+          tgt.classList.add("is-inview");
+          pending.delete(tgt);
+          obs.unobserve(tgt);
+
+          if (tgt.classList.contains("pf-card")) {
+            const delay = Number((tgt as HTMLElement & { dataset: DOMStringMap & { fillDelay?: string } }).dataset.fillDelay || 0);
+            if (prefersReduced()) {
+              tgt.classList.add("is-filled");
+            } else {
+              window.setTimeout(() => tgt.classList.add("is-filled"), FILL_BASE_DELAY + delay);
+            }
+          }
+        }
+        if (!pending.size) obs.disconnect();
+      };
+
+      const io = new IntersectionObserver(onIntersect, {
+        root: null,
+        rootMargin: "0px 0px -12% 0px",
+        threshold: 0.35,
+      });
+      pending.forEach((el) => io.observe(el));
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) io.disconnect();
+        else pending.forEach((el) => io.observe(el));
+      });
+
+      const toggleHot = (card: HTMLElement, on: boolean) => {
+        if (prefersReduced() && !on) card.classList.remove("is-hot");
+        else card.classList.toggle("is-hot", on);
+      };
+      const finePointer = window.matchMedia("(pointer:fine)").matches;
+      cards.forEach((card) => {
+        if (finePointer) {
+          card.addEventListener("mouseenter", () => toggleHot(card, true), { passive: true });
+          card.addEventListener("mouseleave", () => toggleHot(card, false), { passive: true });
+        }
+        card.addEventListener("focusin", () => toggleHot(card, true));
+        card.addEventListener("focusout", (e) => {
+          const next = (e as FocusEvent).relatedTarget as Node | null;
+          if (!next || !card.contains(next)) toggleHot(card, false);
+        });
+      });
+    })();
+
     // Contact section: starfield + form UX + savings estimator
     (() => {
       const section = document.querySelector<HTMLElement>('[data-contact-section]');
@@ -596,12 +761,127 @@ export default function HomePage() {
           spectrum that will be detailed soon.
         </p>
       </section>
-      <section id="work" className="section-shell">
-        <h2>Work</h2>
-        <p>
-          Case studies, proof points, and success stories will live here once the production content
-          is finalized.
-        </p>
+      <section id="portfolio" className="portfolio" aria-labelledby="portfolio-title">
+        <div className="pf-stars" aria-hidden="true" />
+
+        <div className="portfolio__inner">
+          <header className="portfolio__head">
+            <h2 id="portfolio-title" className="portfolio__title">
+              Work That <span className="grad">Stands Out</span>
+            </h2>
+            <p className="portfolio__lede">Real projects, real results, real impact.</p>
+          </header>
+
+          <div className="portfolio__grid">
+            <article className="pf-card" data-key="realtor" tabIndex={0} role="group">
+              <div className="pf-card__media" aria-hidden="true">
+                <img
+                  src="/images/portfolio-realtor.jpg"
+                  alt="Real estate platform interface"
+                  loading="lazy"
+                />
+                <span className="pf-card__pill">Real Estate Platform</span>
+                <button className="pf-card__ext" type="button" aria-label="Open RealtorDemo case study">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z" />
+                  </svg>
+                </button>
+              </div>
+              <div className="pf-card__body">
+                <h3 className="pf-card__title">RealtorDemo</h3>
+                <p className="pf-card__row">
+                  <span className="label label--problem">Problem:</span> Traditional MLS listings with poor lead
+                  generation
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--build">Build:</span> Modern property search with integrated lead
+                  capture system
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--outcome">Outcome:</span> <span>+32% leads</span>{" "}
+                  <span className="pf-card__trend" aria-hidden="true">
+                    ▲
+                  </span>
+                </p>
+                <div className="pf-card__bar">
+                  <span className="pf-card__fill" />
+                </div>
+              </div>
+            </article>
+
+            <article className="pf-card" data-key="nailtech" tabIndex={0} role="group">
+              <div className="pf-card__media" aria-hidden="true">
+                <img
+                  src="/images/portfolio-nailtech.jpg"
+                  alt="Beauty &amp; wellness booking environment"
+                  loading="lazy"
+                />
+                <span className="pf-card__pill">Beauty &amp; Wellness</span>
+                <button className="pf-card__ext" type="button" aria-label="Open NailTechDemo case study">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z" />
+                  </svg>
+                </button>
+              </div>
+              <div className="pf-card__body">
+                <h3 className="pf-card__title">NailTechDemo</h3>
+                <p className="pf-card__row">
+                  <span className="label label--problem">Problem:</span> Manual booking process losing potential clients
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--build">Build:</span> Sleek booking system with integrated payments
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--outcome">Outcome:</span> Dark elegance meets functionality
+                </p>
+                <div className="pf-card__bar">
+                  <span className="pf-card__fill" />
+                </div>
+              </div>
+            </article>
+
+            <article className="pf-card" data-key="photographer" tabIndex={0} role="group">
+              <div className="pf-card__media" aria-hidden="true">
+                <img
+                  src="/images/portfolio-photographer.jpg"
+                  alt="Professional camera and lens"
+                  loading="lazy"
+                />
+                <span className="pf-card__pill">Creative Services</span>
+                <button className="pf-card__ext" type="button" aria-label="Open PhotographerDemo case study">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z" />
+                  </svg>
+                </button>
+              </div>
+              <div className="pf-card__body">
+                <h3 className="pf-card__title">PhotographerDemo</h3>
+                <p className="pf-card__row">
+                  <span className="label label--problem">Problem:</span> Cumbersome photo proofing and booking workflow
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--build">Build:</span> Streamlined gallery with integrated booking
+                  system
+                </p>
+                <p className="pf-card__row">
+                  <span className="label label--outcome">Outcome:</span> Creative-driven user experience
+                </p>
+                <div className="pf-card__bar">
+                  <span className="pf-card__fill" />
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div className="portfolio__cta">
+            <a className="portfolio__link" href="#">
+              View All Projects
+            </a>
+            <div className="portfolio__cta-underline">
+              <span className="fill" />
+            </div>
+          </div>
+        </div>
       </section>
       <Labs />
       <Packs />
