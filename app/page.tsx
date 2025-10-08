@@ -1,7 +1,7 @@
 "use client";
 
 import Labs from "@/features/labs/LabsGlow";
-import { useEffect, type CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 export default function HomePage() {
@@ -273,13 +273,7 @@ export default function HomePage() {
         </p>
       </section>
       <Labs />
-      <section id="packs" className="section-shell">
-        <h2>Packs</h2>
-        <p>
-          Product bundles and starter packs will be highlighted to simplify onboarding for partners
-          and clients.
-        </p>
-      </section>
+      <Packs />
       <section id="contact" className="section-shell">
         <h2>Contact</h2>
         <p>
@@ -288,6 +282,345 @@ export default function HomePage() {
         </p>
       </section>
     </>
+  );
+}
+
+function Packs() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    document.body.classList.add("is-packs-js");
+
+    const mq =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+
+    const syncReduced = (e?: MediaQueryList | MediaQueryListEvent) => {
+      const on = !!(e && "matches" in e ? e.matches : mq?.matches);
+      document.body.classList.toggle("is-packs-reduced", on);
+    };
+    if (mq) {
+      syncReduced(mq);
+      if (typeof mq.addEventListener === "function") mq.addEventListener("change", syncReduced);
+      // Safari
+      // @ts-ignore
+      else if (typeof mq.addListener === "function") mq.addListener(syncReduced);
+    }
+
+    const revealEls = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal]"));
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries, obs) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              obs.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -10% 0px" }
+      );
+      revealEls.forEach((el) => io!.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add("is-in"));
+    }
+
+    const bindHover = (el: Element) => {
+      const card = el as HTMLElement;
+      const enter = () => card.classList.add("is-hover");
+      const leave = () => card.classList.remove("is-hover");
+
+      if (window.matchMedia && window.matchMedia("(pointer:fine)").matches) {
+        card.addEventListener("mouseenter", enter, { passive: true });
+        card.addEventListener("mouseleave", leave, { passive: true });
+      }
+      card.addEventListener("focusin", enter);
+      card.addEventListener("focusout", (e) => {
+        if (!card.contains(e.relatedTarget as Node)) leave();
+      });
+
+      return () => {
+        card.removeEventListener("mouseenter", enter);
+        card.removeEventListener("mouseleave", leave);
+        card.removeEventListener("focusin", enter);
+        card.removeEventListener("focusout", leave as any);
+      };
+    };
+
+    const unbinders: Array<() => void> = [];
+    section.querySelectorAll(".pack, .addon").forEach((n) => unbinders.push(bindHover(n)));
+
+    section.querySelectorAll<HTMLAnchorElement>(".pack__cta, .addons__cta").forEach((a) => {
+      if (a.getAttribute("href") !== "#contact") a.setAttribute("href", "#contact");
+    });
+
+    return () => {
+      io?.disconnect();
+      unbinders.forEach((fn) => fn());
+    };
+  }, []);
+
+  return (
+    <section
+      id="packs"
+      className="packs"
+      aria-labelledby="packs-title"
+      data-packs-section
+      ref={sectionRef}
+    >
+      <div className="packs__inner">
+        <header className="packs__head" data-reveal data-reveal-index="0">
+          <h2 id="packs-title" className="packs__title">
+            Choose Your <span className="grad-word">Pack</span>
+          </h2>
+          <p className="packs__lede">
+            Transparent pricing for every stage of your digital journey
+          </p>
+        </header>
+
+        <ul className="packs__grid" role="list" data-packs-grid data-reveal data-reveal-index="1">
+          <li>
+            <article
+              className="pack"
+              data-accent="starter"
+              aria-labelledby="pack-starter-title"
+              aria-describedby="pack-starter-price pack-starter-desc"
+            >
+              <div className="pack__icon" aria-hidden="true">
+                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                  <path
+                    d="M14 2.5 17 10h7l-5.8 4.2 2.2 7-6.4-4.5-6.4 4.5 2.2-7L4 10h7z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <h3 id="pack-starter-title" className="pack__title">
+                Starter
+              </h3>
+              <p id="pack-starter-desc" className="pack__desc">
+                Perfect for businesses getting online
+              </p>
+              <p id="pack-starter-price" className="pack__price">
+                <span className="val">$2,999</span> <span className="unit">/one-time</span>
+              </p>
+              <ul className="pack__list" role="list">
+                <li>Industry-specific website</li>
+                <li>CMS basics</li>
+                <li>Contact forms</li>
+                <li>Mobile responsive</li>
+                <li>3 months support</li>
+              </ul>
+              <a
+                className="pack__cta"
+                href="#contact"
+                aria-label="Get started: Starter, $2,999 one-time"
+              >
+                Get Started
+              </a>
+            </article>
+          </li>
+
+          <li>
+            <article
+              className="pack is-featured"
+              data-accent="builder"
+              aria-labelledby="pack-builder-title"
+              aria-describedby="pack-builder-price pack-builder-desc"
+              aria-label="Most Popular plan"
+            >
+              <div className="pack__badge" aria-hidden="true">
+                Most Popular
+              </div>
+              <div className="pack__icon" aria-hidden="true">
+                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                  <path
+                    d="M13.5 2v9.5H8L14.5 26V16.5H20L13.5 2Z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <h3 id="pack-builder-title" className="pack__title">
+                Builder
+              </h3>
+              <p id="pack-builder-desc" className="pack__desc">
+                Advanced functionality and integrations
+              </p>
+              <p id="pack-builder-price" className="pack__price">
+                <span className="val">$7,999</span> <span className="unit">/project</span>
+              </p>
+              <ul className="pack__list" role="list">
+                <li>Custom APIs</li>
+                <li>Admin dashboards</li>
+                <li>CRM integration</li>
+                <li>Payment processing</li>
+                <li>Advanced analytics</li>
+                <li>6 months support</li>
+              </ul>
+              <a
+                className="pack__cta pack__cta--primary"
+                href="#contact"
+                aria-label="Get started: Builder, $7,999 per project"
+              >
+                Get Started
+              </a>
+            </article>
+          </li>
+
+          <li>
+            <article
+              className="pack"
+              data-accent="engine"
+              aria-labelledby="pack-engine-title"
+              aria-describedby="pack-engine-price pack-engine-desc"
+            >
+              <div className="pack__icon" aria-hidden="true">
+                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                  <path
+                    d="M6 8.5c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5-3.6 5.5-8 5.5-8-2.2-8-5.5Zm0 5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5M6 18.5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  ></path>
+                </svg>
+              </div>
+              <h3 id="pack-engine-title" className="pack__title">
+                Engine
+              </h3>
+              <p id="pack-engine-desc" className="pack__desc">
+                Data-driven enterprise solutions
+              </p>
+              <p id="pack-engine-price" className="pack__price">
+                <span className="val">$15,999</span> <span className="unit">/project</span>
+              </p>
+              <ul className="pack__list" role="list">
+                <li>Data pipelines</li>
+                <li>Data warehouses</li>
+                <li>BI dashboards</li>
+                <li>Real-time analytics</li>
+                <li>Machine learning</li>
+                <li>12 months support</li>
+              </ul>
+              <a
+                className="pack__cta"
+                href="#contact"
+                aria-label="Get started: Engine, $15,999 per project"
+              >
+                Get Started
+              </a>
+            </article>
+          </li>
+
+          <li>
+            <article
+              className="pack"
+              data-accent="growth"
+              aria-labelledby="pack-growth-title"
+              aria-describedby="pack-growth-price pack-growth-desc"
+            >
+              <div className="pack__icon" aria-hidden="true">
+                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                  <path
+                    d="M4 18.5 11.5 11l4 4L24 6.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <path
+                    d="M18 6h6v6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </svg>
+              </div>
+              <h3 id="pack-growth-title" className="pack__title">
+                Growth
+              </h3>
+              <p id="pack-growth-desc" className="pack__desc">
+                Complete digital marketing solution
+              </p>
+              <p id="pack-growth-price" className="pack__price">
+                <span className="val">$12,999</span> <span className="unit">/campaign</span>
+              </p>
+              <ul className="pack__list" role="list">
+                <li>SEO optimization</li>
+                <li>Lead generation flows</li>
+                <li>Fee-smart checkout</li>
+                <li>Marketing automation</li>
+                <li>Analytics &amp; reporting</li>
+                <li>Ongoing optimization</li>
+              </ul>
+              <a
+                className="pack__cta"
+                href="#contact"
+                aria-label="Get started: Growth, $12,999 per campaign"
+              >
+                Get Started
+              </a>
+            </article>
+          </li>
+        </ul>
+
+        <section className="addons" aria-labelledby="addons-title" data-reveal data-reveal-index="2">
+          <header className="addons__head">
+            <h3 id="addons-title" className="addons__title">
+              Add-ons
+            </h3>
+            <p className="addons__lede">Enhance your pack with additional features</p>
+          </header>
+
+          <ul className="addons__grid" role="list">
+            <li>
+              <article className="addon" data-accent="ai">
+                <h4 className="addon__title">AI Bot</h4>
+                <p className="addon__price">$1,999</p>
+              </article>
+            </li>
+            <li>
+              <article className="addon" data-accent="swiftpay">
+                <h4 className="addon__title">SwiftPay Mini</h4>
+                <p className="addon__price">$999</p>
+              </article>
+            </li>
+            <li>
+              <article className="addon" data-accent="app">
+                <h4 className="addon__title">App Shell</h4>
+                <p className="addon__price">$3,999</p>
+              </article>
+            </li>
+            <li>
+              <article className="addon" data-accent="devops">
+                <h4 className="addon__title">DevOps Setup</h4>
+                <p className="addon__price">$2,499</p>
+              </article>
+            </li>
+          </ul>
+
+          <div className="addons__ctaRow">
+            <p className="addons__prompt">
+              Need a custom solution? Let’s talk about your specific requirements.
+            </p>
+            <a className="addons__cta" href="#contact" aria-label="Request a custom quote">
+              Get Custom Quote
+            </a>
+          </div>
+        </section>
+      </div>
+    </section>
   );
 }
 
