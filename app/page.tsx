@@ -1,6 +1,7 @@
 "use client";
 
 import Labs from "@/features/labs/LabsGlow";
+import { Process } from "@/app/(site)/sections/Process";
 import { useEffect, useRef, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
@@ -1331,6 +1332,7 @@ export default function HomePage() {
       </section>
       <Labs />
       <Packs />
+      <Process />
       <section id="contact" className="contact" aria-labelledby="contact-title" data-contact-section>
         <canvas id="contact-stars" aria-hidden="true" />
 
