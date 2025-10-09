@@ -212,7 +212,7 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Services section: starfield + reveal + pointer glow
+    // Services section: reveal + pointer glow
     (() => {
       "use strict";
 
@@ -225,119 +225,61 @@ export default function HomePage() {
       const prefersReduced = () => reduceMotion.matches;
       const supportsPE = "PointerEvent" in window;
       const passive: AddEventListenerOptions = { passive: true };
-
-      const starsRoot =
-        (section.querySelector(".svc-stars") as HTMLDivElement | null) ??
-        (() => {
-          const el = document.createElement("div");
-          el.className = "svc-stars";
-          section.insertBefore(el, section.firstChild);
-          return el;
-        })();
-
-      const makeStars = () => {
-        if (!starsRoot) return;
-        starsRoot.innerHTML = "";
-        const wide = window.matchMedia("(min-width: 900px)").matches;
-        const count = prefersReduced() ? (wide ? 70 : 45) : (wide ? 120 : 80);
-        const palette = [
-          "rgba(255,255,255,0.95)",
-          "rgba(214,60,255,0.85)",
-          "rgba(255,140,64,0.78)",
-          "rgba(123,206,255,0.85)",
-        ];
-
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < count; i++) {
-          const s = document.createElement("span");
-          s.className = "svc-star";
-          const left = Math.random() * 120 - 10;
-          const top = Math.random() * 120 - 10;
-          const size = (Math.random() * 1.8 + 0.8).toFixed(2);
-          const d = (Math.random() * 4 + 3).toFixed(2);
-          const delay = (Math.random() * 4).toFixed(2);
-          const min = (Math.random() * 0.35 + 0.25).toFixed(2);
-          const max = (Number(min) + Math.random() * 0.45 + 0.25).toFixed(2);
-
-          s.style.setProperty("--left", `${left}%`);
-          s.style.setProperty("--top", `${top}%`);
-          s.style.setProperty("--size", `${size}px`);
-          s.style.setProperty("--twinkle-duration", `${d}s`);
-          s.style.setProperty("--twinkle-delay", `${delay}s`);
-          s.style.setProperty("--twinkle-min", min);
-          s.style.setProperty("--twinkle-max", max);
-          s.style.setProperty("--color", palette[(Math.random() * palette.length) | 0]);
-
-          frag.appendChild(s);
-        }
-        starsRoot.appendChild(frag);
-      };
-
-      let rafParallax = 0;
-      const scheduleParallax = () => {
-        if (rafParallax) return;
-        rafParallax = requestAnimationFrame(() => {
-          rafParallax = 0;
-          if (!starsRoot) return;
-          if (prefersReduced()) {
-            starsRoot.style.transform = "translate3d(0,0,0)";
-            return;
-          }
-          const rect = section.getBoundingClientRect();
-          const vh = Math.max(1, window.innerHeight);
-          const p = 1 - (rect.top + rect.height * 0.5) / (vh + rect.height);
-          const x = Math.max(-8, Math.min(8, p * 8));
-          const y = Math.max(-12, Math.min(12, p * 12));
-          starsRoot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-        });
-      };
-
-      makeStars();
-      window.addEventListener("scroll", scheduleParallax, passive);
-      window.addEventListener("resize", () => {
-        makeStars();
-        scheduleParallax();
-      });
-
-      if (typeof reduceMotion.addEventListener === "function") {
-        reduceMotion.addEventListener("change", () => {
-          makeStars();
-          scheduleParallax();
-        });
-      } else if (typeof (reduceMotion as any).addListener === "function") {
-        (reduceMotion as any).addListener(() => {
-          makeStars();
-          scheduleParallax();
-        });
-      }
-
+      const headerItems = Array.from(section.querySelectorAll<HTMLElement>(".services__head > *"));
       const cards = Array.from(section.querySelectorAll<HTMLElement>(".service-card"));
+      const revealables = [...headerItems, ...cards];
+
       section.classList.add("is-enhanced");
 
-      const revealCard = (card: HTMLElement) => {
-        if (card.classList.contains("is-inview")) return;
-        card.classList.add("is-inview", "underline-active");
-        card.style.removeProperty("--card-delay");
-        setTimeout(() => card.classList.remove("underline-active"), 480);
+      const STAGGER_MS = 80;
+
+      const assignDelays = () => {
+        revealables.forEach((el, index) => {
+          if (el.classList.contains("is-inview")) {
+            el.style.removeProperty("--svc-delay");
+            if (el.classList.contains("service-card")) {
+              el.style.removeProperty("--card-delay");
+            }
+            return;
+          }
+          const delay = prefersReduced() ? 0 : index * STAGGER_MS;
+          el.style.setProperty("--svc-delay", `${delay}ms`);
+          if (el.classList.contains("service-card")) {
+            el.style.setProperty("--card-delay", `${delay}ms`);
+          }
+        });
       };
 
-      cards.forEach((card, i) => card.style.setProperty("--card-delay", `${i * 80}ms`));
+      assignDelays();
+
+      const revealElement = (element: HTMLElement) => {
+        if (element.classList.contains("is-inview")) return;
+        element.classList.add("is-inview");
+        element.style.removeProperty("--svc-delay");
+        if (element.classList.contains("service-card")) {
+          element.classList.add("underline-active");
+          element.style.removeProperty("--card-delay");
+          window.setTimeout(() => element.classList.remove("underline-active"), 480);
+        }
+      };
 
       let io: IntersectionObserver | null = null;
       const startIO = () => {
-        if (io) return;
+        if (io || !revealables.length) return;
         io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                revealCard(entry.target as HTMLElement);
-                io!.unobserve(entry.target);
-              }
+              if (!entry.isIntersecting) return;
+              const target = entry.target as HTMLElement;
+              revealElement(target);
+              io!.unobserve(target);
             });
           },
           { threshold: 0.35, rootMargin: "0px 0px -10% 0px" }
         );
-        cards.forEach((c) => !c.classList.contains("is-inview") && io!.observe(c));
+        revealables
+          .filter((el) => !el.classList.contains("is-inview"))
+          .forEach((el) => io!.observe(el));
       };
       const stopIO = () => {
         if (io) {
@@ -426,10 +368,18 @@ export default function HomePage() {
       };
       const onFocusOut = (e: FocusEvent) => {
         const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
-        if (card) card.classList.remove("underline-active");
+        if (!card) return;
+        const next = e.relatedTarget as Node | null;
+        if (!next || !card.contains(next)) {
+          card.classList.remove("underline-active");
+          if (activeCard === card) endTracking();
+        }
       };
 
-      if (!prefersReduced()) {
+      let pointerBound = false;
+      const bindPointer = () => {
+        if (pointerBound || prefersReduced()) return;
+        pointerBound = true;
         if (supportsPE) {
           section.addEventListener("pointerenter", onEnter, passive);
           section.addEventListener("pointermove", onMove, passive);
@@ -440,20 +390,25 @@ export default function HomePage() {
           section.addEventListener("mousemove", onMove as any, passive);
           section.addEventListener("mouseleave", onLeave, true);
         }
-      }
+      };
+
+      bindPointer();
       section.addEventListener("focusin", onFocusIn);
       section.addEventListener("focusout", onFocusOut);
       window.addEventListener("resize", () => activeCard && measure(), passive);
       window.addEventListener("scroll", () => activeCard && measure(), passive);
 
       const applyRM = () => {
+        assignDelays();
         if (prefersReduced()) {
           stopIO();
-          cards.forEach(revealCard);
+          revealables.forEach(revealElement);
+          endTracking();
           section.classList.add("reduced-motion");
         } else {
           section.classList.remove("reduced-motion");
           startIO();
+          bindPointer();
         }
       };
       applyRM();
@@ -1029,7 +984,7 @@ export default function HomePage() {
       </section>
       <AboutSection />
       <section id="services" className="services">
-        <div className="svc-stars" aria-hidden="true" />
+        <div className="services__stars" aria-hidden="true" />
 
         <div className="services__inner">
           <header className="services__head">
@@ -1042,7 +997,7 @@ export default function HomePage() {
           <div className="services__grid">
             <article className="service-card" data-accent="fullstack" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <rect
                     x="3"
                     y="5"
@@ -1066,7 +1021,7 @@ export default function HomePage() {
 
             <article className="service-card" data-accent="data" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <ellipse
                     cx="12"
                     cy="6.5"
@@ -1098,7 +1053,7 @@ export default function HomePage() {
 
             <article className="service-card" data-accent="ai" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path
                     d="M9.75 4.5c-2.35 0-4.25 1.9-4.25 4.25 0 1.9-1.25 2.9-1.25 4.6 0 2.7 2.2 4.9 4.9 4.9h1.85c.83 0 1.5.67 1.5 1.5v.25"
                     fill="none"
@@ -1132,7 +1087,7 @@ export default function HomePage() {
 
             <article className="service-card" data-accent="swiftpay" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <rect
                     x="3"
                     y="5"
@@ -1159,7 +1114,7 @@ export default function HomePage() {
 
             <article className="service-card" data-accent="marketing" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path
                     d="M4 16.5 9.5 11l3.5 3.5 5-5.5"
                     fill="none"
@@ -1186,7 +1141,7 @@ export default function HomePage() {
 
             <article className="service-card" data-accent="growth" tabIndex={0}>
               <div className="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <circle
                     cx="10"
                     cy="10"
