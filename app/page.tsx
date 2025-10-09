@@ -211,6 +211,279 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Services section: starfield + reveal + pointer glow
+    (() => {
+      "use strict";
+
+      const section = document.getElementById("services") as HTMLElement | null;
+      if (!section) return;
+      if (section.dataset.servicesInit === "done") return;
+      section.dataset.servicesInit = "done";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const prefersReduced = () => reduceMotion.matches;
+      const supportsPE = "PointerEvent" in window;
+      const passive: AddEventListenerOptions = { passive: true };
+
+      const starsRoot =
+        (section.querySelector(".svc-stars") as HTMLDivElement | null) ??
+        (() => {
+          const el = document.createElement("div");
+          el.className = "svc-stars";
+          section.insertBefore(el, section.firstChild);
+          return el;
+        })();
+
+      const makeStars = () => {
+        if (!starsRoot) return;
+        starsRoot.innerHTML = "";
+        const wide = window.matchMedia("(min-width: 900px)").matches;
+        const count = prefersReduced() ? (wide ? 70 : 45) : (wide ? 120 : 80);
+        const palette = [
+          "rgba(255,255,255,0.95)",
+          "rgba(214,60,255,0.85)",
+          "rgba(255,140,64,0.78)",
+          "rgba(123,206,255,0.85)",
+        ];
+
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement("span");
+          s.className = "svc-star";
+          const left = Math.random() * 120 - 10;
+          const top = Math.random() * 120 - 10;
+          const size = (Math.random() * 1.8 + 0.8).toFixed(2);
+          const d = (Math.random() * 4 + 3).toFixed(2);
+          const delay = (Math.random() * 4).toFixed(2);
+          const min = (Math.random() * 0.35 + 0.25).toFixed(2);
+          const max = (Number(min) + Math.random() * 0.45 + 0.25).toFixed(2);
+
+          s.style.setProperty("--left", `${left}%`);
+          s.style.setProperty("--top", `${top}%`);
+          s.style.setProperty("--size", `${size}px`);
+          s.style.setProperty("--twinkle-duration", `${d}s`);
+          s.style.setProperty("--twinkle-delay", `${delay}s`);
+          s.style.setProperty("--twinkle-min", min);
+          s.style.setProperty("--twinkle-max", max);
+          s.style.setProperty("--color", palette[(Math.random() * palette.length) | 0]);
+
+          frag.appendChild(s);
+        }
+        starsRoot.appendChild(frag);
+      };
+
+      let rafParallax = 0;
+      const scheduleParallax = () => {
+        if (rafParallax) return;
+        rafParallax = requestAnimationFrame(() => {
+          rafParallax = 0;
+          if (!starsRoot) return;
+          if (prefersReduced()) {
+            starsRoot.style.transform = "translate3d(0,0,0)";
+            return;
+          }
+          const rect = section.getBoundingClientRect();
+          const vh = Math.max(1, window.innerHeight);
+          const p = 1 - (rect.top + rect.height * 0.5) / (vh + rect.height);
+          const x = Math.max(-8, Math.min(8, p * 8));
+          const y = Math.max(-12, Math.min(12, p * 12));
+          starsRoot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        });
+      };
+
+      makeStars();
+      window.addEventListener("scroll", scheduleParallax, passive);
+      window.addEventListener("resize", () => {
+        makeStars();
+        scheduleParallax();
+      });
+
+      if (typeof reduceMotion.addEventListener === "function") {
+        reduceMotion.addEventListener("change", () => {
+          makeStars();
+          scheduleParallax();
+        });
+      } else if (typeof (reduceMotion as any).addListener === "function") {
+        (reduceMotion as any).addListener(() => {
+          makeStars();
+          scheduleParallax();
+        });
+      }
+
+      const cards = Array.from(section.querySelectorAll<HTMLElement>(".service-card"));
+      section.classList.add("is-enhanced");
+
+      const revealCard = (card: HTMLElement) => {
+        if (card.classList.contains("is-inview")) return;
+        card.classList.add("is-inview", "underline-active");
+        card.style.removeProperty("--card-delay");
+        setTimeout(() => card.classList.remove("underline-active"), 480);
+      };
+
+      cards.forEach((card, i) => card.style.setProperty("--card-delay", `${i * 80}ms`));
+
+      let io: IntersectionObserver | null = null;
+      const startIO = () => {
+        if (io) return;
+        io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                revealCard(entry.target as HTMLElement);
+                io!.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.35, rootMargin: "0px 0px -10% 0px" }
+        );
+        cards.forEach((c) => !c.classList.contains("is-inview") && io!.observe(c));
+      };
+      const stopIO = () => {
+        if (io) {
+          io.disconnect();
+          io = null;
+        }
+      };
+
+      let activeCard: HTMLElement | null = null;
+      let rect: DOMRect | null = null;
+      let lastPctX = 50,
+        lastPctY = 40;
+      let nextPctX = 50,
+        nextPctY = 40;
+      let needsFlush = false;
+      let rafGlow = 0;
+
+      const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+      const isFinePointer = (e: PointerEvent | MouseEvent | null) =>
+        !e || ("pointerType" in (e as PointerEvent) && ((e as PointerEvent).pointerType === "mouse" || (e as PointerEvent).pointerType === "pen"));
+
+      const measure = () => {
+        if (activeCard) rect = activeCard.getBoundingClientRect();
+      };
+
+      const computePercent = (clientX: number, clientY: number) => {
+        if (!rect) return;
+        const x = clamp(((clientX - rect.left) / rect.width) * 100, 0, 100);
+        const y = clamp(((clientY - rect.top) / rect.height) * 100, 0, 100);
+        nextPctX = x;
+        nextPctY = y;
+        needsFlush ||= Math.abs(nextPctX - lastPctX) > 0.2 || Math.abs(nextPctY - lastPctY) > 0.2;
+        if (!rafGlow) rafGlow = requestAnimationFrame(flush);
+      };
+
+      const flush = () => {
+        rafGlow = 0;
+        if (!activeCard || !needsFlush) return;
+        needsFlush = false;
+        lastPctX = nextPctX;
+        lastPctY = nextPctY;
+        activeCard.style.setProperty("--gx", `${lastPctX.toFixed(2)}%`);
+        activeCard.style.setProperty("--gy", `${lastPctY.toFixed(2)}%`);
+      };
+
+      const beginTracking = (card: HTMLElement, evt?: PointerEvent | MouseEvent) => {
+        if (activeCard === card) return;
+        activeCard = card;
+        card.classList.add("underline-active", "is-hot");
+        measure();
+        if (evt) computePercent(evt.clientX, evt.clientY);
+      };
+
+      const endTracking = () => {
+        if (!activeCard) return;
+        activeCard.classList.remove("underline-active", "is-hot");
+        activeCard.style.setProperty("--gx", "50%");
+        activeCard.style.setProperty("--gy", "40%");
+        activeCard = null;
+        rect = null;
+        needsFlush = false;
+        if (rafGlow) {
+          cancelAnimationFrame(rafGlow);
+          rafGlow = 0;
+        }
+      };
+
+      const onEnter = (e: any) => {
+        if (!isFinePointer(e)) return;
+        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
+        if (card && section.contains(card)) beginTracking(card, e);
+      };
+      const onMove = (e: any) => {
+        if (!isFinePointer(e) || !activeCard) return;
+        if (!rect) measure();
+        computePercent(e.clientX, e.clientY);
+      };
+      const onLeave = (e: any) => {
+        const related = (e as MouseEvent).relatedTarget as Node | null;
+        if (activeCard && (!related || !activeCard.contains(related))) endTracking();
+      };
+
+      const onFocusIn = (e: FocusEvent) => {
+        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
+        if (card) card.classList.add("underline-active");
+      };
+      const onFocusOut = (e: FocusEvent) => {
+        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
+        if (card) card.classList.remove("underline-active");
+      };
+
+      if (!prefersReduced()) {
+        if (supportsPE) {
+          section.addEventListener("pointerenter", onEnter, passive);
+          section.addEventListener("pointermove", onMove, passive);
+          section.addEventListener("pointerleave", onLeave);
+          section.addEventListener("pointercancel", endTracking);
+        } else {
+          section.addEventListener("mouseenter", onEnter, true);
+          section.addEventListener("mousemove", onMove as any, passive);
+          section.addEventListener("mouseleave", onLeave, true);
+        }
+      }
+      section.addEventListener("focusin", onFocusIn);
+      section.addEventListener("focusout", onFocusOut);
+      window.addEventListener("resize", () => activeCard && measure(), passive);
+      window.addEventListener("scroll", () => activeCard && measure(), passive);
+
+      const applyRM = () => {
+        if (prefersReduced()) {
+          stopIO();
+          cards.forEach(revealCard);
+          section.classList.add("reduced-motion");
+        } else {
+          section.classList.remove("reduced-motion");
+          startIO();
+        }
+      };
+      applyRM();
+
+      if (typeof reduceMotion.addEventListener === "function") {
+        reduceMotion.addEventListener("change", applyRM);
+      } else if (typeof (reduceMotion as any).addListener === "function") {
+        (reduceMotion as any).addListener(applyRM);
+      }
+
+      document.addEventListener(
+        "visibilitychange",
+        () => {
+          if (document.hidden) {
+            stopIO();
+            endTracking();
+          } else if (!prefersReduced()) startIO();
+        },
+        passive
+      );
+
+      window.addEventListener(
+        "pagehide",
+        () => {
+          stopIO();
+          endTracking();
+        },
+        { once: true }
+      );
+    })();
+
     // Portfolio section: starfield + reveals + hover polish
     (() => {
       const section = document.getElementById("portfolio") as HTMLElement | null;
@@ -754,12 +1027,185 @@ export default function HomePage() {
         </div>
       </section>
       <AboutSection />
-      <section id="services" className="section-shell">
-        <h2>Services</h2>
-        <p>
-          From product strategy to platform maintenance, this placeholder outlines the service
-          spectrum that will be detailed soon.
-        </p>
+      <section id="services" className="services">
+        <div className="svc-stars" aria-hidden="true" />
+
+        <div className="services__inner">
+          <header className="services__head">
+            <h2 className="services__title">
+              What We <span className="grad-word">Build</span>
+            </h2>
+            <p className="services__lede">Comprehensive solutions for modern digital challenges</p>
+          </header>
+
+          <div className="services__grid">
+            <article className="service-card" data-accent="fullstack" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="11"
+                    rx="1.8"
+                    ry="1.8"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path d="M2.75 17h18.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  <path d="M8.5 19.75h7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">Full-Stack Development</span>
+              </h3>
+              <p className="service-card__copy">APIs, apps, dashboards, admin portals.</p>
+            </article>
+
+            <article className="service-card" data-accent="data" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <ellipse
+                    cx="12"
+                    cy="6.5"
+                    rx="7.5"
+                    ry="3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path
+                    d="M4.5 6.5v6c0 1.93 3.36 3.5 7.5 3.5s7.5-1.57 7.5-3.5v-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path
+                    d="M4.5 12.2c0 1.93 3.36 3.5 7.5 3.5s7.5-1.57 7.5-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">Data Engineering</span>
+              </h3>
+              <p className="service-card__copy">Pipelines, warehouses, metrics, and clean dashboards.</p>
+            </article>
+
+            <article className="service-card" data-accent="ai" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M9.75 4.5c-2.35 0-4.25 1.9-4.25 4.25 0 1.9-1.25 2.9-1.25 4.6 0 2.7 2.2 4.9 4.9 4.9h1.85c.83 0 1.5.67 1.5 1.5v.25"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M14.25 4.5c2.35 0 4.25 1.9 4.25 4.25 0 1.9 1.25 2.9 1.25 4.6 0 2.7-2.2 4.9-4.9 4.9H13c-.83 0-1.5.67-1.5 1.5v.25"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="9.75" cy="8.5" r="1" fill="currentColor" />
+                  <circle cx="14.25" cy="8.5" r="1" fill="currentColor" />
+                  <path
+                    d="M9 12.5c.4.6 1.1 1 2 1s1.6-.4 2-1"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">AI Automations &amp; Agents</span>
+              </h3>
+              <p className="service-card__copy">Voice + chatbots, intake copilots, smart workflows.</p>
+            </article>
+
+            <article className="service-card" data-accent="swiftpay" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="13"
+                    rx="2"
+                    ry="2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path d="M3 10.5h18" stroke="currentColor" strokeWidth="1.6" />
+                  <rect x="6.5" y="12.5" width="5" height="2.5" rx="1.2" fill="currentColor" />
+                  <path d="M16.5 13.75h2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">SwiftPay Systems</span>
+              </h3>
+              <p className="service-card__copy">
+                Fee-smart checkouts, subscriptions, and ACH routing — keep more of every dollar.
+              </p>
+            </article>
+
+            <article className="service-card" data-accent="marketing" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 16.5 9.5 11l3.5 3.5 5-5.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M15 8h3v3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                  <path d="M4 19h16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">Digital Marketing</span>
+              </h3>
+              <p className="service-card__copy">Campaigns, funnels, ads, analytics → grow smarter.</p>
+            </article>
+
+            <article className="service-card" data-accent="growth" tabIndex={0}>
+              <div className="service-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r="4.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path d="m13.5 13.5 5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  <path d="M8.75 9.75h2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  <path d="M10 8.5v2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </div>
+              <h3 className="service-card__title">
+                <span className="service-card__title-text">Digital Growth (SEO &amp; CRM)</span>
+              </h3>
+              <p className="service-card__copy">SEO, CRM wiring, landing pages, reporting.</p>
+            </article>
+          </div>
+        </div>
       </section>
       <section id="portfolio" className="portfolio" aria-labelledby="portfolio-title">
         <div className="pf-stars" aria-hidden="true" />
