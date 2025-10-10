@@ -230,8 +230,11 @@ export default function HomePage() {
       const revealables = [...headerItems, ...cards];
 
       section.classList.add("is-enhanced");
+      section.style.setProperty("--gx", "0px");
+      section.style.setProperty("--gy", "0px");
 
-      const STAGGER_MS = 80;
+      const STAGGER_MS = 60;
+      const MAX_STAGGER_INDEX = 5;
 
       const assignDelays = () => {
         revealables.forEach((el, index) => {
@@ -242,7 +245,8 @@ export default function HomePage() {
             }
             return;
           }
-          const delay = prefersReduced() ? 0 : index * STAGGER_MS;
+          const offsetIndex = Math.min(index, MAX_STAGGER_INDEX);
+          const delay = prefersReduced() ? 0 : offsetIndex * STAGGER_MS;
           el.style.setProperty("--svc-delay", `${delay}ms`);
           if (el.classList.contains("service-card")) {
             el.style.setProperty("--card-delay", `${delay}ms`);
@@ -252,6 +256,8 @@ export default function HomePage() {
 
       assignDelays();
 
+      let hasSwept = false;
+
       const revealElement = (element: HTMLElement) => {
         if (element.classList.contains("is-inview")) return;
         element.classList.add("is-inview");
@@ -260,6 +266,10 @@ export default function HomePage() {
           element.classList.add("underline-active");
           element.style.removeProperty("--card-delay");
           window.setTimeout(() => element.classList.remove("underline-active"), 480);
+          if (!hasSwept) {
+            hasSwept = true;
+            section.classList.add("has-revealed");
+          }
         }
       };
 
@@ -275,7 +285,7 @@ export default function HomePage() {
               io!.unobserve(target);
             });
           },
-          { threshold: 0.35, rootMargin: "0px 0px -10% 0px" }
+          { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
         );
         revealables
           .filter((el) => !el.classList.contains("is-inview"))
@@ -288,122 +298,196 @@ export default function HomePage() {
         }
       };
 
+      const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
       let activeCard: HTMLElement | null = null;
-      let rect: DOMRect | null = null;
-      let lastPctX = 50,
-        lastPctY = 40;
-      let nextPctX = 50,
-        nextPctY = 40;
-      let needsFlush = false;
-      let rafGlow = 0;
-
-      const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
-      const isFinePointer = (e: PointerEvent | MouseEvent | null) =>
-        !e || ("pointerType" in (e as PointerEvent) && ((e as PointerEvent).pointerType === "mouse" || (e as PointerEvent).pointerType === "pen"));
-
-      const measure = () => {
-        if (activeCard) rect = activeCard.getBoundingClientRect();
-      };
-
-      const computePercent = (clientX: number, clientY: number) => {
-        if (!rect) return;
-        const x = clamp(((clientX - rect.left) / rect.width) * 100, 0, 100);
-        const y = clamp(((clientY - rect.top) / rect.height) * 100, 0, 100);
-        nextPctX = x;
-        nextPctY = y;
-        needsFlush ||= Math.abs(nextPctX - lastPctX) > 0.2 || Math.abs(nextPctY - lastPctY) > 0.2;
-        if (!rafGlow) rafGlow = requestAnimationFrame(flush);
-      };
-
-      const flush = () => {
-        rafGlow = 0;
-        if (!activeCard || !needsFlush) return;
-        needsFlush = false;
-        lastPctX = nextPctX;
-        lastPctY = nextPctY;
-        activeCard.style.setProperty("--gx", `${lastPctX.toFixed(2)}%`);
-        activeCard.style.setProperty("--gy", `${lastPctY.toFixed(2)}%`);
-      };
-
-      const beginTracking = (card: HTMLElement, evt?: PointerEvent | MouseEvent) => {
-        if (activeCard === card) return;
-        activeCard = card;
-        card.classList.add("underline-active", "is-hot");
-        measure();
-        if (evt) computePercent(evt.clientX, evt.clientY);
-      };
-
-      const endTracking = () => {
-        if (!activeCard) return;
-        activeCard.classList.remove("underline-active", "is-hot");
-        activeCard.style.setProperty("--gx", "50%");
-        activeCard.style.setProperty("--gy", "40%");
-        activeCard = null;
-        rect = null;
-        needsFlush = false;
-        if (rafGlow) {
-          cancelAnimationFrame(rafGlow);
-          rafGlow = 0;
-        }
-      };
-
-      const onEnter = (e: any) => {
-        if (!isFinePointer(e)) return;
-        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
-        if (card && section.contains(card)) beginTracking(card, e);
-      };
-      const onMove = (e: any) => {
-        if (!isFinePointer(e) || !activeCard) return;
-        if (!rect) measure();
-        computePercent(e.clientX, e.clientY);
-      };
-      const onLeave = (e: any) => {
-        const related = (e as MouseEvent).relatedTarget as Node | null;
-        if (activeCard && (!related || !activeCard.contains(related))) endTracking();
-      };
-
-      const onFocusIn = (e: FocusEvent) => {
-        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
-        if (card) card.classList.add("underline-active");
-      };
-      const onFocusOut = (e: FocusEvent) => {
-        const card = (e.target as Element).closest(".service-card") as HTMLElement | null;
-        if (!card) return;
-        const next = e.relatedTarget as Node | null;
-        if (!next || !card.contains(next)) {
-          card.classList.remove("underline-active");
-          if (activeCard === card) endTracking();
-        }
-      };
-
       let pointerBound = false;
+      let pointerRaf = 0;
+      let lastPointerX = 0;
+      let lastPointerY = 0;
+      let nextPointerX = 0;
+      let nextPointerY = 0;
+      let idleTimer: number | null = null;
+
+      const flushPointer = () => {
+        pointerRaf = 0;
+        if (Math.abs(nextPointerX - lastPointerX) < 0.05 && Math.abs(nextPointerY - lastPointerY) < 0.05) {
+          return;
+        }
+        lastPointerX = nextPointerX;
+        lastPointerY = nextPointerY;
+        section.style.setProperty("--gx", `${lastPointerX.toFixed(2)}px`);
+        section.style.setProperty("--gy", `${lastPointerY.toFixed(2)}px`);
+      };
+
+      const requestPointerFrame = () => {
+        if (!pointerRaf) pointerRaf = requestAnimationFrame(flushPointer);
+      };
+
+      const clearIdleTimer = () => {
+        if (idleTimer !== null) {
+          window.clearTimeout(idleTimer);
+          idleTimer = null;
+        }
+      };
+
+      const resetPointer = () => {
+        nextPointerX = 0;
+        nextPointerY = 0;
+        requestPointerFrame();
+      };
+
+      const scheduleIdleReset = () => {
+        clearIdleTimer();
+        idleTimer = window.setTimeout(() => {
+          idleTimer = null;
+          resetPointer();
+        }, 1200);
+      };
+
+      const isFinePointer = (event?: PointerEvent | MouseEvent | null) => {
+        if (!event) return true;
+        if ("pointerType" in event) {
+          const type = (event as PointerEvent).pointerType;
+          return type === "mouse" || type === "pen" || type === "";
+        }
+        return true;
+      };
+
+      const updatePointer = (clientX: number, clientY: number) => {
+        const rect = section.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const normalizedX = clamp((clientX - centerX) / (rect.width / 2), -1, 1);
+        const normalizedY = clamp((clientY - centerY) / (rect.height / 2), -1, 1);
+        nextPointerX = clamp(normalizedX * 18, -18, 18);
+        nextPointerY = clamp(normalizedY * 18, -18, 18);
+        requestPointerFrame();
+        scheduleIdleReset();
+      };
+
+      const activateCard = (card: HTMLElement | null) => {
+        if (!card || activeCard === card) return;
+        if (activeCard && activeCard !== card) {
+          const previous = activeCard;
+          deactivateCard(previous);
+        }
+        card.classList.add("underline-active", "is-hot");
+        activeCard = card;
+      };
+
+      const deactivateCard = (card: HTMLElement | null, force = false) => {
+        if (!card) return;
+        const activeEl = document.activeElement as HTMLElement | null;
+        if (!force && activeEl && card.contains(activeEl)) return;
+        card.classList.remove("underline-active", "is-hot");
+        if (activeCard === card) {
+          activeCard = null;
+        }
+      };
+
+      const handlePointerMove = (event: PointerEvent | MouseEvent) => {
+        if (!isFinePointer(event)) return;
+        updatePointer(event.clientX, event.clientY);
+      };
+
+      const handlePointerEnter = (event: PointerEvent | MouseEvent) => {
+        if (!isFinePointer(event)) return;
+        updatePointer(event.clientX, event.clientY);
+      };
+
+      const handlePointerOver = (event: PointerEvent | MouseEvent) => {
+        if (!isFinePointer(event)) return;
+        const card = (event.target as Element).closest(".service-card") as HTMLElement | null;
+        if (card && section.contains(card)) {
+          activateCard(card);
+        }
+      };
+
+      const handlePointerOut = (event: PointerEvent | MouseEvent) => {
+        const card = (event.target as Element).closest(".service-card") as HTMLElement | null;
+        if (!card) return;
+        const related = (event as MouseEvent).relatedTarget as Node | null;
+        if (related && card.contains(related)) return;
+        deactivateCard(card);
+      };
+
+      const handlePointerLeave = () => {
+        clearIdleTimer();
+        if (activeCard) {
+          const current = activeCard;
+          deactivateCard(current);
+          activeCard = null;
+        }
+        resetPointer();
+      };
+
+      const onFocusIn = (event: FocusEvent) => {
+        const card = (event.target as Element).closest(".service-card") as HTMLElement | null;
+        if (!card) return;
+        card.classList.add("underline-active", "is-hot");
+      };
+
+      const onFocusOut = (event: FocusEvent) => {
+        const card = (event.target as Element).closest(".service-card") as HTMLElement | null;
+        if (!card) return;
+        const next = event.relatedTarget as Node | null;
+        if (!next || !card.contains(next)) {
+          deactivateCard(card, true);
+        }
+      };
+
       const bindPointer = () => {
         if (pointerBound || prefersReduced()) return;
         pointerBound = true;
         if (supportsPE) {
-          section.addEventListener("pointerenter", onEnter, passive);
-          section.addEventListener("pointermove", onMove, passive);
-          section.addEventListener("pointerleave", onLeave);
-          section.addEventListener("pointercancel", endTracking);
+          section.addEventListener("pointermove", handlePointerMove, passive);
+          section.addEventListener("pointerenter", handlePointerEnter, passive);
+          section.addEventListener("pointerleave", handlePointerLeave);
+          section.addEventListener("pointercancel", handlePointerLeave);
+          section.addEventListener("pointerover", handlePointerOver);
+          section.addEventListener("pointerout", handlePointerOut);
         } else {
-          section.addEventListener("mouseenter", onEnter, true);
-          section.addEventListener("mousemove", onMove as any, passive);
-          section.addEventListener("mouseleave", onLeave, true);
+          section.addEventListener("mousemove", handlePointerMove as any, passive);
+          section.addEventListener("mouseenter", handlePointerEnter as any, true);
+          section.addEventListener("mouseleave", handlePointerLeave, true);
+          section.addEventListener("mouseover", handlePointerOver as any);
+          section.addEventListener("mouseout", handlePointerOut as any);
+        }
+      };
+
+      const unbindPointer = () => {
+        if (!pointerBound) return;
+        pointerBound = false;
+        if (supportsPE) {
+          section.removeEventListener("pointermove", handlePointerMove, passive);
+          section.removeEventListener("pointerenter", handlePointerEnter, passive);
+          section.removeEventListener("pointerleave", handlePointerLeave);
+          section.removeEventListener("pointercancel", handlePointerLeave);
+          section.removeEventListener("pointerover", handlePointerOver);
+          section.removeEventListener("pointerout", handlePointerOut);
+        } else {
+          section.removeEventListener("mousemove", handlePointerMove as any, passive);
+          section.removeEventListener("mouseenter", handlePointerEnter as any, true);
+          section.removeEventListener("mouseleave", handlePointerLeave, true);
+          section.removeEventListener("mouseover", handlePointerOver as any);
+          section.removeEventListener("mouseout", handlePointerOut as any);
         }
       };
 
       bindPointer();
       section.addEventListener("focusin", onFocusIn);
       section.addEventListener("focusout", onFocusOut);
-      window.addEventListener("resize", () => activeCard && measure(), passive);
-      window.addEventListener("scroll", () => activeCard && measure(), passive);
 
       const applyRM = () => {
         assignDelays();
         if (prefersReduced()) {
           stopIO();
           revealables.forEach(revealElement);
-          endTracking();
+          unbindPointer();
+          clearIdleTimer();
+          resetPointer();
           section.classList.add("reduced-motion");
         } else {
           section.classList.remove("reduced-motion");
@@ -424,7 +508,7 @@ export default function HomePage() {
         () => {
           if (document.hidden) {
             stopIO();
-            endTracking();
+            handlePointerLeave();
           } else if (!prefersReduced()) startIO();
         },
         passive
@@ -434,7 +518,8 @@ export default function HomePage() {
         "pagehide",
         () => {
           stopIO();
-          endTracking();
+          handlePointerLeave();
+          unbindPointer();
         },
         { once: true }
       );
@@ -983,12 +1068,12 @@ export default function HomePage() {
         </div>
       </section>
       <AboutSection />
-      <section id="services" className="services">
+      <section id="services" className="services" role="region" aria-labelledby="services-title">
         <div className="services__stars" aria-hidden="true" />
 
         <div className="services__inner">
           <header className="services__head">
-            <h2 className="services__title">
+            <h2 className="services__title" id="services-title">
               What We <span className="grad-word">Build</span>
             </h2>
             <p className="services__lede">Comprehensive solutions for modern digital challenges</p>
