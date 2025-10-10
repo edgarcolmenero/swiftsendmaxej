@@ -63,14 +63,14 @@ body {
 }
 
 /* ===== Header styles (overlay, transparent, micro-fade) ===== */
-.ss-header{
-  position: sticky;
+.header.ss-header{
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 50;
+  z-index: 120;
   width: 100%;
-  background: linear-gradient(92deg, rgba(7, 11, 22, 0.86) 0%, rgba(8, 10, 21, 0.78) 100%);
+  background: linear-gradient(92deg, rgba(7, 11, 22, 0.68) 0%, rgba(8, 10, 21, 0.58) 100%);
   border: none;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -80,35 +80,37 @@ body {
     border-color 220ms var(--ease),
     opacity 220ms var(--ease);
 }
-.ss-header::before,
-.ss-header::after{
+
+.header.ss-header::after{
   content: "";
   position: absolute;
   left: 0;
   right: 0;
+  bottom: 0;
   height: 1px;
   pointer-events: none;
   background: var(--underline-gradient);
-  opacity: 0.4;
-}
-.ss-header::before{ top: 0; }
-.ss-header::after{ bottom: 0; }
-
-.ss-header.has-shadow{
-  box-shadow: 0 18px 32px rgba(5, 7, 18, 0.46);
+  opacity: 0.45;
+  transition: opacity 220ms var(--ease);
 }
 
-.ss-header.has-shadow::after{
-  opacity: 0.75;
+.header.ss-header.has-shadow{
+  box-shadow: 0 14px 28px rgba(5, 7, 18, 0.38);
+}
+
+.header.ss-header.has-shadow::after{
+  opacity: 0.82;
 }
 
 .header-row{
   display:flex; align-items:center; justify-content:space-between;
-  padding: .7rem 0;
+  padding: clamp(.65rem, 1.6vw, .9rem) 0;
   gap: clamp(1rem, 3vw, 2.5rem);
 }
 
-.brand{display:flex; align-items:center; gap:.65rem; color:#fff; text-decoration:none;}
+.brand{display:flex; align-items:center; gap:.65rem; color:#fff; text-decoration:none; transition: filter 160ms var(--ease); cursor:pointer;}
+.brand:hover{ filter: brightness(1.02); }
+.brand:focus-visible{ outline:2px solid var(--brand-cool); outline-offset:4px; text-decoration:none; filter: brightness(1.02); }
 .brand-mark{
   display:inline-grid;
   place-items:center;
@@ -144,37 +146,58 @@ body {
 .nav-desktop .nav-pill.is-active::after{ transform: scaleX(1); }
 .nav-desktop .nav-pill.is-active{ color: rgba(255, 205, 135, 0.92); }
 
-.header-icons{ display:flex; align-items:center; gap:0.95rem; }
+.header--fixed{ position: fixed; top:0; left:0; width:100%; }
+.header-actions{ display:flex; align-items:center; gap:clamp(1.25rem, 2.2vw, 1.5rem); }
+.header-actions__cluster{ display:flex; align-items:center; gap:clamp(.6rem, 1.8vw, .9rem); }
+.header-actions a.icon-btn{ text-decoration:none; }
+.header-icons{ display:flex; align-items:center; gap:clamp(.6rem, 1.8vw, .9rem); }
 .icon-btn{
+  position:relative;
   display:grid;
   place-items:center;
   width:44px;
   height:44px;
-  color: rgba(255, 255, 255, 0.92);
+  min-width:44px;
+  min-height:44px;
+  color: rgba(255, 255, 255, 0.9);
   background: rgba(255, 255, 255, 0.04);
-  border-radius:12px;
+  border-radius:14px;
   border:none;
   cursor:pointer;
-  transition: transform 180ms var(--ease),
-    box-shadow 180ms var(--ease),
-    opacity 180ms var(--ease);
+  transition:
+    transform 200ms var(--ease),
+    box-shadow 200ms var(--ease),
+    color 200ms var(--ease);
+}
+.icon-btn::before{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border-radius:inherit;
+  border:1px solid rgba(255, 255, 255, 0.22);
+  opacity:0;
+  transition: opacity 200ms var(--ease);
+  pointer-events:none;
 }
 .icon-btn:hover,
 .icon-btn:focus-visible{
-  transform: scale(1.1);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-  opacity: 1;
+  transform: scale(1.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+.icon-btn:hover::before,
+.icon-btn:focus-visible::before{
+  opacity:1;
 }
 .icon-btn:focus-visible{
-  outline: 2px solid var(--brand-cool);
-  outline-offset: 2px;
+  outline:2px solid var(--brand-cool);
+  outline-offset:3px;
 }
 .icon-btn:active{
-  transform: scale(0.95);
-  opacity: 0.9;
+  transform: scale(0.98);
 }
-.icon-btn .action-icon{ display:block; width:20px; height:20px; color:#fff; opacity:0.95; }
-.header-icons a.icon-btn{ text-decoration:none; }
+.icon-btn .action-icon{ display:block; width:20px; height:20px; color:#fff; opacity:0.9; transition: opacity 200ms var(--ease); }
+.icon-btn:hover .action-icon,
+.icon-btn:focus-visible .action-icon{ opacity:1; }
 
 .hamburger{
   display:inline-grid; gap:4px; margin-left:.25rem; width:38px; height:38px; place-items:center; border-radius:10px; background:transparent; border:none; cursor:pointer;
