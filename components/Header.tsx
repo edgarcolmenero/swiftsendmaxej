@@ -2,7 +2,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+// @ts-ignore -- resolved via custom local react-dom typings
+import * as ReactDOM from "react-dom";
+import {
+  type MouseEvent,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 const NAV_ITEMS = [
   { href: "#home", label: "Home" },
@@ -107,7 +114,13 @@ const ACTION_ITEMS: ActionItem[] = [
 ];
 
 export default function Header() {
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [portalTarget, setPortalTarget] = useState<Element | null>(null);
   const [hasShadow, setHasShadow] = useState(false);
+
+  useEffect(() => {
+    setPortalTarget(document.body);
+  }, []);
 
   useEffect(() => {
     const updateShadow = () => {
@@ -119,10 +132,70 @@ export default function Header() {
     return () => window.removeEventListener("scroll", updateShadow);
   }, []);
 
-  return (
-    <header data-header className={`ss-header${hasShadow ? " has-shadow" : ""}`}>
+  useEffect(() => {
+    if (!portalTarget || !headerRef.current) {
+      return;
+    }
+
+    const setHeaderHeight = () => {
+      if (!headerRef.current) return;
+      const height = headerRef.current.offsetHeight;
+      document.documentElement.style.setProperty("--header-h", `${height}px`);
+    };
+
+    let resizeObserver: ResizeObserver | null = null;
+
+    if (typeof ResizeObserver !== "undefined" && headerRef.current) {
+      resizeObserver = new ResizeObserver(setHeaderHeight);
+      resizeObserver.observe(headerRef.current);
+    } else {
+      setHeaderHeight();
+    }
+
+    setHeaderHeight();
+    window.addEventListener("orientationchange", setHeaderHeight);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener("orientationchange", setHeaderHeight);
+    };
+  }, [portalTarget]);
+
+  const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) return;
+
+    const target = document.querySelector<HTMLElement>(href);
+    if (!target) return;
+
+    event.preventDefault();
+
+    const headerHeight = headerRef.current?.offsetHeight ?? 0;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetOffset = target.getBoundingClientRect().top + window.scrollY - headerHeight - 8;
+    const destination = Math.max(targetOffset, 0);
+
+    window.scrollTo({
+      top: destination,
+      behavior: prefersReducedMotion ? "auto" : "smooth"
+    });
+  };
+
+  if (!portalTarget) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
+    <header
+      ref={headerRef}
+      data-header
+      className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
+    >
       <div className="container header-row">
-        <Link href="#home" className="brand">
+        <Link
+          href="#home"
+          className="brand"
+          onClick={(event) => handleAnchorClick(event, "#home")}
+        >
           <span className="brand-mark" aria-hidden="true">
             <svg
               width="32"
@@ -137,7 +210,7 @@ export default function Header() {
                 </linearGradient>
               </defs>
               <path
-                d="M21.62 7.08c-1.72-1.46-4.25-2.29-6.82-1.93-3.08.42-5.57 2.43-6.24 4.92a3.1 3.1 0 0 0 2.84 3.89h4.44c.82 0 1.46.46 1.46 1.06 0 .6-.64 1.06-1.46 1.06h-5.03c-2.88 0-5.28 1.95-5.81 4.55-.7 3.43 2.13 6.41 5.7 6.41h7.02c3.54 0 6.8-2.33 7.39-5.46.46-2.44-.74-4.69-2.93-5.9l-.74-.41c-.4-.22-.48-.47-.48-.63 0-.16.08-.41.48-.63l.74-.41c2.19-1.21 3.39-3.46 2.93-5.9-.24-1.26-1.01-2.48-2.29-3.62Z"
+                d="M22.09 6.84c-1.86-1.6-4.57-2.51-7.33-2.12-3.2.44-5.79 2.51-6.49 5.07a3.18 3.18 0 0 0 2.92 3.98h4.73c.81 0 1.47.62 1.47 1.45 0 .6-.66 1.07-1.47 1.07h-5.29c-3 0-5.51 1.98-6.07 4.61-.73 3.48 2.21 6.48 5.91 6.48h7.29c3.67 0 7.03-2.36 7.64-5.53.47-2.47-.77-4.74-3.03-5.97l-.77-.42c-.39-.22-.48-.47-.48-.63 0-.16.09-.41.48-.63l.77-.42c2.26-1.23 3.49-3.5 3.03-5.97-.25-1.28-1.05-2.52-2.36-3.64Z"
                 fill="url(#brand-mark-gradient)"
               />
             </svg>
@@ -146,7 +219,12 @@ export default function Header() {
         </Link>
         <nav className="nav-desktop" aria-label="Primary">
           {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} className="nav-pill">
+            <Link
+              key={item.href}
+              href={item.href}
+              className="nav-pill"
+              onClick={(event) => handleAnchorClick(event, item.href)}
+            >
               {item.label}
             </Link>
           ))}
@@ -154,23 +232,46 @@ export default function Header() {
             Support
           </Link>
         </nav>
-        <div className="header-icons">
-          {ACTION_ITEMS.map((action) =>
-            action.external ? (
-              <a
-                key={action.label}
-                href={action.href}
-                aria-label={action.label}
-                className="icon-btn"
-              >
-                {action.icon}
-              </a>
-            ) : (
-              <Link key={action.label} href={action.href} aria-label={action.label} className="icon-btn">
-                {action.icon}
-              </Link>
-            )
-          )}
+        <div className="header-actions">
+          <div className="header-actions__cluster">
+            {ACTION_ITEMS.map((action) =>
+              action.external ? (
+                <a
+                  key={action.label}
+                  href={action.href}
+                  aria-label={action.label}
+                  className="icon-btn"
+                >
+                  {action.icon}
+                </a>
+              ) : (
+                <Link
+                  key={action.label}
+                  href={action.href}
+                  aria-label={action.label}
+                  className="icon-btn"
+                >
+                  {action.icon}
+                </Link>
+              )
+            )}
+          </div>
+          <Link href="/support" aria-label="Support" className="icon-btn icon-btn--support">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="action-icon"
+            >
+              <path
+                d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm.04 6.15c1.6 0 2.61 1.01 2.61 2.3 0 1-.52 1.74-1.4 2.25-.78.44-1.05.73-1.05 1.25v.26a.75.75 0 0 1-1.5 0v-.35c0-1.04.52-1.67 1.4-2.16.78-.44 1.05-.79 1.05-1.3 0-.48-.36-.8-1.11-.8-.63 0-1.1.26-1.52.73a.75.75 0 0 1-1.1-1.02c.65-.71 1.44-1.16 2.62-1.16Zm-.04 8.86a.94.94 0 1 1 .94-.94.94.94 0 0 1-.94.94Z"
+                fill="currentColor"
+              />
+            </svg>
+          </Link>
           <button type="button" className="hamburger" aria-label="Open navigation">
             <span />
             <span />
@@ -178,6 +279,7 @@ export default function Header() {
           </button>
         </div>
       </div>
-    </header>
+    </header>,
+    portalTarget
   );
 }
