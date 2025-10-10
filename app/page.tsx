@@ -2,6 +2,7 @@
 
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
+import AboutPlaceholder from "@/components/about/AboutPlaceholder";
 import { useEffect, useRef, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
@@ -1068,6 +1069,7 @@ export default function HomePage() {
         </div>
       </section>
       <AboutSection />
+      <AboutPlaceholder />
       <section id="services" className="services" role="region" aria-labelledby="services-title">
         <div className="services__stars" aria-hidden="true" />
 
