@@ -94,14 +94,15 @@ export default function AboutPlaceholder() {
             style={getRevealStyle(1)}
           >
             <div className="about__avatar">
-              <img src="/placeholder.svg" alt="Firstname Lastname portrait" loading="lazy" />
+              <img src="/placeholder.svg" alt="Jade Padilla portrait" loading="lazy" />
             </div>
             <div className="about__profile-details">
-              <p className="about__name">Firstname Lastname</p>
-              <p className="about__role">Position Title</p>
+              <p className="about__name">Jade Padilla</p>
+              <p className="about__role">Second-in-Command</p>
               <p className="about__bio">
-                This is a short paragraph about your background, mission, and experience. Replace this
-                with your personal or company summary.
+                My goal is to help customers complete their goals by turning ideas into shippable
+                products—aligning strategy with execution while keeping delivery fast, calm, and
+                customer-first.
               </p>
             </div>
             <div
@@ -110,7 +111,7 @@ export default function AboutPlaceholder() {
               data-reveal-index="3"
               style={getRevealStyle(3)}
             >
-              <p>Inspirational placeholder quote.</p>
+              <p>No limit to success.</p>
             </div>
           </div>
           <div
@@ -149,8 +150,8 @@ export default function AboutPlaceholder() {
                   </svg>
                 </span>
                 <div className="achv-card__text">
-                  <span className="achv-card__title">Award Title #1</span>
-                  <span className="achv-card__sub">Brief description of the first achievement or milestone.</span>
+                  <span className="achv-card__title">Software Engineer</span>
+                  <span className="achv-card__sub">Contribute clean, reliable code across front-end and back-end systems.</span>
                 </div>
                 <span className="achv-card__status" aria-hidden="true" />
               </li>
@@ -179,8 +180,8 @@ export default function AboutPlaceholder() {
                   </svg>
                 </span>
                 <div className="achv-card__text">
-                  <span className="achv-card__title">Award Title #2</span>
-                  <span className="achv-card__sub">Brief description of the second achievement or recognition.</span>
+                  <span className="achv-card__title">STEM Club Administrator</span>
+                  <span className="achv-card__sub">Organize initiatives and support emerging builders in the community.</span>
                 </div>
                 <span className="achv-card__status" aria-hidden="true" />
               </li>
@@ -208,8 +209,8 @@ export default function AboutPlaceholder() {
                   </svg>
                 </span>
                 <div className="achv-card__text">
-                  <span className="achv-card__title">Award Title #3</span>
-                  <span className="achv-card__sub">Brief description of the third award or project.</span>
+                  <span className="achv-card__title">Walmart Customer Service Representative Lead</span>
+                  <span className="achv-card__sub">Led service operations, resolved escalations, and improved customer experience.</span>
                 </div>
                 <span className="achv-card__status" aria-hidden="true" />
               </li>
@@ -237,8 +238,8 @@ export default function AboutPlaceholder() {
                   </svg>
                 </span>
                 <div className="achv-card__text">
-                  <span className="achv-card__title">Award Title #4</span>
-                  <span className="achv-card__sub">Brief description of the fourth milestone.</span>
+                  <span className="achv-card__title">UTA Honors Society</span>
+                  <span className="achv-card__sub">Recognized for academic excellence and continuous learning.</span>
                 </div>
                 <span className="achv-card__status" aria-hidden="true" />
               </li>
@@ -273,8 +274,8 @@ export default function AboutPlaceholder() {
                   </svg>
                 </span>
                 <div className="achv-card__text">
-                  <span className="achv-card__title">Award Title #5</span>
-                  <span className="achv-card__sub">Brief description of the fifth highlight.</span>
+                  <span className="achv-card__title">SwiftSend Mission Lead</span>
+                  <span className="achv-card__sub">Drive weekly launch cadences that keep clients ahead.</span>
                 </div>
                 <span className="achv-card__status" aria-hidden="true" />
               </li>
