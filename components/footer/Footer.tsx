@@ -63,7 +63,9 @@ type BrandMarkProps = {
   imageClassName?: string;
 };
 
-const LOGO_SOURCES = [...BRAND_LOGO_SOURCES];
+const LOGO_SOURCES = Array.from(
+  new Set<string>(["/brand/swiftsend-logo.png", ...BRAND_LOGO_SOURCES])
+);
 const PLACEHOLDER_LETTER = BRAND_PLACEHOLDER_LETTER || "S";
 
 const BrandMark = ({
@@ -90,62 +92,59 @@ const BrandMark = ({
 
   return (
     <>
-      <span
-        className={`dynamic-brand-mark__tile${tileClassName ? ` ${tileClassName}` : ""}`}
-        aria-hidden="true"
-        style={{ fontSize: `${fontSize}px` }}
-      >
-        {PLACEHOLDER_LETTER}
-      </span>
       {activeSrc ? (
         <img
           src={activeSrc}
           alt=""
           aria-hidden="true"
-          className={`dynamic-brand-mark__image${imageClassName ? ` ${imageClassName}` : ""}${
+          decoding="async"
+          fetchPriority="high"
+          loading="eager"
+          draggable="false"
+          className={`brand-img${imageClassName ? ` ${imageClassName}` : ""}${
             isVisible ? " is-visible" : ""
           }`}
           onLoad={() => setIsVisible(true)}
           onError={handleError}
         />
-      ) : null}
+      ) : (
+        <span
+          className={`dynamic-brand-mark__tile${tileClassName ? ` ${tileClassName}` : ""}`}
+          aria-hidden="true"
+          style={{ fontSize: `${fontSize}px` }}
+        >
+          {PLACEHOLDER_LETTER}
+        </span>
+      )}
       <style jsx>{`
         .dynamic-brand-mark__tile {
-          position: relative;
-          z-index: 0;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           width: 100%;
           height: 100%;
-          border-radius: var(--logo-radius);
+          border-radius: var(--logo-radius, 18%);
           background: linear-gradient(45deg, var(--brand-warm), var(--brand-cool));
           color: #fff;
           font-weight: 700;
           letter-spacing: 0.02em;
           line-height: 1;
           user-select: none;
-          transition: transform 150ms var(--ease), opacity 200ms var(--ease);
         }
 
-        .dynamic-brand-mark__image {
-          position: absolute;
-          inset: 0;
-          width: 100%;
+        .brand-img {
+          display: block;
           height: 100%;
-          border-radius: var(--logo-radius);
+          width: auto;
+          max-width: 100%;
+          border-radius: var(--logo-radius, 18%);
           object-fit: contain;
           opacity: 0;
           transition: opacity 180ms var(--ease);
         }
 
-        .dynamic-brand-mark__image.is-visible {
+        .brand-img.is-visible {
           opacity: 1;
-        }
-
-        :global(.brand:hover) .dynamic-brand-mark__tile,
-        :global(.brand:focus-visible) .dynamic-brand-mark__tile {
-          transform: translateY(-1.5px);
         }
       `}</style>
     </>
@@ -300,11 +299,10 @@ const Footer = ({
               display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
-              filter: "drop-shadow(0 18px 32px rgba(58, 123, 255, 0.28))",
               "--logo-radius": BRAND_LOGO_RADIUS
             } as CSSProperties}
           >
-            <BrandMark />
+            <BrandMark imageClassName={styles["brand-img--lg"]} />
           </span>
           <h3 className={styles["f-name"]}>{brandName}</h3>
           {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
