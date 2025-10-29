@@ -5,11 +5,19 @@ import Link from "next/link";
 // @ts-ignore -- resolved via custom local react-dom typings
 import * as ReactDOM from "react-dom";
 import {
+  type CSSProperties,
   type MouseEvent,
   useEffect,
   useRef,
   useState
 } from "react";
+
+import {
+  BRAND_LOGO_RADIUS,
+  BRAND_LOGO_SOURCES,
+  BRAND_NAME,
+  BRAND_PLACEHOLDER_LETTER
+} from "@/config/site";
 
 const NAV_ITEMS = [
   { href: "#home", label: "Home" },
@@ -113,6 +121,101 @@ const ACTION_ITEMS: ActionItem[] = [
   }
 ];
 
+type BrandMarkProps = {
+  size?: "sm" | "lg";
+  tileClassName?: string;
+  imageClassName?: string;
+};
+
+const LOGO_SOURCES = [...BRAND_LOGO_SOURCES];
+const PLACEHOLDER_LETTER = BRAND_PLACEHOLDER_LETTER || "S";
+
+function BrandMark({
+  size = "sm",
+  tileClassName,
+  imageClassName
+}: BrandMarkProps) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const activeSrc = sourceIndex < LOGO_SOURCES.length ? LOGO_SOURCES[sourceIndex] : null;
+  const fontSize = size === "lg" ? 24 : 18;
+
+  useEffect(() => {
+    setIsVisible(false);
+  }, [activeSrc]);
+
+  const handleError = () => {
+    setSourceIndex((previous) => {
+      const nextIndex = previous + 1;
+      return nextIndex < LOGO_SOURCES.length ? nextIndex : LOGO_SOURCES.length;
+    });
+  };
+
+  return (
+    <>
+      <span
+        className={`dynamic-brand-mark__tile${tileClassName ? ` ${tileClassName}` : ""}`}
+        aria-hidden="true"
+        style={{ fontSize: `${fontSize}px` }}
+      >
+        {PLACEHOLDER_LETTER}
+      </span>
+      {activeSrc ? (
+        <img
+          src={activeSrc}
+          alt=""
+          aria-hidden="true"
+          className={`dynamic-brand-mark__image${imageClassName ? ` ${imageClassName}` : ""}${
+            isVisible ? " is-visible" : ""
+          }`}
+          onLoad={() => setIsVisible(true)}
+          onError={handleError}
+        />
+      ) : null}
+      <style jsx>{`
+        .dynamic-brand-mark__tile {
+          position: relative;
+          z-index: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          border-radius: var(--logo-radius);
+          background: linear-gradient(45deg, var(--brand-warm), var(--brand-cool));
+          color: #fff;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          line-height: 1;
+          user-select: none;
+          transition: transform 150ms var(--ease), opacity 200ms var(--ease);
+        }
+
+        .dynamic-brand-mark__image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: var(--logo-radius);
+          object-fit: contain;
+          opacity: 0;
+          transition: opacity 180ms var(--ease);
+        }
+
+        .dynamic-brand-mark__image.is-visible {
+          opacity: 1;
+        }
+
+        :global(.brand:hover) .dynamic-brand-mark__tile,
+        :global(.brand:focus-visible) .dynamic-brand-mark__tile {
+          transform: translateY(-1.5px);
+        }
+      `}</style>
+    </>
+  );
+}
+
 export default function Header() {
   const headerRef = useRef<HTMLElement | null>(null);
   const [portalTarget, setPortalTarget] = useState<Element | null>(null);
@@ -194,28 +297,28 @@ export default function Header() {
         <Link
           href="#home"
           className="brand"
+          aria-label={BRAND_NAME}
+          style={{ minHeight: "44px" }}
           onClick={(event) => handleAnchorClick(event, "#home")}
         >
-          <span className="brand-mark" aria-hidden="true">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <linearGradient id="brand-mark-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--brand-warm)" />
-                  <stop offset="100%" stopColor="var(--brand-cool)" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M22.09 6.84c-1.86-1.6-4.57-2.51-7.33-2.12-3.2.44-5.79 2.51-6.49 5.07a3.18 3.18 0 0 0 2.92 3.98h4.73c.81 0 1.47.62 1.47 1.45 0 .6-.66 1.07-1.47 1.07h-5.29c-3 0-5.51 1.98-6.07 4.61-.73 3.48 2.21 6.48 5.91 6.48h7.29c3.67 0 7.03-2.36 7.64-5.53.47-2.47-.77-4.74-3.03-5.97l-.77-.42c-.39-.22-.48-.47-.48-.63 0-.16.09-.41.48-.63l.77-.42c2.26-1.23 3.49-3.5 3.03-5.97-.25-1.28-1.05-2.52-2.36-3.64Z"
-                fill="url(#brand-mark-gradient)"
-              />
-            </svg>
+          <span
+            className="brand-mark"
+            aria-hidden="true"
+            style={{
+              position: "relative",
+              width: "32px",
+              height: "32px",
+              flexShrink: 0,
+              display: "inline-flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "var(--logo-radius)",
+              "--logo-radius": BRAND_LOGO_RADIUS
+            } as CSSProperties}
+          >
+            <BrandMark />
           </span>
-          <span className="brand-text">SwiftSend</span>
+          <span className="brand-text">{BRAND_NAME}</span>
         </Link>
         <nav className="nav-desktop" aria-label="Primary">
           {NAV_ITEMS.map((item) => (
