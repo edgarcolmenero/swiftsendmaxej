@@ -59,15 +59,13 @@
   height: 44px;
 }
 
-.brand-img--lg {
+:global(.brand-img--lg) {
+  display: block;
   height: 44px;
   width: auto;
   max-width: 100%;
   border-radius: var(--logo-radius, 18%);
-}
-
-.brand-img--lg.is-visible {
-  opacity: 1;
+  object-fit: contain;
 }
 
 .f-name {

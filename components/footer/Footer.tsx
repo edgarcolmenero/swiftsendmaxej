@@ -61,55 +61,47 @@ type BrandMarkProps = {
   size?: "sm" | "lg";
   tileClassName?: string;
   imageClassName?: string;
+  loading?: "lazy" | "eager";
+  fetchPriority?: "auto" | "low" | "high";
 };
 
-const LOGO_SOURCES = Array.from(
-  new Set<string>(["/brand/swiftsend-logo.png", ...BRAND_LOGO_SOURCES])
-);
+const PRIMARY_LOGO_SOURCE = BRAND_LOGO_SOURCES[0];
 const PLACEHOLDER_LETTER = BRAND_PLACEHOLDER_LETTER || "S";
 
 const BrandMark = ({
   size = "lg",
   tileClassName,
-  imageClassName
+  imageClassName,
+  loading = "lazy",
+  fetchPriority = "auto"
 }: BrandMarkProps) => {
-  const [sourceIndex, setSourceIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const activeSrc = sourceIndex < LOGO_SOURCES.length ? LOGO_SOURCES[sourceIndex] : null;
+  const [shouldShowFallback, setShouldShowFallback] = useState(!PRIMARY_LOGO_SOURCE);
   const fontSize = size === "lg" ? 24 : 18;
-
-  useEffect(() => {
-    setIsVisible(false);
-  }, [activeSrc]);
+  const shouldRenderImage = Boolean(PRIMARY_LOGO_SOURCE) && !shouldShowFallback;
 
   const handleError = () => {
-    setSourceIndex((previous) => {
-      const nextIndex = previous + 1;
-      return nextIndex < LOGO_SOURCES.length ? nextIndex : LOGO_SOURCES.length;
-    });
+    setShouldShowFallback(true);
   };
 
   return (
     <>
-      {activeSrc ? (
+      {shouldRenderImage ? (
         <img
-          src={activeSrc}
+          src={PRIMARY_LOGO_SOURCE}
           alt=""
           aria-hidden="true"
           decoding="async"
-          fetchPriority="high"
-          loading="eager"
+          fetchPriority={fetchPriority}
+          loading={loading}
           draggable="false"
-          className={`brand-img${imageClassName ? ` ${imageClassName}` : ""}${
-            isVisible ? " is-visible" : ""
-          }`}
-          onLoad={() => setIsVisible(true)}
+          className={`brand-img${imageClassName ? ` ${imageClassName}` : ""}`}
           onError={handleError}
         />
       ) : (
         <span
-          className={`dynamic-brand-mark__tile${tileClassName ? ` ${tileClassName}` : ""}`}
+          className={`dynamic-brand-mark__tile${
+            tileClassName ? ` ${tileClassName}` : ""
+          }${shouldShowFallback ? " is-fallback" : ""}`}
           aria-hidden="true"
           style={{ fontSize: `${fontSize}px` }}
         >
@@ -118,7 +110,7 @@ const BrandMark = ({
       )}
       <style jsx>{`
         .dynamic-brand-mark__tile {
-          display: inline-flex;
+          display: none;
           align-items: center;
           justify-content: center;
           width: 100%;
@@ -132,6 +124,10 @@ const BrandMark = ({
           user-select: none;
         }
 
+        .dynamic-brand-mark__tile.is-fallback {
+          display: inline-flex;
+        }
+
         .brand-img {
           display: block;
           height: 100%;
@@ -139,12 +135,6 @@ const BrandMark = ({
           max-width: 100%;
           border-radius: var(--logo-radius, 18%);
           object-fit: contain;
-          opacity: 0;
-          transition: opacity 180ms var(--ease);
-        }
-
-        .brand-img.is-visible {
-          opacity: 1;
         }
       `}</style>
     </>
@@ -302,7 +292,7 @@ const Footer = ({
               "--logo-radius": BRAND_LOGO_RADIUS
             } as CSSProperties}
           >
-            <BrandMark imageClassName={styles["brand-img--lg"]} />
+            <BrandMark imageClassName="brand-img--lg" />
           </span>
           <h3 className={styles["f-name"]}>{brandName}</h3>
           {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
