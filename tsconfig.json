@@ -7,6 +7,11 @@
     "jsx": "preserve",
     "allowJs": false,
     "strict": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "noEmit": true,
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -23,6 +28,7 @@
         "name": "next"
       }
     ],
+    "skipLibCheck": true,
     "typeRoots": [
       "./types",
       "./node_modules/@types"

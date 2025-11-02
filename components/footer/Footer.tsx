@@ -292,7 +292,7 @@ const Footer = ({
               "--logo-radius": BRAND_LOGO_RADIUS
             } as CSSProperties}
           >
-            <BrandMark imageClassName="brand-img--lg" />
+            <BrandMark imageClassName={styles.brandImgLg} />
           </span>
           <h3 className={styles["f-name"]}>{brandName}</h3>
           {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
