@@ -1,0 +1,29 @@
+{
+  "//": "SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z \u2014 real implementation to follow",
+  "_repaired": "/* repaired: 2025-10-07T23:34:08Z \u2014 normalized package metadata for stable dev scripts */",
+  "name": "swiftsendmaxej",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "autoprefixer": "10.4.19",
+    "postcss": "8.4.39",
+    "tailwindcss": "3.4.7",
+    "typescript": "5.5.3"
+  }
+}
