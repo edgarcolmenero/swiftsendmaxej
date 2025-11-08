@@ -106,24 +106,31 @@ body {
   opacity: 0.82;
 }
 
-.header-row{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  align-items:center;
-  gap: clamp(1rem, 3vw, 2.5rem);
-  padding: clamp(.65rem, 1.6vw, .9rem) 1.5rem;
+.header-container{
+  width: min(1200px, calc(100% - 32px));
+  margin-inline: auto;
+  height: 4rem;
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
-  .header-row {
-    padding-inline: 2rem;
+  .header-container {
+    height: 5rem;
   }
 }
 
-@media (min-width: 1024px) {
-  .header-row {
-    padding-inline: 2.5rem;
-  }
+.header-row{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) max-content minmax(0, 1fr);
+  align-items:center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
+  height: 100%;
+}
+
+.header-row > .brand{
+  justify-self: start;
 }
 
 .brand{
@@ -236,7 +243,7 @@ body {
 }
 
 .icon-btn--support{
-  margin-left: clamp(1.2rem, 2.4vw, 1.6rem);
+  margin-left: 0;
 }
 
 .icon-glyph{
