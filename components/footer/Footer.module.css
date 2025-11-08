@@ -51,42 +51,33 @@
   max-width: 320px;
 }
 
-.f-logo {
+.f-logoLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
+  gap: 0;
 }
 
-.brandImgLg {
-  display: block;
+.f-logoLink .brand-mark {
+  width: 44px;
   height: 44px;
-  width: auto;
-  border-radius: var(--logo-radius, 18%);
 }
 
-.f-name {
-  margin: 0;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  display: inline-block;
-  transition: transform 140ms var(--ease);
-}
-
-.footer__brand:hover .f-name,
-.footer__brand:focus-within .f-name {
+.footer__brand:hover .f-logoLink,
+.footer__brand:focus-within .f-logoLink {
   transform: translateY(-1.5px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .f-name {
+  .f-logoLink {
     transition: none;
     transform: none;
   }
 
-  .footer__brand:hover .f-name,
-  .footer__brand:focus-within .f-name {
+  .footer__brand:hover .f-logoLink,
+  .footer__brand:focus-within .f-logoLink {
     transform: none;
   }
 }
