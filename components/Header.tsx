@@ -13,33 +13,39 @@ import {
 
 import Logo from "@/components/shared/Logo";
 
+type LinkTarget = string | { pathname: string; hash?: string };
+
 type NavItem = {
-  href: string;
+  href: LinkTarget;
   label: string;
   ariaLabel?: string;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/#home", label: "Home" },
-  { href: "/#about", label: "About" },
-  { href: "/#services", label: "Services" },
-  { href: "/#work", label: "Work" },
-  { href: "/#labs", label: "Labs" },
-  { href: "/#packs", label: "Packs" },
-  { href: "/#contact", label: "Start", ariaLabel: "Go to contact section" }
+  { href: { pathname: "/", hash: "home" }, label: "Home" },
+  { href: { pathname: "/", hash: "about" }, label: "About" },
+  { href: { pathname: "/", hash: "services" }, label: "Services" },
+  { href: { pathname: "/", hash: "work" }, label: "Work" },
+  { href: { pathname: "/", hash: "labs" }, label: "Labs" },
+  { href: { pathname: "/", hash: "packs" }, label: "Packs" },
+  {
+    href: { pathname: "/", hash: "contact" },
+    label: "Start",
+    ariaLabel: "Go to contact section",
+  },
 ];
 
 type ActionItem = {
-  href: string;
-  label: string;
+  href: LinkTarget;
+  ariaLabel: string;
   icon: JSX.Element;
   external?: boolean;
 };
 
 const ACTION_ITEMS: ActionItem[] = [
   {
-    href: "/#contact",
-    label: "Open contact section",
+    href: { pathname: "/", hash: "contact" },
+    ariaLabel: "Start a build",
     icon: (
       <svg
         aria-hidden="true"
@@ -59,7 +65,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "tel:+1234567890",
-    label: "Call SwiftSend",
+    ariaLabel: "Call SwiftSend",
     external: true,
     icon: (
       <svg
@@ -80,7 +86,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "/account",
-    label: "Open account",
+    ariaLabel: "Open account",
     icon: (
       <svg
         aria-hidden="true"
@@ -100,7 +106,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "/schedule",
-    label: "Open schedule",
+    ariaLabel: "Open schedule",
     icon: (
       <svg
         aria-hidden="true"
@@ -168,9 +174,45 @@ export default function Header() {
     };
   }, [portalTarget]);
 
-  const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    const hashIndex = href.indexOf("#");
-    if (hashIndex === -1) {
+  const resolveHash = (href: LinkTarget): string | null => {
+    if (typeof href === "string") {
+      const hashIndex = href.indexOf("#");
+      if (hashIndex === -1) {
+        return null;
+      }
+      return href.slice(hashIndex);
+    }
+
+    const rawHash = href.hash;
+    if (!rawHash) {
+      return null;
+    }
+
+    return rawHash.startsWith("#") ? rawHash : `#${rawHash}`;
+  };
+
+  const getLinkKey = (href: LinkTarget) =>
+    typeof href === "string"
+      ? href
+      : `${href.pathname ?? ""}#${href.hash ?? ""}`;
+
+  const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: LinkTarget) => {
+    const hash = resolveHash(href);
+    if (!hash) {
+      return;
+    }
+
+    const pathname =
+      typeof href === "string"
+        ? (() => {
+            const hashIndex = href.indexOf("#");
+            if (hashIndex === -1) return href || "/";
+            const rawPath = href.slice(0, hashIndex);
+            return rawPath === "" ? "/" : rawPath;
+          })()
+        : href.pathname ?? "/";
+
+    if (pathname && pathname !== "/") {
       return;
     }
 
@@ -178,7 +220,6 @@ export default function Header() {
       return;
     }
 
-    const hash = href.slice(hashIndex);
     const target = document.querySelector<HTMLElement>(hash);
     if (!target) return;
 
@@ -191,7 +232,7 @@ export default function Header() {
 
     window.scrollTo({
       top: destination,
-      behavior: prefersReducedMotion ? "auto" : "smooth"
+      behavior: prefersReducedMotion ? "auto" : "smooth",
     });
   };
 
@@ -211,12 +252,13 @@ export default function Header() {
           showWordmark={false}
           size="md"
           priority
-          onClick={(event) => handleAnchorClick(event, "/#home")}
+          ariaLabel="SwiftSend — Home"
+          onClick={(event) => handleAnchorClick(event, { pathname: "/", hash: "home" })}
         />
         <nav className="nav-desktop" aria-label="Primary">
           {NAV_ITEMS.map((item) => (
             <Link
-              key={item.href}
+              key={getLinkKey(item.href)}
               href={item.href}
               className="nav-pill"
               aria-label={item.ariaLabel}
@@ -232,18 +274,18 @@ export default function Header() {
             {ACTION_ITEMS.map((action) =>
               action.external ? (
                 <a
-                  key={action.label}
-                  href={action.href}
-                  aria-label={action.label}
+                  key={action.ariaLabel}
+                  href={typeof action.href === "string" ? action.href : action.href.pathname ?? "/"}
+                  aria-label={action.ariaLabel}
                   className="icon-btn"
                 >
                   {action.icon}
                 </a>
               ) : (
                 <Link
-                  key={action.label}
+                  key={action.ariaLabel}
                   href={action.href}
-                  aria-label={action.label}
+                  aria-label={action.ariaLabel}
                   className="icon-btn"
                   prefetch={false}
                   onClick={(event) => handleAnchorClick(event, action.href)}
@@ -255,7 +297,7 @@ export default function Header() {
           </div>
           <Link
             href="/support"
-            aria-label="Open support"
+            aria-label="Support"
             className="icon-btn icon-btn--support"
             prefetch={false}
           >

@@ -37,6 +37,10 @@ html, body {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   color: #f7f9ff;
@@ -140,9 +144,8 @@ body {
   height: 32px;
 }
 
-[id="contact"],
-[id="work"] {
-  scroll-margin-top: calc(var(--header-h, 96px) + 16px);
+[id] {
+  scroll-margin-top: var(--header-h, 84px);
 }
 
 .brand-mark__svg {
