@@ -246,81 +246,83 @@ export default function Header() {
       data-header
       className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
     >
-      <div className="container header-row">
-        <Logo
-          className="brand"
-          showWordmark={false}
-          size="md"
-          priority
-          ariaLabel="SwiftSend — Home"
-          onClick={(event) => handleAnchorClick(event, { pathname: "/", hash: "home" })}
-        />
-        <nav className="nav-desktop" aria-label="Primary">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={getLinkKey(item.href)}
-              href={item.href}
-              className="nav-pill"
-              aria-label={item.ariaLabel}
-              onClick={(event) => handleAnchorClick(event, item.href)}
-              prefetch={false}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="header-actions">
-          <div className="header-actions__cluster">
-            {ACTION_ITEMS.map((action) =>
-              action.external ? (
-                <a
-                  key={action.ariaLabel}
-                  href={typeof action.href === "string" ? action.href : action.href.pathname ?? "/"}
-                  aria-label={action.ariaLabel}
-                  className="icon-btn"
+      <div className="header-container">
+        <div className="header-row">
+          <Logo
+            className="brand"
+            showWordmark={false}
+            size="md"
+            priority
+            ariaLabel="SwiftSend — Home"
+            onClick={(event) => handleAnchorClick(event, { pathname: "/", hash: "home" })}
+          />
+          <nav className="nav-desktop" aria-label="Primary">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={getLinkKey(item.href)}
+                href={item.href}
+                className="nav-pill"
+                aria-label={item.ariaLabel}
+                onClick={(event) => handleAnchorClick(event, item.href)}
+                prefetch={false}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="header-actions">
+            <div className="header-actions__cluster">
+              {ACTION_ITEMS.map((action) =>
+                action.external ? (
+                  <a
+                    key={action.ariaLabel}
+                    href={typeof action.href === "string" ? action.href : action.href.pathname ?? "/"}
+                    aria-label={action.ariaLabel}
+                    className="icon-btn"
+                  >
+                    {action.icon}
+                  </a>
+                ) : (
+                  <Link
+                    key={action.ariaLabel}
+                    href={action.href}
+                    aria-label={action.ariaLabel}
+                    className="icon-btn"
+                    prefetch={false}
+                    onClick={(event) => handleAnchorClick(event, action.href)}
+                  >
+                    {action.icon}
+                  </Link>
+                )
+              )}
+              <Link
+                href="/support"
+                aria-label="Support"
+                className="icon-btn icon-btn--support"
+                prefetch={false}
+              >
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="action-icon"
                 >
-                  {action.icon}
-                </a>
-              ) : (
-                <Link
-                  key={action.ariaLabel}
-                  href={action.href}
-                  aria-label={action.ariaLabel}
-                  className="icon-btn"
-                  prefetch={false}
-                  onClick={(event) => handleAnchorClick(event, action.href)}
-                >
-                  {action.icon}
-                </Link>
-              )
-            )}
+                  <path
+                    d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm.04 6.15c1.6 0 2.61 1.01 2.61 2.3 0 1-.52 1.74-1.4 2.25-.78.44-1.05.73-1.05 1.25v.26a.75.75 0 0 1-1.5 0v-.35c0-1.04.52-1.67 1.4-2.16.78-.44 1.05-.79 1.05-1.3 0-.48-.36-.8-1.11-.8-.63 0-1.1.26-1.52.73a.75.75 0 0 1-1.1-1.02c.65-.71 1.44-1.16 2.62-1.16Zm-.04 8.86a.94.94 0 1 1 .94-.94.94.94 0 0 1-.94.94Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </Link>
+            </div>
+            <button type="button" className="hamburger" aria-label="Open navigation">
+              <span />
+              <span />
+              <span />
+            </button>
           </div>
-          <Link
-            href="/support"
-            aria-label="Support"
-            className="icon-btn icon-btn--support"
-            prefetch={false}
-          >
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              className="action-icon"
-            >
-              <path
-                d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm.04 6.15c1.6 0 2.61 1.01 2.61 2.3 0 1-.52 1.74-1.4 2.25-.78.44-1.05.73-1.05 1.25v.26a.75.75 0 0 1-1.5 0v-.35c0-1.04.52-1.67 1.4-2.16.78-.44 1.05-.79 1.05-1.3 0-.48-.36-.8-1.11-.8-.63 0-1.1.26-1.52.73a.75.75 0 0 1-1.1-1.02c.65-.71 1.44-1.16 2.62-1.16Zm-.04 8.86a.94.94 0 1 1 .94-.94.94.94 0 0 1-.94.94Z"
-                fill="currentColor"
-              />
-            </svg>
-          </Link>
-          <button type="button" className="hamburger" aria-label="Open navigation">
-            <span />
-            <span />
-            <span />
-          </button>
         </div>
       </div>
     </header>,
