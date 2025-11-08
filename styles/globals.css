@@ -107,9 +107,23 @@ body {
 }
 
 .header-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: clamp(.65rem, 1.6vw, .9rem) 0;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
   gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(.65rem, 1.6vw, .9rem) 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .header-row {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-row {
+    padding-inline: 2.5rem;
+  }
 }
 
 .brand{
@@ -160,7 +174,7 @@ body {
   font-size: 1.02rem;
 }
 
-.nav-desktop{ display:none; gap:1.4rem; align-items:center; }
+.nav-desktop{ display:none; gap:1.4rem; align-items:center; justify-self:center; text-align:center; }
 @media (min-width:960px){ .nav-desktop{ display:flex } }
 
 .nav-desktop .nav-pill{
@@ -182,7 +196,7 @@ body {
 .nav-desktop .nav-pill.is-active{ color: rgba(255, 205, 135, 0.92); }
 
 .header--fixed{ position: fixed; top:0; left:0; width:100%; }
-.header-actions{ display:flex; align-items:center; gap:clamp(1.25rem, 2.2vw, 1.5rem); }
+.header-actions{ display:flex; align-items:center; gap:clamp(1.25rem, 2.2vw, 1.5rem); justify-self:end; }
 .header-actions__cluster{ display:flex; align-items:center; gap:clamp(.6rem, 1.8vw, .9rem); }
 .header-actions a.icon-btn{ text-decoration:none; }
 .header-icons{
