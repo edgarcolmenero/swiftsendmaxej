@@ -117,6 +117,11 @@ body {
   cursor: pointer;
   transform: translateY(0);
   transition: transform var(--dur) var(--ease);
+  min-height: 44px;
+}
+
+.brand.brand--solo{
+  gap: 0;
 }
 
 .brand:hover,
@@ -133,6 +138,11 @@ body {
   display: inline-flex;
   width: 32px;
   height: 32px;
+}
+
+[id="contact"],
+[id="work"] {
+  scroll-margin-top: calc(var(--header-h, 96px) + 16px);
 }
 
 .brand-mark__svg {

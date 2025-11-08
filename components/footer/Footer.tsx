@@ -1,14 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import {
-  BRAND_LOGO_RADIUS,
-  BRAND_LOGO_SOURCES,
-  BRAND_NAME,
-  BRAND_PLACEHOLDER_LETTER
-} from "@/config/site";
+import Logo from "@/components/shared/Logo";
+import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
 
 import styles from "./Footer.module.css";
 
@@ -40,13 +36,13 @@ const DEFAULT_INSTAGRAM_HANDLE = "@swiftsend.dev";
 const DEFAULT_INSTAGRAM_HREF = "https://instagram.com/swiftsend.dev";
 
 const DEFAULT_QUICK_LINKS: FooterLink[] = [
-  { label: "Home", href: "#home" },
-  { label: "Work", href: "#portfolio" },
-  { label: "Packs", href: "#packs" },
-  { label: "Contact", href: "#contact" },
-  { label: "Services", href: "#services" },
-  { label: "Labs", href: "#labs" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/#home" },
+  { label: "Work", href: "/#work" },
+  { label: "Packs", href: "/#packs" },
+  { label: "Start", href: "/#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "Labs", href: "/#labs" },
+  { label: "About", href: "/#about" },
 ];
 
 const DEFAULT_LEGAL_LINKS: FooterLink[] = [
@@ -56,90 +52,6 @@ const DEFAULT_LEGAL_LINKS: FooterLink[] = [
 
 const combineClassNames = (...values: Array<string | undefined>): string =>
   values.filter(Boolean).join(" ");
-
-type BrandMarkProps = {
-  size?: "sm" | "lg";
-  tileClassName?: string;
-  imageClassName?: string;
-  loading?: "lazy" | "eager";
-  fetchPriority?: "auto" | "low" | "high";
-};
-
-const PRIMARY_LOGO_SOURCE = BRAND_LOGO_SOURCES[0];
-const PLACEHOLDER_LETTER = BRAND_PLACEHOLDER_LETTER || "S";
-
-const BrandMark = ({
-  size = "lg",
-  tileClassName,
-  imageClassName,
-  loading = "lazy",
-  fetchPriority = "auto"
-}: BrandMarkProps) => {
-  const [shouldShowFallback, setShouldShowFallback] = useState(!PRIMARY_LOGO_SOURCE);
-  const fontSize = size === "lg" ? 24 : 18;
-  const shouldRenderImage = Boolean(PRIMARY_LOGO_SOURCE) && !shouldShowFallback;
-
-  const handleError = () => {
-    setShouldShowFallback(true);
-  };
-
-  return (
-    <>
-      {shouldRenderImage ? (
-        <img
-          src={PRIMARY_LOGO_SOURCE}
-          alt=""
-          aria-hidden="true"
-          decoding="async"
-          fetchPriority={fetchPriority}
-          loading={loading}
-          draggable="false"
-          className={`brand-img${imageClassName ? ` ${imageClassName}` : ""}`}
-          onError={handleError}
-        />
-      ) : (
-        <span
-          className={`dynamic-brand-mark__tile${
-            tileClassName ? ` ${tileClassName}` : ""
-          }${shouldShowFallback ? " is-fallback" : ""}`}
-          aria-hidden="true"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {PLACEHOLDER_LETTER}
-        </span>
-      )}
-      <style jsx>{`
-        .dynamic-brand-mark__tile {
-          display: none;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          border-radius: var(--logo-radius, 18%);
-          background: linear-gradient(45deg, var(--brand-warm), var(--brand-cool));
-          color: #fff;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          line-height: 1;
-          user-select: none;
-        }
-
-        .dynamic-brand-mark__tile.is-fallback {
-          display: inline-flex;
-        }
-
-        .brand-img {
-          display: block;
-          height: 100%;
-          width: auto;
-          max-width: 100%;
-          border-radius: var(--logo-radius, 18%);
-          object-fit: contain;
-        }
-      `}</style>
-    </>
-  );
-};
 
 const Footer = ({
   brandName = DEFAULT_BRAND_NAME,
@@ -262,7 +174,7 @@ const Footer = ({
 
     if (href.startsWith("/")) {
       return (
-        <Link key={`${label}-${href}`} href={href} className={linkClassName}>
+        <Link key={`${label}-${href}`} href={href} className={linkClassName} prefetch={false}>
           {label}
         </Link>
       );
@@ -281,20 +193,14 @@ const Footer = ({
     <footer ref={rootRef} className={rootClassName} data-footer>
       <div className={styles.inner}>
         <section className={styles["footer__brand"]} data-animate="true">
-          <span
-            className={styles["f-logo"]}
-            aria-hidden="true"
-            style={{
-              position: "relative",
-              display: "inline-flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "--logo-radius": BRAND_LOGO_RADIUS
-            } as CSSProperties}
-          >
-            <BrandMark imageClassName={styles.brandImgLg} />
-          </span>
-          <h3 className={styles["f-name"]}>{brandName}</h3>
+          <Logo
+            className={styles["f-logoLink"]}
+            showWordmark={false}
+            size="lg"
+            ariaLabel="Go to home"
+            prefetch={false}
+            imageSizes="44px"
+          />
           {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
           {description ? <p className={styles["f-desc"]}>{description}</p> : null}
         </section>

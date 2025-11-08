@@ -5,28 +5,28 @@ import Link from "next/link";
 // @ts-ignore -- resolved via custom local react-dom typings
 import * as ReactDOM from "react-dom";
 import {
-  type CSSProperties,
   type MouseEvent,
   useEffect,
   useRef,
   useState
 } from "react";
 
-import {
-  BRAND_LOGO_RADIUS,
-  BRAND_LOGO_SOURCES,
-  BRAND_NAME,
-  BRAND_PLACEHOLDER_LETTER
-} from "@/config/site";
+import Logo from "@/components/shared/Logo";
 
-const NAV_ITEMS = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#work", label: "Work" },
-  { href: "#labs", label: "Labs" },
-  { href: "#packs", label: "Packs" },
-  { href: "#contact", label: "Contact" }
+type NavItem = {
+  href: string;
+  label: string;
+  ariaLabel?: string;
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#services", label: "Services" },
+  { href: "/#work", label: "Work" },
+  { href: "/#labs", label: "Labs" },
+  { href: "/#packs", label: "Packs" },
+  { href: "/#contact", label: "Start", ariaLabel: "Go to contact section" }
 ];
 
 type ActionItem = {
@@ -38,9 +38,8 @@ type ActionItem = {
 
 const ACTION_ITEMS: ActionItem[] = [
   {
-    href: "mailto:hello@swiftsend.com",
-    label: "Email",
-    external: true,
+    href: "/#contact",
+    label: "Open contact section",
     icon: (
       <svg
         aria-hidden="true"
@@ -60,7 +59,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "tel:+1234567890",
-    label: "Call",
+    label: "Call SwiftSend",
     external: true,
     icon: (
       <svg
@@ -81,7 +80,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "/account",
-    label: "Account",
+    label: "Open account",
     icon: (
       <svg
         aria-hidden="true"
@@ -101,7 +100,7 @@ const ACTION_ITEMS: ActionItem[] = [
   },
   {
     href: "/schedule",
-    label: "Schedule",
+    label: "Open schedule",
     icon: (
       <svg
         aria-hidden="true"
@@ -120,117 +119,6 @@ const ACTION_ITEMS: ActionItem[] = [
     )
   }
 ];
-
-type BrandMarkProps = {
-  size?: "sm" | "lg";
-  tileClassName?: string;
-  imageClassName?: string;
-  loading?: "lazy" | "eager";
-  fetchPriority?: "auto" | "low" | "high";
-};
-
-const PRIMARY_LOGO_SOURCE = BRAND_LOGO_SOURCES[0];
-const PLACEHOLDER_LETTER = BRAND_PLACEHOLDER_LETTER || "S";
-
-function BrandMark({
-  size = "sm",
-  tileClassName,
-  imageClassName,
-  loading = "eager",
-  fetchPriority = "high"
-}: BrandMarkProps) {
-  const [shouldShowFallback, setShouldShowFallback] = useState(!PRIMARY_LOGO_SOURCE);
-  const fontSize = size === "lg" ? 24 : 18;
-  const shouldRenderImage = Boolean(PRIMARY_LOGO_SOURCE) && !shouldShowFallback;
-
-  const handleError = () => {
-    setShouldShowFallback(true);
-  };
-
-  return (
-    <>
-      {shouldRenderImage ? (
-        <img
-          src={PRIMARY_LOGO_SOURCE}
-          alt=""
-          aria-hidden="true"
-          decoding="async"
-          fetchPriority={fetchPriority}
-          loading={loading}
-          draggable="false"
-          className={`brand-img${imageClassName ? ` ${imageClassName}` : ""}`}
-          onError={handleError}
-        />
-      ) : (
-        <span
-          className={`dynamic-brand-mark__tile${
-            tileClassName ? ` ${tileClassName}` : ""
-          }${shouldShowFallback ? " is-fallback" : ""}`}
-          aria-hidden="true"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {PLACEHOLDER_LETTER}
-        </span>
-      )}
-      <style jsx>{`
-        .dynamic-brand-mark__tile {
-          display: none;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          border-radius: var(--logo-radius, 18%);
-          background: linear-gradient(45deg, var(--brand-warm), var(--brand-cool));
-          color: #fff;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          line-height: 1;
-          user-select: none;
-        }
-
-        .dynamic-brand-mark__tile.is-fallback {
-          display: inline-flex;
-        }
-
-        .brand-img {
-          display: block;
-          height: 100%;
-          width: auto;
-          max-width: 100%;
-          border-radius: var(--logo-radius, 18%);
-          object-fit: contain;
-        }
-
-        :global(.brand) {
-          transition: transform 140ms var(--ease);
-        }
-
-        :global(.brand:hover),
-        :global(.brand:focus-visible) {
-          transform: translateY(-1.5px);
-        }
-
-        :global(.brand .brand-text),
-        :global(.brand:hover .brand-text),
-        :global(.brand:focus-visible .brand-text) {
-          text-decoration: none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          :global(.brand) {
-            transition: none;
-            transform: none;
-          }
-
-          :global(.brand:hover),
-          :global(.brand:focus-visible) {
-            transform: none;
-          }
-        }
-      `}</style>
-    </>
-  );
-}
 
 export default function Header() {
   const headerRef = useRef<HTMLElement | null>(null);
@@ -281,9 +169,17 @@ export default function Header() {
   }, [portalTarget]);
 
   const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) return;
+    const hashIndex = href.indexOf("#");
+    if (hashIndex === -1) {
+      return;
+    }
 
-    const target = document.querySelector<HTMLElement>(href);
+    if (window.location.pathname !== "/") {
+      return;
+    }
+
+    const hash = href.slice(hashIndex);
+    const target = document.querySelector<HTMLElement>(hash);
     if (!target) return;
 
     event.preventDefault();
@@ -310,46 +206,26 @@ export default function Header() {
       className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
     >
       <div className="container header-row">
-        <Link
-          href="#home"
+        <Logo
           className="brand"
-          aria-label="SwiftSend Home"
-          style={{ minHeight: "44px" }}
-          onClick={(event) => handleAnchorClick(event, "#home")}
-        >
-          <span
-            className="brand-mark"
-            aria-hidden="true"
-            style={{
-              position: "relative",
-              width: "32px",
-              height: "32px",
-              flexShrink: 0,
-              display: "inline-flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "var(--logo-radius)",
-              "--logo-radius": BRAND_LOGO_RADIUS
-            } as CSSProperties}
-          >
-            <BrandMark />
-          </span>
-          <span className="brand-text">{BRAND_NAME}</span>
-        </Link>
+          showWordmark={false}
+          size="md"
+          priority
+          onClick={(event) => handleAnchorClick(event, "/#home")}
+        />
         <nav className="nav-desktop" aria-label="Primary">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className="nav-pill"
+              aria-label={item.ariaLabel}
               onClick={(event) => handleAnchorClick(event, item.href)}
+              prefetch={false}
             >
               {item.label}
             </Link>
           ))}
-          <Link href="/support" className="nav-pill nav-support">
-            Support
-          </Link>
         </nav>
         <div className="header-actions">
           <div className="header-actions__cluster">
@@ -369,13 +245,20 @@ export default function Header() {
                   href={action.href}
                   aria-label={action.label}
                   className="icon-btn"
+                  prefetch={false}
+                  onClick={(event) => handleAnchorClick(event, action.href)}
                 >
                   {action.icon}
                 </Link>
               )
             )}
           </div>
-          <Link href="/support" aria-label="Support" className="icon-btn icon-btn--support">
+          <Link
+            href="/support"
+            aria-label="Open support"
+            className="icon-btn icon-btn--support"
+            prefetch={false}
+          >
             <svg
               aria-hidden="true"
               focusable="false"

@@ -59,7 +59,7 @@ const STEPS: Record<StepId, StepContent> = {
     ],
     cta: {
       label: "Review design sprints",
-      href: "#portfolio",
+      href: "#work",
     },
     hue: 276,
   },

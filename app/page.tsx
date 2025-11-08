@@ -1062,7 +1062,7 @@ export default function HomePage() {
                 />
               </svg>
             </a>
-            <a href="#portfolio" className="btn btn-ghost underline-seq">
+            <a href="#work" className="btn btn-ghost underline-seq">
               See Our Work
             </a>
           </div>
@@ -1250,11 +1250,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="portfolio" className="portfolio" aria-labelledby="portfolio-title">
-        <div className="pf-stars" aria-hidden="true" />
+      <section id="work" data-section="portfolio" aria-labelledby="portfolio-title">
+        <div id="portfolio" className="portfolio" aria-labelledby="portfolio-title">
+          <div className="pf-stars" aria-hidden="true" />
 
-        <div className="portfolio__inner">
-          <header className="portfolio__head">
+          <div className="portfolio__inner">
+            <header className="portfolio__head">
             <h2 id="portfolio-title" className="portfolio__title">
               Work That <span className="grad">Stands Out</span>
             </h2>
@@ -1362,12 +1363,13 @@ export default function HomePage() {
             </article>
           </div>
 
-          <div className="portfolio__cta">
-            <a className="portfolio__link" href="#">
-              View All Projects
-            </a>
-            <div className="portfolio__cta-underline">
-              <span className="fill" />
+            <div className="portfolio__cta">
+              <a className="portfolio__link" href="#">
+                View All Projects
+              </a>
+              <div className="portfolio__cta-underline">
+                <span className="fill" />
+              </div>
             </div>
           </div>
         </div>
