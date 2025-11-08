@@ -8,9 +8,11 @@ import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
 
 import styles from "./Footer.module.css";
 
+type LinkTarget = string | { pathname: string; hash?: string };
+
 export interface FooterLink {
   label: string;
-  href: string;
+  href: LinkTarget;
   external?: boolean;
 }
 
@@ -36,13 +38,13 @@ const DEFAULT_INSTAGRAM_HANDLE = "@swiftsend.dev";
 const DEFAULT_INSTAGRAM_HREF = "https://instagram.com/swiftsend.dev";
 
 const DEFAULT_QUICK_LINKS: FooterLink[] = [
-  { label: "Home", href: "/#home" },
-  { label: "Work", href: "/#work" },
-  { label: "Packs", href: "/#packs" },
-  { label: "Start", href: "/#contact" },
-  { label: "Services", href: "/#services" },
-  { label: "Labs", href: "/#labs" },
-  { label: "About", href: "/#about" },
+  { label: "Home", href: { pathname: "/", hash: "home" } },
+  { label: "Work", href: { pathname: "/", hash: "work" } },
+  { label: "Packs", href: { pathname: "/", hash: "packs" } },
+  { label: "Start", href: { pathname: "/", hash: "contact" } },
+  { label: "Services", href: { pathname: "/", hash: "services" } },
+  { label: "Labs", href: { pathname: "/", hash: "labs" } },
+  { label: "About", href: { pathname: "/", hash: "about" } },
 ];
 
 const DEFAULT_LEGAL_LINKS: FooterLink[] = [
@@ -156,7 +158,21 @@ const Footer = ({
 
   const renderLink = (link: FooterLink, linkClassName?: string) => {
     const { href, label } = link;
-    const isExternal = link.external ?? /^https?:\/\//.test(href);
+
+    if (typeof href === "object") {
+      return (
+        <Link
+          key={`${label}-${href.pathname ?? ""}-${href.hash ?? ""}`}
+          href={href}
+          className={linkClassName}
+          prefetch={false}
+        >
+          {label}
+        </Link>
+      );
+    }
+
+    const isExternal = link.external ?? (/^https?:\/\//.test(href) || href.startsWith("mailto:"));
 
     if (isExternal) {
       return (
@@ -193,14 +209,14 @@ const Footer = ({
     <footer ref={rootRef} className={rootClassName} data-footer>
       <div className={styles.inner}>
         <section className={styles["footer__brand"]} data-animate="true">
-          <Logo
-            className={styles["f-logoLink"]}
-            showWordmark={false}
-            size="lg"
-            ariaLabel="Go to home"
-            prefetch={false}
-            imageSizes="44px"
-          />
+        <Logo
+          className={styles["f-logoLink"]}
+          showWordmark={false}
+          size="lg"
+          ariaLabel="SwiftSend — Home"
+          prefetch={false}
+          imageSizes="44px"
+        />
           {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
           {description ? <p className={styles["f-desc"]}>{description}</p> : null}
         </section>
@@ -209,7 +225,13 @@ const Footer = ({
           <h4 className={styles["f-colTitle"]}>Quick Links</h4>
           <ul className={styles["f-cols"]}>
             {quickLinks.map((link) => (
-              <li key={`${link.label}-${link.href}`}>
+              <li
+                key={`${link.label}-${
+                  typeof link.href === "string"
+                    ? link.href
+                    : `${link.href.pathname ?? ""}-${link.href.hash ?? ""}`
+                }`}
+              >
                 {renderLink(link)}
               </li>
             ))}
