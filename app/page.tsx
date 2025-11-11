@@ -145,6 +145,34 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    if (!window.location.hash) {
+      return;
+    }
+
+    const scrollToHash = () => {
+      const targetId = window.location.hash.replace("#", "");
+      if (!targetId) return;
+
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      const header = document.querySelector<HTMLElement>("[data-header]");
+      const headerHeight = header?.offsetHeight ?? 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 8;
+
+      window.scrollTo({ top: Math.max(top, 0), behavior: "auto" });
+    };
+
+    const timeoutId = window.setTimeout(scrollToHash, 80);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const field = document.querySelector<HTMLDivElement>(".spark-field");
     if (!field) return;
 
@@ -1021,7 +1049,7 @@ export default function HomePage() {
 
   return (
     <>
-      <section id="home" data-hero className="hero">
+      <section id="home" data-hero className="hero scroll-mt-28 md:scroll-mt-32">
         <canvas id="fx-stars" aria-hidden="true" />
         <div className="spark-field" data-spark-field aria-hidden="true" />
         <div className="hero-inner">
@@ -1070,7 +1098,12 @@ export default function HomePage() {
       </section>
       <AboutSection />
       <AboutPlaceholder />
-      <section id="services" className="services" role="region" aria-labelledby="services-title">
+      <section
+        id="services"
+        className="services scroll-mt-28 md:scroll-mt-32"
+        role="region"
+        aria-labelledby="services-title"
+      >
         <div className="services__stars" aria-hidden="true" />
 
         <div className="services__inner">
@@ -1250,7 +1283,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="work" data-section="portfolio" aria-labelledby="portfolio-title">
+      <section
+        id="work"
+        className="scroll-mt-28 md:scroll-mt-32"
+        data-section="portfolio"
+        aria-labelledby="portfolio-title"
+      >
         <div id="portfolio" className="portfolio" aria-labelledby="portfolio-title">
           <div className="pf-stars" aria-hidden="true" />
 
@@ -1377,7 +1415,12 @@ export default function HomePage() {
       <Labs />
       <Packs />
       <Process />
-      <section id="contact" className="contact" aria-labelledby="contact-title" data-contact-section>
+      <section
+        id="contact"
+        className="contact scroll-mt-28 md:scroll-mt-32"
+        aria-labelledby="contact-title"
+        data-contact-section
+      >
         <canvas id="contact-stars" aria-hidden="true" />
 
         <div className="contact__inner">
@@ -1636,7 +1679,7 @@ function Packs() {
   return (
     <section
       id="packs"
-      className="packs"
+      className="packs scroll-mt-28 md:scroll-mt-32"
       aria-labelledby="packs-title"
       data-packs-section
       ref={sectionRef}
@@ -1961,7 +2004,11 @@ function AboutSection() {
   });
 
   return (
-    <section id="about" className="about" aria-labelledby="about-title">
+    <section
+      id="about"
+      className="about scroll-mt-28 md:scroll-mt-32"
+      aria-labelledby="about-title"
+    >
       <div className="about__container">
         <header
           className="about__head"
