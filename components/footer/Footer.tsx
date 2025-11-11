@@ -38,13 +38,13 @@ const DEFAULT_INSTAGRAM_HANDLE = "@swiftsend.dev";
 const DEFAULT_INSTAGRAM_HREF = "https://instagram.com/swiftsend.dev";
 
 const DEFAULT_QUICK_LINKS: FooterLink[] = [
-  { label: "Home", href: { pathname: "/", hash: "home" } },
-  { label: "Work", href: { pathname: "/", hash: "work" } },
-  { label: "Packs", href: { pathname: "/", hash: "packs" } },
-  { label: "Start", href: { pathname: "/", hash: "contact" } },
-  { label: "Services", href: { pathname: "/", hash: "services" } },
-  { label: "Labs", href: { pathname: "/", hash: "labs" } },
-  { label: "About", href: { pathname: "/", hash: "about" } },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "Work", href: "/#work" },
+  { label: "Labs", href: "/#labs" },
+  { label: "Packs", href: "/#packs" },
+  { label: "Save", href: "/#contact" },
 ];
 
 const DEFAULT_LEGAL_LINKS: FooterLink[] = [

@@ -2,91 +2,70 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 // @ts-ignore -- resolved via custom local react-dom typings
 import * as ReactDOM from "react-dom";
 import {
   type MouseEvent,
+  useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 
 import Logo from "@/components/shared/Logo";
 
+const SECTION_IDS = [
+  "home",
+  "about",
+  "services",
+  "work",
+  "labs",
+  "packs",
+  "contact",
+] as const;
+
+type SectionId = (typeof SECTION_IDS)[number];
+
 type LinkTarget = string | { pathname: string; hash?: string };
 
+const isSectionId = (value: string): value is SectionId =>
+  (SECTION_IDS as readonly string[]).includes(value);
+
 type NavItem = {
-  href: LinkTarget;
+  href: string;
   label: string;
+  section: SectionId;
   ariaLabel?: string;
+  gradient?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: { pathname: "/", hash: "home" }, label: "Home" },
-  { href: { pathname: "/", hash: "about" }, label: "About" },
-  { href: { pathname: "/", hash: "services" }, label: "Services" },
-  { href: { pathname: "/", hash: "work" }, label: "Work" },
-  { href: { pathname: "/", hash: "labs" }, label: "Labs" },
-  { href: { pathname: "/", hash: "packs" }, label: "Packs" },
+  { href: "/#home", label: "Home", section: "home" },
+  { href: "/#about", label: "About", section: "about" },
+  { href: "/#services", label: "Services", section: "services" },
+  { href: "/#work", label: "Work", section: "work" },
+  { href: "/#labs", label: "Labs", section: "labs" },
+  { href: "/#packs", label: "Packs", section: "packs" },
   {
-    href: { pathname: "/", hash: "contact" },
-    label: "Start",
+    href: "/#contact",
+    label: "Save",
+    section: "contact",
     ariaLabel: "Go to contact section",
+    gradient: true,
   },
 ];
 
 type ActionItem = {
-  href: LinkTarget;
+  href: string;
   ariaLabel: string;
   icon: JSX.Element;
-  external?: boolean;
 };
 
 const ACTION_ITEMS: ActionItem[] = [
   {
-    href: { pathname: "/", hash: "contact" },
-    ariaLabel: "Start a build",
-    icon: (
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        className="action-icon"
-      >
-        <path
-          d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Zm2.5-1a1 1 0 0 0-1 1v.32l6.17 4.05a.5.5 0 0 0 .66 0L19.5 6.82V6.5a1 1 0 0 0-1-1h-11Zm11.73 3.2L13 12.18a2.5 2.5 0 0 1-3 0L5.77 8.7V17.5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V8.7Z"
-          fill="currentColor"
-        />
-      </svg>
-    )
-  },
-  {
-    href: "tel:+1234567890",
-    ariaLabel: "Call SwiftSend",
-    external: true,
-    icon: (
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        className="action-icon"
-      >
-        <path
-          d="M7.06 2.94a2.5 2.5 0 0 1 3.57 0l1.19 1.19a2.5 2.5 0 0 1 .45 2.94l-.53 1.06a1 1 0 0 0 .21 1.15l2.92 2.92a1 1 0 0 0 1.15.21l1.06-.53a2.5 2.5 0 0 1 2.94.45l1.19 1.19a2.5 2.5 0 0 1 0 3.57l-1.01 1.01c-1.65 1.65-4.25 1.9-6.2.58a33.35 33.35 0 0 1-9.73-9.73c-1.32-1.95-1.07-4.55.58-6.2l1.01-1.01Z"
-          fill="currentColor"
-        />
-      </svg>
-    )
-  },
-  {
     href: "/account",
-    ariaLabel: "Open account",
+    ariaLabel: "Account",
     icon: (
       <svg
         aria-hidden="true"
@@ -102,11 +81,11 @@ const ACTION_ITEMS: ActionItem[] = [
           fill="currentColor"
         />
       </svg>
-    )
+    ),
   },
   {
     href: "/schedule",
-    ariaLabel: "Open schedule",
+    ariaLabel: "Schedule",
     icon: (
       <svg
         aria-hidden="true"
@@ -122,14 +101,37 @@ const ACTION_ITEMS: ActionItem[] = [
           fill="currentColor"
         />
       </svg>
-    )
-  }
+    ),
+  },
+  {
+    href: "/support",
+    ariaLabel: "Support",
+    icon: (
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        className="action-icon"
+      >
+        <path
+          d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm.04 6.15c1.6 0 2.61 1.01 2.61 2.3 0 1-.52 1.74-1.4 2.25-.78.44-1.05.73-1.05 1.25v.26a.75.75 0 0 1-1.5 0v-.35c0-1.04.52-1.67 1.4-2.16.78-.44 1.05-.79 1.05-1.3 0-.48-.36-.8-1.11-.8-.63 0-1.1.26-1.52.73a.75.75 0 0 1-1.1-1.02c.65-.71 1.44-1.16 2.62-1.16Zm-.04 8.86a.94.94 0 1 1 .94-.94.94.94 0 0 1-.94.94Z"
+          fill="currentColor"
+        />
+      </svg>
+    ),
+  },
 ];
 
 export default function Header() {
   const headerRef = useRef<HTMLElement | null>(null);
   const [portalTarget, setPortalTarget] = useState<Element | null>(null);
   const [hasShadow, setHasShadow] = useState(false);
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
+  const activeSectionRef = useRef<SectionId | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     setPortalTarget(document.body);
@@ -174,7 +176,11 @@ export default function Header() {
     };
   }, [portalTarget]);
 
-  const resolveHash = (href: LinkTarget): string | null => {
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
+
+  const resolveHash = useCallback((href: LinkTarget): string | null => {
     if (typeof href === "string") {
       const hashIndex = href.indexOf("#");
       if (hashIndex === -1) {
@@ -189,20 +195,23 @@ export default function Header() {
     }
 
     return rawHash.startsWith("#") ? rawHash : `#${rawHash}`;
-  };
+  }, []);
 
-  const getLinkKey = (href: LinkTarget) =>
-    typeof href === "string"
-      ? href
-      : `${href.pathname ?? ""}#${href.hash ?? ""}`;
-
-  const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: LinkTarget) => {
-    const hash = resolveHash(href);
-    if (!hash) {
-      return;
+  const setActiveSectionIfValid = useCallback((sectionId: SectionId | null) => {
+    if (sectionId && activeSectionRef.current !== sectionId) {
+      activeSectionRef.current = sectionId;
+      setActiveSection(sectionId);
     }
+  }, []);
 
-    const pathname =
+  const handleAnchorClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: LinkTarget, sectionId?: SectionId) => {
+      const hash = resolveHash(href);
+      if (!hash) {
+        return;
+      }
+
+    const hrefPathname =
       typeof href === "string"
         ? (() => {
             const hashIndex = href.indexOf("#");
@@ -212,11 +221,11 @@ export default function Header() {
           })()
         : href.pathname ?? "/";
 
-    if (pathname && pathname !== "/") {
+    if (hrefPathname && hrefPathname !== "/") {
       return;
     }
 
-    if (window.location.pathname !== "/") {
+    if (pathname !== "/") {
       return;
     }
 
@@ -234,7 +243,113 @@ export default function Header() {
       top: destination,
       behavior: prefersReducedMotion ? "auto" : "smooth",
     });
-  };
+    if (sectionId) {
+      setActiveSectionIfValid(sectionId);
+    }
+  }, [resolveHash, pathname, setActiveSectionIfValid]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (pathname !== "/") {
+      setActiveSection(null);
+      activeSectionRef.current = null;
+      return;
+    }
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && isSectionId(hash)) {
+      setActiveSectionIfValid(hash);
+      return;
+    }
+
+    setActiveSectionIfValid("home");
+  }, [pathname, setActiveSectionIfValid]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (pathname !== "/") {
+      return;
+    }
+
+    const ratiosRef = Object.fromEntries(
+      SECTION_IDS.map((section) => [section, 0])
+    ) as Record<SectionId, number>;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let didUpdate = false;
+        entries.forEach((entry) => {
+          const sectionId = entry.target.id;
+          if (!sectionId || !isSectionId(sectionId)) {
+            return;
+          }
+
+          ratiosRef[sectionId] = entry.intersectionRatio;
+          didUpdate = true;
+        });
+
+        if (!didUpdate) {
+          return;
+        }
+
+        const sorted = SECTION_IDS.map((id) => ({
+          id,
+          ratio: ratiosRef[id] ?? 0,
+        })).sort((a, b) => b.ratio - a.ratio);
+
+        const next = sorted.find((entry) => entry.ratio > 0.05) ?? sorted[0];
+        if (!next) {
+          return;
+        }
+
+        setActiveSectionIfValid(next.id);
+      },
+      {
+        rootMargin: "-30% 0px -60% 0px",
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (element): element is HTMLElement => Boolean(element)
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [pathname, setActiveSectionIfValid]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (pathname !== "/") {
+      return;
+    }
+
+    const handleHashChange = () => {
+      const next = window.location.hash.replace("#", "");
+      if (next && isSectionId(next)) {
+        setActiveSectionIfValid(next);
+      } else if (!next) {
+        setActiveSectionIfValid("home");
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [pathname, setActiveSectionIfValid]);
 
   if (!portalTarget) {
     return null;
@@ -247,75 +362,59 @@ export default function Header() {
       className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
     >
       <div className="header-container">
-        <div className="header-row">
-          <Logo
-            className="brand"
-            showWordmark={false}
-            size="md"
-            priority
-            ariaLabel="SwiftSend — Home"
-            onClick={(event) => handleAnchorClick(event, { pathname: "/", hash: "home" })}
-          />
+        <div className="header-grid">
+          <div className="header-logo">
+            <Logo
+              className="brand"
+              showWordmark={false}
+              size="md"
+              priority
+              ariaLabel="SwiftSend — Home"
+              onClick={(event) => handleAnchorClick(event, "/#home", "home")}
+            />
+          </div>
           <nav className="nav-desktop" aria-label="Primary">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={getLinkKey(item.href)}
-                href={item.href}
-                className="nav-pill"
-                aria-label={item.ariaLabel}
-                onClick={(event) => handleAnchorClick(event, item.href)}
-                prefetch={false}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <ul className="nav-list" role="list">
+              {NAV_ITEMS.map((item) => {
+                const isActive = activeSection === item.section;
+                return (
+                  <li key={item.section} className="nav-item">
+                    <Link
+                      href={item.href}
+                      className={`nav-link${isActive ? " nav-link--active" : ""}`}
+                      aria-label={item.ariaLabel}
+                      aria-current={isActive ? "true" : undefined}
+                      onClick={(event) => handleAnchorClick(event, item.href, item.section)}
+                      prefetch={false}
+                    >
+                      <span
+                        className={`nav-label${item.gradient ? " nav-label--gradient" : ""}`}
+                      >
+                        {item.label}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className={`nav-underline${isActive ? " nav-underline--active" : ""}`}
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
           <div className="header-actions">
             <div className="header-actions__cluster">
-              {ACTION_ITEMS.map((action) =>
-                action.external ? (
-                  <a
-                    key={action.ariaLabel}
-                    href={typeof action.href === "string" ? action.href : action.href.pathname ?? "/"}
-                    aria-label={action.ariaLabel}
-                    className="icon-btn"
-                  >
-                    {action.icon}
-                  </a>
-                ) : (
-                  <Link
-                    key={action.ariaLabel}
-                    href={action.href}
-                    aria-label={action.ariaLabel}
-                    className="icon-btn"
-                    prefetch={false}
-                    onClick={(event) => handleAnchorClick(event, action.href)}
-                  >
-                    {action.icon}
-                  </Link>
-                )
-              )}
-              <Link
-                href="/support"
-                aria-label="Support"
-                className="icon-btn icon-btn--support"
-                prefetch={false}
-              >
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="action-icon"
+              {ACTION_ITEMS.map((action) => (
+                <Link
+                  key={action.ariaLabel}
+                  href={action.href}
+                  aria-label={action.ariaLabel}
+                  className="icon-btn"
+                  prefetch={false}
                 >
-                  <path
-                    d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm.04 6.15c1.6 0 2.61 1.01 2.61 2.3 0 1-.52 1.74-1.4 2.25-.78.44-1.05.73-1.05 1.25v.26a.75.75 0 0 1-1.5 0v-.35c0-1.04.52-1.67 1.4-2.16.78-.44 1.05-.79 1.05-1.3 0-.48-.36-.8-1.11-.8-.63 0-1.1.26-1.52.73a.75.75 0 0 1-1.1-1.02c.65-.71 1.44-1.16 2.62-1.16Zm-.04 8.86a.94.94 0 1 1 .94-.94.94.94 0 0 1-.94.94Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </Link>
+                  {action.icon}
+                </Link>
+              ))}
             </div>
             <button type="button" className="hamburger" aria-label="Open navigation">
               <span />
