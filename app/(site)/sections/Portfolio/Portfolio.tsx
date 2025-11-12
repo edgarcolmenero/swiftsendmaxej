@@ -10,8 +10,17 @@ export default function PortfolioSection({
   id: _ignored,
   ...rest
 }: PortfolioSectionProps) {
+  const combinedClassName = className
+    ? `scroll-mt-24 ${className}`
+    : "scroll-mt-24";
+
   return (
-    <section id="work" className={className} {...rest}>
+    <section
+      id="work"
+      className={combinedClassName}
+      data-testid="section-work"
+      {...rest}
+    >
       {children}
     </section>
   );

@@ -275,10 +275,16 @@ export default function Labs() {
   }, [items, isBrowser]);
 
   return (
-    <section id="labs" className="labs-section" aria-labelledby="labs-title" ref={sectionRef}>
-      <div className="labs-backdrop" aria-hidden="true" />
+    <section
+      id="labs"
+      className="labs-section scroll-mt-24"
+      aria-labelledby="labs-title"
+      ref={sectionRef}
+      data-testid="section-labs"
+    >
+      <div className="labs-backdrop pointer-events-none" aria-hidden="true" />
       <div className="labs-inner">
-        <div className="labs-stars" aria-hidden="true" ref={starsRef}>
+        <div className="labs-stars pointer-events-none" aria-hidden="true" ref={starsRef}>
           <div className="labs-orb" data-labs-orb aria-hidden="true" ref={orbRef} />
         </div>
 
@@ -295,7 +301,7 @@ export default function Labs() {
         <ul className="labs-grid" role="list" data-labs-grid ref={gridRef} />
 
         <div className="labs-beta-cta" data-reveal data-reveal-index="8">
-          <a className="labs-beta-button" href="#contact">
+          <a className="labs-beta-button" href="#save">
             Join the Labs Beta Program
           </a>
         </div>

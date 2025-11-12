@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { type MouseEvent } from "react";
-
 import styles from "./NavMenu.module.css";
 
 export type HeaderSectionId = string;
@@ -18,17 +16,12 @@ export type HeaderNavItem = {
 export interface NavMenuProps {
   items: readonly HeaderNavItem[];
   activeSection: HeaderSectionId | null;
-  onNavigate: (
-    event: MouseEvent<HTMLAnchorElement>,
-    item: HeaderNavItem
-  ) => void;
   className?: string;
 }
 
 export default function NavMenu({
   items,
   activeSection,
-  onNavigate,
   className,
 }: NavMenuProps) {
   const navClassName = className
@@ -62,7 +55,6 @@ export default function NavMenu({
                 className={linkClasses.join(" ")}
                 aria-label={item.ariaLabel}
                 aria-current={isActive ? "true" : undefined}
-                onClick={(event) => onNavigate(event, item)}
                 prefetch={false}
               >
                 <span className={labelClasses.join(" ")}>

@@ -44,7 +44,7 @@ const DEFAULT_QUICK_LINKS: FooterLink[] = [
   { label: "Work", href: "/#work" },
   { label: "Labs", href: "/#labs" },
   { label: "Packs", href: "/#packs" },
-  { label: "Save", href: "/#contact" },
+  { label: "Save", href: "/#save" },
 ];
 
 const DEFAULT_LEGAL_LINKS: FooterLink[] = [

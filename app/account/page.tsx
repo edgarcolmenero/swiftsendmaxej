@@ -118,7 +118,7 @@ export default function AccountPage() {
           we’ll invite you as soon as early access opens.
         </p>
         <div style={ctaStackStyle}>
-          <Link href={{ pathname: "/", hash: "contact" }} prefetch={false} className="btn btn-primary">
+          <Link href={{ pathname: "/", hash: "save" }} prefetch={false} className="btn btn-primary">
             Start a Build
           </Link>
           <Link href="/" prefetch={false} className="btn btn-ghost">
@@ -132,7 +132,7 @@ export default function AccountPage() {
           </Link>{" "}
           or
           {" "}
-          <Link href={{ pathname: "/", hash: "contact" }} prefetch={false} style={inlineLinkStyle}>
+          <Link href={{ pathname: "/", hash: "save" }} prefetch={false} style={inlineLinkStyle}>
             Start a Build request
           </Link>
           .
