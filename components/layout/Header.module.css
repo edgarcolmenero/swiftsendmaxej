@@ -1,0 +1,183 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  width: 100%;
+  background: linear-gradient(92deg, rgba(7, 11, 22, 0.68) 0%, rgba(8, 10, 21, 0.58) 100%);
+  border: none;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition:
+    background 220ms var(--ease),
+    box-shadow 220ms var(--ease),
+    border-color 220ms var(--ease),
+    opacity 220ms var(--ease);
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+  background: var(--underline-gradient);
+  opacity: 0.45;
+  transition: opacity 220ms var(--ease);
+}
+
+.withShadow {
+  box-shadow: 0 14px 28px rgba(5, 7, 18, 0.38);
+}
+
+.withShadow::after {
+  opacity: 0.82;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+  height: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    height: 5rem;
+    padding-inline: clamp(24px, 5vw, 48px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    max-width: 1400px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 2.75rem);
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navDesktop {
+  display: none;
+  justify-self: center;
+  text-align: center;
+}
+
+@media (min-width: 960px) {
+  .navDesktop {
+    display: block;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.actionsCluster {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.1rem, 2.8vw, 1.5rem);
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 0.85rem);
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: rgba(255, 255, 255, 0.9);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transform: translateY(0);
+  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+  text-decoration: none;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid rgba(58, 123, 255, 0.6);
+  outline-offset: 3px;
+}
+
+.iconButton:active {
+  transform: translateY(-1px);
+}
+
+.actionIcon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+}
+
+.hamburger {
+  display: inline-grid;
+  gap: 4px;
+  margin-left: 0.25rem;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+
+.hamburger:hover,
+.hamburger:focus-visible {
+  transform: translateY(-2px);
+}
+
+.hamburger:focus-visible {
+  outline: 2px solid rgba(58, 123, 255, 0.6);
+  outline-offset: 3px;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 3px;
+  background: #fff;
+}
+
+@media (min-width: 960px) {
+  .hamburger {
+    display: none;
+  }
+}

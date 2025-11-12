@@ -18,9 +18,15 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/app/*": ["app/*"],
+      "@/features/*": ["features/*"],
+      "@/components/*": ["components/*"],
+      "@/styles/*": ["styles/*"],
+      "@/lib/*": ["lib/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/data/*": ["data/*"],
+      "@/config/*": ["config/*"],
+      "@/types/*": ["types/*"]
     },
     "incremental": true,
     "plugins": [
