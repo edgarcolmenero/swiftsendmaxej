@@ -115,25 +115,13 @@
     font-size: 1.02rem;
   }
 
-  #home,
-  #about,
-  #services,
-  #work,
-  #labs,
-  #packs,
-  #save {
-    scroll-margin-top: 7rem;
+  .anchor-section {
+    scroll-margin-top: 88px;
   }
 
   @media (min-width: 768px) {
-    #home,
-    #about,
-    #services,
-    #work,
-    #labs,
-    #packs,
-    #save {
-      scroll-margin-top: 8rem;
+    .anchor-section {
+      scroll-margin-top: 96px;
     }
   }
 

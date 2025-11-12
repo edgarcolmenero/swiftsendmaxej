@@ -10,9 +10,10 @@ export default function PortfolioSection({
   id: _ignored,
   ...rest
 }: PortfolioSectionProps) {
+  const baseClassName = "anchor-section scroll-mt-24";
   const combinedClassName = className
-    ? `scroll-mt-24 ${className}`
-    : "scroll-mt-24";
+    ? `${baseClassName} ${className}`
+    : baseClassName;
 
   return (
     <section

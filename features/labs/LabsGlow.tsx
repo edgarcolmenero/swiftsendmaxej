@@ -277,7 +277,7 @@ export default function Labs() {
   return (
     <section
       id="labs"
-      className="labs-section scroll-mt-24"
+      className="anchor-section labs-section scroll-mt-24"
       aria-labelledby="labs-title"
       ref={sectionRef}
       data-testid="section-labs"
