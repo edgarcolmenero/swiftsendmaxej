@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "react";
 
+import "./Portfolio.module.css";
+
 type PortfolioSectionProps = HTMLAttributes<HTMLElement>;
 
 export default function PortfolioSection({

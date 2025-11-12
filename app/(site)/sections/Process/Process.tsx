@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 
+import "./Process.module.css";
+
 type StepId = "discover" | "design" | "build" | "launch";
 
 type StepContent = {
