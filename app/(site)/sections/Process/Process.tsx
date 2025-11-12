@@ -288,7 +288,7 @@ export function Process() {
   }, [progressVisible, isInitialReveal]);
 
   const sectionClassName = useMemo(() => {
-    const classes = [styles.processScope, "process"];
+    const classes = ["anchor-section", styles.processScope, "process"];
     if (prefersReducedMotion) classes.push("process--reduced-motion");
     return classes.join(" ");
   }, [prefersReducedMotion]);

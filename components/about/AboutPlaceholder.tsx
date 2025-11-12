@@ -76,7 +76,7 @@ export default function AboutPlaceholder() {
   return (
     <section
       id="about"
-      className="about scroll-mt-24"
+      className="anchor-section about scroll-mt-24"
       aria-labelledby="about-title"
       data-testid="section-about"
     >
