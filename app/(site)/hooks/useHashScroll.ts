@@ -1,46 +1,39 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const HASH_PREFIX = "#";
-
-const getHashId = () => {
-  const { hash } = window.location;
-  if (!hash || hash === HASH_PREFIX) {
-    return "";
-  }
-  return decodeURIComponent(hash.replace(HASH_PREFIX, ""));
-};
-
-const getScrollBehavior = () => {
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-    return "auto" as const;
-  }
-  return "smooth" as const;
-};
-
-export function useHashScroll() {
+export function useHashScroll(containerSelector?: string) {
   useEffect(() => {
+    const container = containerSelector
+      ? (document.querySelector(containerSelector) as HTMLElement | null)
+      : null;
+
     const scrollToHash = () => {
-      const id = getHashId();
-      if (!id) {
-        return;
-      }
+      const id = decodeURIComponent(window.location.hash.replace('#', ''));
+      if (!id) return;
 
       const element = document.getElementById(id);
-      if (!element) {
+      if (!element) return;
+
+      if (container) {
+        const scrollMarginTop = parseInt(getComputedStyle(element).scrollMarginTop || '0', 10) || 0;
+        const { top } = element.getBoundingClientRect();
+        const containerScrollTop = container.scrollTop || 0;
+        container.scrollTo({
+          top: top + containerScrollTop - scrollMarginTop,
+          behavior: 'smooth',
+        });
         return;
       }
 
-      element.scrollIntoView({ behavior: getScrollBehavior(), block: "start" });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    // Allow DOM to paint before attempting to scroll on initial load.
-    requestAnimationFrame(scrollToHash);
+    scrollToHash();
 
-    window.addEventListener("hashchange", scrollToHash);
+    window.addEventListener('hashchange', scrollToHash);
     return () => {
-      window.removeEventListener("hashchange", scrollToHash);
+      window.removeEventListener('hashchange', scrollToHash);
     };
-  }, []);
+  }, [containerSelector]);
 }

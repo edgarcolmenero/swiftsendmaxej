@@ -301,7 +301,7 @@ export function Process() {
       className={sectionClassName}
       aria-labelledby="process-heading"
     >
-      <div className="process-stars" aria-hidden="true" />
+      <div className="process-stars" aria-hidden="true" style={{ pointerEvents: 'none' }} />
       <div className="process__inner">
         <header className="process__intro" data-process-reveal>
           <p className="process__eyebrow">Process</p>

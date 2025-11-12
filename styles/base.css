@@ -117,12 +117,12 @@
   }
 
   .anchor-section {
-    scroll-margin-top: 88px;
+    scroll-margin-top: var(--header-h);
   }
 
   @media (min-width: 768px) {
-    .anchor-section {
-      scroll-margin-top: 96px;
+    :root {
+      --header-h: 96px;
     }
   }
 

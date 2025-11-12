@@ -1,5 +1,4 @@
-:global {
-   SwiftSend Max 3.0 — Hero (Home)
+/* SwiftSend Max 3.0 — Hero (Home)
    =========================== */
 .hero {
   position: relative;
@@ -890,5 +889,4 @@ body.is-about-js .about [data-reveal].is-in {
   .achv-card:focus-visible {
     transform: none !important;
   }
-}
 }
