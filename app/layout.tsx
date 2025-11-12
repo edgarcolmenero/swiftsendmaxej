@@ -1,5 +1,5 @@
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
-import "../styles/globals.css";
+import "@/styles/base.css";
 import type { Metadata } from "next";
 
 import Header from "@/components/layout/Header";
