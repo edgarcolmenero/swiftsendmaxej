@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 
-import "./Process.module.css";
+import styles from "./Process.module.css";
 
 type StepId = "discover" | "design" | "build" | "launch";
 
@@ -288,7 +288,7 @@ export function Process() {
   }, [progressVisible, isInitialReveal]);
 
   const sectionClassName = useMemo(() => {
-    const classes = ["process"];
+    const classes = [styles.processScope, "process"];
     if (prefersReducedMotion) classes.push("process--reduced-motion");
     return classes.join(" ");
   }, [prefersReducedMotion]);
