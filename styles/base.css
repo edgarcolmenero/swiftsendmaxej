@@ -30,6 +30,7 @@
     --hue-design: 276;
     --hue-build: 28;
     --hue-launch: 150;
+    --header-h: 88px;
   }
 
   html,
@@ -123,6 +124,15 @@
     .anchor-section {
       scroll-margin-top: 96px;
     }
+  }
+
+  .anchor-marker {
+    position: relative;
+    display: block;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
   .text-gradient {
