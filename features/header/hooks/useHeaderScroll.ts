@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import {
-  type MouseEvent,
   type MutableRefObject,
   useCallback,
   useEffect,
@@ -11,8 +10,6 @@ import {
 } from "react";
 
 export type SectionId = string;
-
-export type LinkTarget = string | { pathname?: string; hash?: string };
 
 export interface UseHeaderScrollOptions {
   sections: readonly SectionId[];
@@ -23,11 +20,6 @@ export interface HeaderScrollResult {
   portalTarget: Element | null;
   hasShadow: boolean;
   activeSection: SectionId | null;
-  handleAnchorClick: (
-    event: MouseEvent<HTMLAnchorElement>,
-    href: LinkTarget,
-    sectionId?: SectionId
-  ) => void;
 }
 
 export function useHeaderScroll({
@@ -113,76 +105,6 @@ export function useHeaderScroll({
       setActiveSection(sectionId);
     }
   }, []);
-
-  const resolveHash = useCallback((href: LinkTarget): string | null => {
-    if (typeof href === "string") {
-      const hashIndex = href.indexOf("#");
-      if (hashIndex === -1) {
-        return null;
-      }
-      return href.slice(hashIndex);
-    }
-
-    const rawHash = href.hash;
-    if (!rawHash) {
-      return null;
-    }
-
-    return rawHash.startsWith("#") ? rawHash : `#${rawHash}`;
-  }, []);
-
-  const handleAnchorClick = useCallback(
-    (
-      event: MouseEvent<HTMLAnchorElement>,
-      href: LinkTarget,
-      sectionId?: SectionId
-    ) => {
-      const hash = resolveHash(href);
-      if (!hash) {
-        return;
-      }
-
-      const hrefPathname =
-        typeof href === "string"
-          ? (() => {
-              const hashIndex = href.indexOf("#");
-              if (hashIndex === -1) return href || "/";
-              const rawPath = href.slice(0, hashIndex);
-              return rawPath === "" ? "/" : rawPath;
-            })()
-          : href.pathname ?? "/";
-
-      if (hrefPathname && hrefPathname !== "/") {
-        return;
-      }
-
-      if (pathname !== "/") {
-        return;
-      }
-
-      const target = document.querySelector<HTMLElement>(hash);
-      if (!target) return;
-
-      event.preventDefault();
-
-      const headerHeight = headerRef.current?.offsetHeight ?? 0;
-      const prefersReducedMotion = window
-        .matchMedia("(prefers-reduced-motion: reduce)")
-        .matches;
-      const targetOffset =
-        target.getBoundingClientRect().top + window.scrollY - headerHeight - 8;
-      const destination = Math.max(targetOffset, 0);
-
-      window.scrollTo({
-        top: destination,
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
-      if (sectionId) {
-        setActiveSectionIfValid(sectionId);
-      }
-    },
-    [pathname, resolveHash, setActiveSectionIfValid]
-  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -294,6 +216,5 @@ export function useHeaderScroll({
     portalTarget,
     hasShadow,
     activeSection,
-    handleAnchorClick,
   };
 }

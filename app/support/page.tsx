@@ -118,7 +118,7 @@ export default function SupportPage() {
           hear from us with next steps in one business day or sooner.
         </p>
         <div style={ctaStackStyle}>
-          <Link href={{ pathname: "/", hash: "contact" }} prefetch={false} className="btn btn-primary">
+          <Link href={{ pathname: "/", hash: "save" }} prefetch={false} className="btn btn-primary">
             Start a Build
           </Link>
           <Link href="/" prefetch={false} className="btn btn-ghost">

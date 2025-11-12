@@ -3,7 +3,6 @@
 import Link from "next/link";
 // @ts-ignore -- resolved via custom local react-dom typings
 import * as ReactDOM from "react-dom";
-import { type MouseEvent } from "react";
 
 import Logo from "@/components/shared/Logo";
 import NavMenu, {
@@ -11,7 +10,6 @@ import NavMenu, {
   type HeaderSectionId,
 } from "@/features/header/components/NavMenu";
 import {
-  type LinkTarget,
   useHeaderScroll,
 } from "@/features/header/hooks/useHeaderScroll";
 
@@ -24,10 +22,8 @@ const SECTION_IDS = [
   "work",
   "labs",
   "packs",
-  "contact",
+  "save",
 ] as const satisfies readonly HeaderSectionId[];
-
-type SectionId = (typeof SECTION_IDS)[number];
 
 type ActionItem = {
   href: string;
@@ -43,10 +39,10 @@ const NAV_ITEMS: HeaderNavItem[] = [
   { href: "/#labs", label: "Labs", section: "labs" },
   { href: "/#packs", label: "Packs", section: "packs" },
   {
-    href: "/#contact",
+    href: "/#save",
     label: "Save",
-    section: "contact",
-    ariaLabel: "Go to contact section",
+    section: "save",
+    ariaLabel: "Go to save section",
     gradient: true,
   },
 ];
@@ -115,16 +111,9 @@ const ACTION_ITEMS: ActionItem[] = [
 ];
 
 export default function Header() {
-  const { headerRef, portalTarget, hasShadow, activeSection, handleAnchorClick } =
-    useHeaderScroll({ sections: SECTION_IDS });
-
-  const onAnchorClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    href: LinkTarget,
-    sectionId?: SectionId
-  ) => {
-    handleAnchorClick(event, href, sectionId);
-  };
+  const { headerRef, portalTarget, hasShadow, activeSection } = useHeaderScroll({
+    sections: SECTION_IDS,
+  });
 
   if (!portalTarget) {
     return null;
@@ -144,16 +133,12 @@ export default function Header() {
               size="md"
               priority
               ariaLabel="SwiftSend — Home"
-              onClick={(event) => onAnchorClick(event, "/#home", "home")}
             />
           </div>
           <NavMenu
             className={styles.navDesktop}
             items={NAV_ITEMS}
             activeSection={activeSection}
-            onNavigate={(event, item) =>
-              onAnchorClick(event, item.href, item.section as SectionId)
-            }
           />
           <div className={styles.actions}>
             <div className={styles.actionsCluster}>

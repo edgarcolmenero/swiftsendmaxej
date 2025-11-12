@@ -41,7 +41,7 @@ const STEPS: Record<StepId, StepContent> = {
     ],
     cta: {
       label: "Schedule discovery",
-      href: "#contact",
+      href: "#save",
     },
     hue: 210,
   },
@@ -101,7 +101,7 @@ const STEPS: Record<StepId, StepContent> = {
     ],
     cta: {
       label: "Plan your launch",
-      href: "#contact",
+      href: "#save",
     },
     hue: 150,
   },

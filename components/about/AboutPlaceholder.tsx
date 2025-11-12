@@ -74,7 +74,12 @@ export default function AboutPlaceholder() {
   });
 
   return (
-    <section id="about" className="about" aria-labelledby="about-title">
+    <section
+      id="about"
+      className="about scroll-mt-24"
+      aria-labelledby="about-title"
+      data-testid="section-about"
+    >
       <div className="about__container">
         <header
           className="about__head"
