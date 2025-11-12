@@ -295,7 +295,7 @@ export function Process() {
 
   return (
     <section
-      id="process"
+      id="services"
       ref={sectionRef}
       data-process-section
       className={sectionClassName}
