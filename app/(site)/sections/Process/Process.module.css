@@ -1,5 +1,6 @@
-:global {
-  .process {
+.processScope {}
+
+  .processScope :global(.process) {
     --accent-hue: var(--hue-discover);
     --step-hue: var(--hue-discover);
     --process-progress-duration: 0.7s;
@@ -17,14 +18,14 @@
       linear-gradient(180deg, #0d0718 0%, #071025 50%, #040b1a 100%);
   }
   
-  .process::before,
-  .process::after,
-  .process-stars::before,
-  .process-stars::after {
+  .processScope :global(.process::before),
+  .processScope :global(.process::after),
+  .processScope :global(.process-stars::before),
+  .processScope :global(.process-stars::after) {
     pointer-events: none;
   }
   
-  .process::before {
+  .processScope :global(.process::before) {
     content: "";
     position: absolute;
     bottom: 12%;
@@ -53,7 +54,7 @@
     z-index: 0;
   }
   
-  .process::after {
+  .processScope :global(.process::after) {
     content: "";
     position: absolute;
     inset: -55% -75% -40% -65%;
@@ -72,13 +73,13 @@
     z-index: 1;
   }
   
-  .process-stars {
+  .processScope :global(.process-stars) {
     position: absolute;
     inset: 0;
     z-index: 0;
   }
   
-  .process-stars::before {
+  .processScope :global(.process-stars::before) {
     content: "";
     position: absolute;
     top: 12%;
@@ -106,7 +107,7 @@
     animation-delay: -1.8s;
   }
   
-  .process-stars::after {
+  .processScope :global(.process-stars::after) {
     content: "";
     position: absolute;
     top: 24%;
@@ -128,7 +129,7 @@
     animation-delay: -2.6s;
   }
   
-  .process__inner {
+  .processScope :global(.process__inner) {
     position: relative;
     z-index: 2;
     width: min(1180px, calc(100% - clamp(40px, 8vw, 180px)));
@@ -137,13 +138,13 @@
     gap: clamp(32px, 6vw, 52px);
   }
   
-  .process__intro {
+  .processScope :global(.process__intro) {
     max-width: min(640px, 100%);
     display: grid;
     gap: clamp(12px, 2vw, 16px);
   }
   
-  .process__eyebrow {
+  .processScope :global(.process__eyebrow) {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -153,20 +154,20 @@
     color: rgba(255, 255, 255, 0.62);
   }
   
-  .process__heading {
+  .processScope :global(.process__heading) {
     font-size: clamp(2.1rem, 4vw, 2.8rem);
     margin: 0;
     letter-spacing: -0.015em;
   }
   
-  .process__lede {
+  .processScope :global(.process__lede) {
     margin: 0;
     color: rgba(240, 237, 255, 0.78);
     font-size: clamp(1rem, 2.3vw, 1.1rem);
     line-height: 1.65;
   }
   
-  .process__progress {
+  .processScope :global(.process__progress) {
     position: relative;
     display: grid;
     gap: 0.75rem;
@@ -175,16 +176,16 @@
     transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   }
   
-  .process__progress.is-active {
+  .processScope :global(.process__progress.is-active) {
     opacity: 1;
     transform: none;
   }
   
-  .process__progress.is-revealing {
+  .processScope :global(.process__progress.is-revealing) {
     --process-progress-duration: 1.25s;
   }
   
-  .process__progress-meta {
+  .processScope :global(.process__progress-meta) {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -193,20 +194,20 @@
     color: rgba(240, 237, 255, 0.74);
   }
   
-  .process__progress-label {
+  .processScope :global(.process__progress-label) {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     font-size: 0.68rem;
     color: rgba(240, 237, 255, 0.6);
   }
   
-  .process__progress-value {
+  .processScope :global(.process__progress-value) {
     font-variant-numeric: tabular-nums;
     font-size: 1.05rem;
     color: rgba(255, 255, 255, 0.82);
   }
   
-  .process__progress-track {
+  .processScope :global(.process__progress-track) {
     position: relative;
     height: 7px;
     border-radius: 999px;
@@ -214,7 +215,7 @@
     overflow: hidden;
   }
   
-  .process__progress-fill {
+  .processScope :global(.process__progress-fill) {
     position: absolute;
     inset: 0 auto 0 0;
     width: 0;
@@ -229,7 +230,7 @@
     transition: width var(--process-progress-duration) var(--ease);
   }
   
-  .process__progress-fill::after {
+  .processScope :global(.process__progress-fill::after) {
     content: "";
     position: absolute;
     top: 50%;
@@ -244,11 +245,11 @@
     transition: opacity 0.4s var(--ease);
   }
   
-  .process__progress.is-active .process__progress-fill::after {
+  .processScope :global(.process__progress.is-active .process__progress-fill::after) {
     opacity: 1;
   }
   
-  .process__progress-indicator {
+  .processScope :global(.process__progress-indicator) {
     position: absolute;
     top: 50%;
     width: 20px;
@@ -261,22 +262,22 @@
     opacity: 0;
   }
   
-  .process__progress.is-active .process__progress-indicator {
+  .processScope :global(.process__progress.is-active .process__progress-indicator) {
     opacity: 1;
   }
   
-  .process__layout {
+  .processScope :global(.process__layout) {
     display: grid;
     gap: clamp(28px, 5vw, 56px);
   }
   
-  .process__tiles {
+  .processScope :global(.process__tiles) {
     display: grid;
     gap: clamp(18px, 3vw, 24px);
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
   
-  .process__tile {
+  .processScope :global(.process__tile) {
     --tile-hue: var(--accent-hue);
     position: relative;
     display: grid;
@@ -299,7 +300,7 @@
     overflow: hidden;
   }
   
-  .process__tile::before {
+  .processScope :global(.process__tile::before) {
     content: "";
     position: absolute;
     inset: 0;
@@ -308,7 +309,7 @@
     pointer-events: none;
   }
   
-  .process__tile::after {
+  .processScope :global(.process__tile::after) {
     content: "";
     position: absolute;
     inset: -40% -60%;
@@ -319,33 +320,33 @@
     opacity: 0.9;
   }
   
-  .process__tile:hover,
-  .process__tile:focus-visible {
+  .processScope :global(.process__tile:hover),
+  .processScope :global(.process__tile:focus-visible) {
     transform: translateY(-5px);
   }
   
-  .process__tile:hover::after,
-  .process__tile:focus-visible::after {
+  .processScope :global(.process__tile:hover::after),
+  .processScope :global(.process__tile:focus-visible::after) {
     transform: translateX(120%);
   }
   
-  .process__tile:focus-visible::before {
+  .processScope :global(.process__tile:focus-visible::before) {
     border-color: rgba(255, 255, 255, 0.65);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.22);
   }
   
-  .process__tile.is-active {
+  .processScope :global(.process__tile.is-active) {
     transform: translateY(-6px);
     border-color: hsla(var(--tile-hue) 82% 64% / 0.7);
     box-shadow: 0 24px 36px rgba(12, 7, 26, 0.4), 0 0 28px hsla(var(--tile-hue) 90% 66% / 0.38);
     background: rgba(22, 14, 40, 0.72);
   }
   
-  .process__tile.is-active::after {
+  .processScope :global(.process__tile.is-active::after) {
     transform: translateX(28%);
   }
   
-  .process__badge {
+  .processScope :global(.process__badge) {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
@@ -358,7 +359,7 @@
     color: rgba(242, 239, 255, 0.72);
   }
   
-  .process__badge-number {
+  .processScope :global(.process__badge-number) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -372,26 +373,26 @@
     box-shadow: 0 0 12px hsla(var(--tile-hue) 96% 74% / 0.45);
   }
   
-  .process__badge-label {
+  .processScope :global(.process__badge-label) {
     font-weight: 600;
   }
   
-  .process__tile-title {
+  .processScope :global(.process__tile-title) {
     font-size: clamp(1.05rem, 2.4vw, 1.24rem);
     letter-spacing: -0.01em;
   }
   
-  .process__tile-summary {
+  .processScope :global(.process__tile-summary) {
     font-size: 0.95rem;
     line-height: 1.55;
     color: rgba(238, 235, 255, 0.75);
   }
   
-  .process__detail {
+  .processScope :global(.process__detail) {
     position: relative;
   }
   
-  .process__detail-card {
+  .processScope :global(.process__detail-card) {
     --cta-glow: hsla(var(--step-hue) 98% 72% / 0.55);
     display: grid;
     gap: clamp(16px, 3vw, 22px);
@@ -405,7 +406,7 @@
     transition: border-color 0.45s var(--ease), box-shadow 0.45s var(--ease), background 0.45s var(--ease);
   }
   
-  .process__detail-eyebrow {
+  .processScope :global(.process__detail-eyebrow) {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -415,19 +416,19 @@
     color: hsla(var(--step-hue) 96% 82% / 0.85);
   }
   
-  .process__detail-title {
+  .processScope :global(.process__detail-title) {
     margin: 0;
     font-size: clamp(1.5rem, 3vw, 1.8rem);
     letter-spacing: -0.01em;
   }
   
-  .process__detail-description {
+  .processScope :global(.process__detail-description) {
     margin: 0;
     color: rgba(240, 237, 255, 0.76);
     line-height: 1.7;
   }
   
-  .process__detail-list {
+  .processScope :global(.process__detail-list) {
     list-style: none;
     display: grid;
     gap: 0.75rem;
@@ -435,7 +436,7 @@
     padding: 0;
   }
   
-  .process__detail-list li {
+  .processScope :global(.process__detail-list li) {
     position: relative;
     padding-left: 1.6rem;
     font-size: 0.98rem;
@@ -443,7 +444,7 @@
     color: rgba(243, 240, 255, 0.84);
   }
   
-  .process__detail-list li::before {
+  .processScope :global(.process__detail-list li::before) {
     content: "";
     position: absolute;
     top: 0.6em;
@@ -456,7 +457,7 @@
     transform: translateY(-50%);
   }
   
-  .process__cta {
+  .processScope :global(.process__cta) {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -472,8 +473,8 @@
     isolation: isolate;
   }
   
-  .process__cta::before,
-  .process__cta::after {
+  .processScope :global(.process__cta::before),
+  .processScope :global(.process__cta::after) {
     content: "";
     position: absolute;
     inset: 0;
@@ -481,13 +482,13 @@
     pointer-events: none;
   }
   
-  .process__cta::before {
+  .processScope :global(.process__cta::before) {
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 70%);
     mix-blend-mode: screen;
     opacity: 0.85;
   }
   
-  .process__cta::after {
+  .processScope :global(.process__cta::after) {
     top: -8px;
     left: -8px;
     width: 4px;
@@ -504,87 +505,95 @@
     animation-direction: reverse;
   }
   
-  .process__cta:hover,
-  .process__cta:focus-visible {
+  .processScope :global(.process__cta:hover),
+  .processScope :global(.process__cta:focus-visible) {
     transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.14);
     box-shadow: 0 0 18px var(--cta-glow);
   }
   
-  .process__cta:focus-visible {
+  .processScope :global(.process__cta:focus-visible) {
     outline: 2px solid rgba(255, 255, 255, 0.65);
     outline-offset: 4px;
   }
   
-  .process__cta-icon {
+  .processScope :global(.process__cta-icon) {
     font-size: 1.05rem;
   }
   
-  [data-process-reveal] {
+  .processScope :global([data-process-reveal]) {
     opacity: 0;
     transform: translateY(18px);
     transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   }
   
-  [data-process-reveal][data-reveal-state="visible"] {
+  .processScope :global([data-process-reveal][data-reveal-state="visible"]) {
     opacity: 1;
     transform: none;
   }
   
   @media (min-width: 880px) {
-    .process__layout {
+    .processScope :global(.process__layout) {
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
       align-items: stretch;
     }
   
-    .process__intro {
+    .processScope :global(.process__intro) {
       max-width: 540px;
     }
   }
   
   @media (prefers-reduced-motion: reduce) {
-    .process,
-    .process * {
+    .processScope :global(.process),
+    .processScope :global(.process *) {
       transition-duration: 0.001ms !important;
       animation-duration: 0.001ms !important;
     }
   }
   
-  .process--reduced-motion::after,
-  .process--reduced-motion::before,
-  .process--reduced-motion .process-stars::before,
-  .process--reduced-motion .process-stars::after,
-  .process--reduced-motion .process__cta::after {
+  .processScope :global(.process--reduced-motion::after),
+  .processScope :global(.process--reduced-motion::before),
+  .processScope :global(.process--reduced-motion .process-stars::before),
+  .processScope :global(.process--reduced-motion .process-stars::after),
+  .processScope :global(.process--reduced-motion .process__cta::after) {
     animation: none;
     opacity: 0.65;
     transform: none;
   }
   
-  .process--reduced-motion .process__progress {
+  .processScope :global(.process--reduced-motion .process__progress) {
     transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
   }
   
-  .process--reduced-motion .process__progress-fill,
-  .process--reduced-motion .process__progress-indicator {
+  .processScope :global(.process--reduced-motion .process__progress-fill),
+  .processScope :global(.process--reduced-motion .process__progress-indicator) {
     transition-duration: 0.001ms;
   }
   
-  .process--reduced-motion .process__tile,
-  .process--reduced-motion .process__cta {
+  .processScope :global(.process--reduced-motion .process__tile),
+  .processScope :global(.process--reduced-motion .process__cta) {
     transition-duration: 0.001ms;
   }
   
-  .process--reduced-motion .process__tile::after,
-  .process--reduced-motion .process__cta::after {
+  .processScope :global(.process--reduced-motion .process__tile::after),
+  .processScope :global(.process--reduced-motion .process__cta::after) {
     transition: none;
   }
-  
-  @keyframes processSweep {
-    0% {
-      transform: translateX(-55%);
-    }
-    50% {
-      transform: translateX(20%);
-    }
-    100% {
-  }
+
+/* === Animations (safe, balanced braces) === */
+
+@keyframes processSweep {
+  0%   { transform: translateX(-55%); }
+  50%  { transform: translateX(20%); }
+  100% { transform: translateX(-55%); }
+}
+
+@keyframes progressSlide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(0%); }
+}
+
+@keyframes processPulse {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
+}
