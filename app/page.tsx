@@ -2,7 +2,6 @@
 
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
-import AboutPlaceholder from "@/components/about/AboutPlaceholder";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
@@ -1097,7 +1096,6 @@ export default function HomePage() {
         </div>
       </section>
       <AboutSection />
-      <AboutPlaceholder />
       <section
         id="services"
         className="services scroll-mt-28 md:scroll-mt-32"
@@ -2291,7 +2289,7 @@ function AboutSection() {
               Experience &amp; Achievements
             </h3>
             <ul className="achv-list">
-              {leader.achievements.map((achievement) => (
+              {leader.achievements.slice(0, 4).map((achievement) => (
                 <li
                   key={achievement.title}
                   className="achv-card"
