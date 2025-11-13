@@ -240,6 +240,211 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    if (!hero || hero.dataset.heroReady === "done") return;
+    hero.dataset.heroReady = "done";
+
+    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const shouldReduceMotion = () => reduceMotionQuery.matches;
+
+    const revealables = Array.from(
+      hero.querySelectorAll<HTMLElement>('[data-hero-reveal]')
+    );
+    const counters = Array.from(
+      hero.querySelectorAll<HTMLElement>('[data-count-target]')
+    );
+
+    const compactCurrencyFormatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      maximumFractionDigits: 1,
+    });
+
+    const currencyFormatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    });
+
+    const applyValue = (element: HTMLElement, value: number) => {
+      const format = element.dataset.countFormat ?? "number";
+      const decimals = Number(element.dataset.countDecimals ?? "0");
+      const suffix = element.dataset.countSuffix ?? "";
+      let text: string;
+
+      if (format === "compactCurrency") {
+        text = compactCurrencyFormatter.format(value);
+      } else if (format === "currency") {
+        text = currencyFormatter.format(value);
+      } else {
+        if (decimals > 0) {
+          text = value.toFixed(decimals);
+        } else {
+          const safeValue = value < 0 ? 0 : value;
+          text = Math.floor(safeValue).toString();
+        }
+      }
+
+      element.textContent = `${text}${suffix}`;
+    };
+
+    const setInitialValues = () => {
+      counters.forEach((counter) => {
+        const targetValue = Number(counter.dataset.countTarget ?? "0");
+        const startValue = Number(counter.dataset.countStart ?? "0");
+        const value = shouldReduceMotion() ? targetValue : startValue;
+        applyValue(counter, value);
+      });
+    };
+
+    setInitialValues();
+
+    let animatedCounters = new WeakSet<HTMLElement>();
+    const rafMap = new Map<HTMLElement, number>();
+
+    const animateCounter = (counter: HTMLElement) => {
+      if (animatedCounters.has(counter)) return;
+
+      const targetValue = Number(counter.dataset.countTarget ?? "0");
+      if (!Number.isFinite(targetValue)) return;
+
+      const startValue = Number(counter.dataset.countStart ?? "0");
+      const duration = Number(counter.dataset.countDuration ?? "1400");
+
+      if (shouldReduceMotion()) {
+        applyValue(counter, targetValue);
+        animatedCounters.add(counter);
+        return;
+      }
+
+      const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+      const startTimestamp = performance.now();
+      animatedCounters.add(counter);
+
+      const tick = (now: number) => {
+        const progress = Math.min((now - startTimestamp) / duration, 1);
+        const eased = easeOutCubic(progress);
+        const currentValue = startValue + (targetValue - startValue) * eased;
+
+        if (progress >= 1) {
+          applyValue(counter, targetValue);
+          rafMap.delete(counter);
+          return;
+        }
+
+        applyValue(counter, currentValue);
+        const rafId = requestAnimationFrame(tick);
+        rafMap.set(counter, rafId);
+      };
+
+      const rafId = requestAnimationFrame(tick);
+      rafMap.set(counter, rafId);
+    };
+
+    const revealElement = (element: HTMLElement) => {
+      if (!element.classList.contains("is-visible")) {
+        element.classList.add("is-visible");
+      }
+      element.style.removeProperty("--hero-delay");
+      element.querySelectorAll<HTMLElement>('[data-count-target]').forEach(animateCounter);
+    };
+
+    const assignDelays = () => {
+      if (shouldReduceMotion()) {
+        revealables.forEach((el) => el.style.removeProperty("--hero-delay"));
+        return;
+      }
+
+      revealables.forEach((el) => {
+        const order = Number(el.dataset.heroOrder ?? "0");
+        const clamped = Math.max(0, Math.min(order, 8));
+        el.style.setProperty("--hero-delay", `${clamped * 90}ms`);
+      });
+    };
+
+    assignDelays();
+
+    let observer: IntersectionObserver | null = null;
+
+    const startObserver = () => {
+      if (observer || shouldReduceMotion()) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const target = entry.target as HTMLElement;
+            revealElement(target);
+            observer?.unobserve(target);
+          });
+        },
+        { threshold: 0.3, rootMargin: "0px 0px -10% 0px" }
+      );
+
+      revealables
+        .filter((el) => !el.classList.contains("is-visible"))
+        .forEach((el) => observer?.observe(el));
+    };
+
+    const stopObserver = () => {
+      if (!observer) return;
+      observer.disconnect();
+      observer = null;
+    };
+
+    if (shouldReduceMotion()) {
+      revealables.forEach(revealElement);
+    } else {
+      startObserver();
+    }
+
+    const cancelAllRafs = () => {
+      rafMap.forEach((rafId) => cancelAnimationFrame(rafId));
+      rafMap.clear();
+    };
+
+    const handleMotionChange = () => {
+      cancelAllRafs();
+      animatedCounters = new WeakSet<HTMLElement>();
+      assignDelays();
+      setInitialValues();
+
+      if (shouldReduceMotion()) {
+        stopObserver();
+        revealables.forEach(revealElement);
+        return;
+      }
+
+      stopObserver();
+      revealables.forEach((el) => {
+        if (el.classList.contains("is-visible")) {
+          el.classList.remove("is-visible");
+        }
+      });
+      startObserver();
+    };
+
+    if (typeof reduceMotionQuery.addEventListener === "function") {
+      reduceMotionQuery.addEventListener("change", handleMotionChange);
+    } else {
+      reduceMotionQuery.addListener(handleMotionChange);
+    }
+
+    return () => {
+      stopObserver();
+      cancelAllRafs();
+      if (typeof reduceMotionQuery.removeEventListener === "function") {
+        reduceMotionQuery.removeEventListener("change", handleMotionChange);
+      } else {
+        reduceMotionQuery.removeListener(handleMotionChange);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
     // Services section: reveal + pointer glow
     (() => {
       "use strict";
@@ -1052,7 +1257,45 @@ export default function HomePage() {
         <canvas id="fx-stars" aria-hidden="true" />
         <div className="spark-field" data-spark-field aria-hidden="true" />
         <div className="hero-inner">
-          <div className="tile-wrap" aria-hidden="true">
+          <div className="hero__content">
+            <span className="hero__badge" data-hero-reveal data-hero-order="0">
+              FULL-STACK INNOVATION PARTNER
+            </span>
+            <h1 className="display hero__title" data-hero-reveal data-hero-order="1">
+              Your Systems.
+              <br />
+              <span className="grad-word">Your</span> Savings.
+              <br />
+              Your Future.
+            </h1>
+            <p className="lede hero__lede" data-hero-reveal data-hero-order="2">
+              SwiftSend Max 3.0 powers ambitious builders with a battle-tested engineering core,
+              product accelerators, and a crew obsessed with velocity and polish.
+            </p>
+            <div className="cta" data-hero-reveal data-hero-order="3">
+              <a href="#contact" className="btn btn-primary">
+                Start a Build
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 9h8.586l-2.793-2.793L10.5 5.5 15 10l-4.5 4.5-0.707-0.707L12.586 10H4V9z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a href="#services" className="btn btn-ghost underline-seq">
+                Explore Services
+              </a>
+            </div>
+          </div>
+          <div className="tile-wrap" aria-hidden="true" data-hero-reveal data-hero-order="4">
             <div className="tile">
               <span className="tile-s">s</span>
               <span className="orbit o1" />
@@ -1060,38 +1303,57 @@ export default function HomePage() {
               <span className="orbit o3" />
             </div>
           </div>
-          <h1 className="display">
-            Your Software.
-            <br />
-            <span className="grad-word">Your</span> Stack.
-            <br />
-            Your Savings.
-          </h1>
-          <p className="lede">
-            SwiftSend Max 3.0 powers ambitious builders with a battle-tested engineering core,
-            product accelerators, and a crew obsessed with velocity and polish.
-          </p>
-          <div className="cta">
-            <a href="#contact" className="btn btn-primary">
-              Start a Build
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 9h8.586l-2.793-2.793L10.5 5.5 15 10l-4.5 4.5-0.707-0.707L12.586 10H4V9z"
-                  fill="currentColor"
-                />
-              </svg>
-            </a>
-            <a href="#work" className="btn btn-ghost underline-seq">
-              See Our Work
-            </a>
+          <div className="hero__stats" role="list">
+            <article className="hero-stat" data-hero-reveal data-hero-order="5" role="listitem">
+              <div className="hero-stat__meta">
+                <h3 className="hero-stat__title">Launch Velocity</h3>
+                <p
+                  className="hero-stat__value hero-stat__value--range"
+                  aria-label="Six to eight week delivery timeline"
+                  aria-live="polite"
+                >
+                  <span data-count-target="6" data-count-start="0" data-count-duration="1200" data-count-format="number">0</span>
+                  <span className="hero-stat__range-divider" aria-hidden="true">–</span>
+                  <span data-count-target="8" data-count-start="0" data-count-duration="1400" data-count-format="number">0</span>
+                  <span className="hero-stat__suffix">weeks</span>
+                </p>
+              </div>
+              <p className="hero-stat__description">Production-ready systems delivered fast.</p>
+            </article>
+            <article className="hero-stat" data-hero-reveal data-hero-order="6" role="listitem">
+              <div className="hero-stat__meta">
+                <h3 className="hero-stat__title">Enterprise-Scale Infrastructure</h3>
+                <p
+                  className="hero-stat__value"
+                  aria-label="Over one hundred million dollars in commerce supported"
+                  aria-live="polite"
+                >
+                  <span
+                    data-count-target="100000000"
+                    data-count-start="0"
+                    data-count-duration="1800"
+                    data-count-format="compactCurrency"
+                    data-count-suffix="+"
+                  >$0</span>
+                </p>
+                <p className="hero-stat__label">Commerce Supported</p>
+              </div>
+              <p className="hero-stat__description">
+                Digital infrastructure powering a high-growth, nine-figure operation.
+              </p>
+            </article>
+            <article className="hero-stat" data-hero-reveal data-hero-order="7" role="listitem">
+              <div className="hero-stat__meta">
+                <h3 className="hero-stat__title">System Reliability</h3>
+                <p className="hero-stat__value">
+                  <span>99.99%</span>
+                </p>
+                <p className="hero-stat__label">Uptime</p>
+              </div>
+              <p className="hero-stat__description">
+                Enterprise-grade stability across every deployment.
+              </p>
+            </article>
           </div>
         </div>
       </section>
