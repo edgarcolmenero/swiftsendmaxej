@@ -1933,7 +1933,7 @@ function Packs() {
   );
 }
 
-type AchievementVariant = "honors" | "stem" | "adidas" | "consult" | "swiftsend";
+type AchievementVariant = "honors" | "stem" | "adidas" | "consult";
 
 type Achievement = {
   variant: AchievementVariant;
@@ -1950,7 +1950,6 @@ type LeaderProfile = {
   avatar: string;
   bio: string;
   mantra: string;
-  mission: Achievement;
   achievements: Achievement[];
 };
 
@@ -1964,11 +1963,6 @@ const leaders: Record<LeaderKey, LeaderProfile> = {
     avatar: "/me1.jpg",
     bio: "Edgar guides SwiftSend's delivery practice, helping multi-disciplinary squads ship resilient platforms across fintech, retail, and consumer tech. He blends systems thinking with rapid prototyping to align product vision and velocity.",
     mantra: "Never Stay Satisfied.",
-    mission: {
-      variant: "swiftsend",
-      title: "SwiftSend Mission Lead",
-      subtitle: "Orchestrates weekly launch cadences that keep clients ahead.",
-    },
     achievements: [
       {
         variant: "honors",
@@ -1999,11 +1993,6 @@ const leaders: Record<LeaderKey, LeaderProfile> = {
     avatar: "/me2.jpg",
     bio: "Jaden architects SwiftSend's technical runway, pairing infrastructure rigor with a brand-first mindset. He connects product strategy to platform decisions so every release stays fast, stable, and unmistakably polished.",
     mantra: "Design Momentum. Deliver Proof.",
-    mission: {
-      variant: "swiftsend",
-      title: "Launch Systems Director",
-      subtitle: "Keeps cross-discipline pods aligned from discovery to daily releases.",
-    },
     achievements: [
       {
         variant: "honors",
@@ -2120,7 +2109,6 @@ function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
           />
         </svg>
       );
-    case "swiftsend":
     default:
       return (
         <svg
@@ -2318,18 +2306,6 @@ function AboutSection() {
           <div className="about__missionHead">
             <div className="about__quote">
               <p>{leader.mantra}</p>
-            </div>
-            <div className="about__mission-card">
-              <article className="achv-card" data-variant={leader.mission.variant} tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  {renderAchievementIcon(leader.mission.variant)}
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">{leader.mission.title}</span>
-                  <span className="achv-card__sub">{leader.mission.subtitle}</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </article>
             </div>
           </div>
           <div className="certs">
