@@ -2120,13 +2120,13 @@ main {
   width: min(1100px, calc(100% - clamp(36px, 10vw, 160px)));
   margin-inline: auto;
   display: grid;
-  gap: clamp(20px, 3.8vw, 36px);
+  gap: clamp(16px, 3vw, 28px);
 }
 
 .about__head {
   text-align: left;
   display: grid;
-  gap: clamp(12px, 2.2vw, 18px);
+  gap: clamp(8px, 1.8vw, 14px);
   align-items: start;
 }
 
@@ -2148,7 +2148,7 @@ main {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(12px, 2vw, 18px);
+  gap: clamp(8px, 1.6vw, 14px);
 }
 
 .about__leaderBtn {
@@ -2227,13 +2227,13 @@ main {
 .about__inner {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(360px, 1fr);
-  gap: clamp(18px, 3.4vw, 32px);
+  gap: clamp(16px, 3vw, 26px);
   align-items: start;
 }
 
 .about__profile {
   display: grid;
-  gap: clamp(14px, 3.4vw, 22px);
+  gap: clamp(12px, 2.6vw, 18px);
   align-content: start;
   justify-items: start;
 }
@@ -2252,7 +2252,7 @@ main {
   overflow: hidden;
   display: grid;
   place-items: center;
-  margin-top: 12px;
+  margin-top: 4px;
 }
 
 .about__avatar::before {
@@ -2335,26 +2335,27 @@ main {
 .about__quote--long {
   max-width: 60ch;
   margin-inline: auto;
-  margin-top: clamp(18px, 3.2vw, 28px);
+  margin-top: clamp(14px, 2.6vw, 22px);
   display: flex;
   padding: clamp(20px, 4vw, 30px) clamp(24px, 5vw, 48px);
 }
 
 .about__achievements {
   display: grid;
-  gap: clamp(14px, 2.8vw, 20px);
+  gap: clamp(12px, 2.4vw, 18px);
+  width: min(540px, 100%);
 }
 
 .about__mission {
   display: grid;
-  gap: clamp(14px, 2.6vw, 22px);
+  gap: clamp(12px, 2.4vw, 18px);
 }
 
 .about__missionHead {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  gap: clamp(10px, 2.4vw, 18px);
+  gap: clamp(10px, 2vw, 16px);
 }
 
 .about__missionHead .about__quote {
@@ -2376,17 +2377,11 @@ main {
 
 .achv-list {
   display: grid;
-  gap: clamp(14px, 2.4vw, 18px);
+  gap: clamp(12px, 2vw, 16px);
   padding: 0;
   margin: 0;
   list-style: none;
   grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 961px) {
-  .achv-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 .achv-card {
@@ -2558,7 +2553,7 @@ main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(12px, 3vw, 18px);
-  margin-top: clamp(16px, 2.6vw, 24px);
+  margin-top: clamp(12px, 2.2vw, 20px);
 }
 
 .cert {
