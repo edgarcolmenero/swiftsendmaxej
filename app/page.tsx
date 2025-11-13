@@ -3,7 +3,7 @@
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
 import AboutPlaceholder from "@/components/about/AboutPlaceholder";
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 export default function HomePage() {
@@ -1935,6 +1935,222 @@ function Packs() {
   );
 }
 
+type AchievementVariant = "honors" | "stem" | "adidas" | "consult" | "swiftsend";
+
+type Achievement = {
+  variant: AchievementVariant;
+  title: string;
+  subtitle: string;
+};
+
+type LeaderKey = "edgar" | "jaden";
+
+type LeaderProfile = {
+  name: string;
+  title: string;
+  toggleTitle?: string;
+  avatar: string;
+  bio: string;
+  mantra: string;
+  mission: Achievement;
+  achievements: Achievement[];
+};
+
+const leaderOrder: LeaderKey[] = ["edgar", "jaden"];
+
+const leaders: Record<LeaderKey, LeaderProfile> = {
+  edgar: {
+    name: "Edgar Colmenero",
+    title: "Founder & Delivery Principal",
+    toggleTitle: "Delivery Principal",
+    avatar: "/me1.jpg",
+    bio: "Edgar guides SwiftSend's delivery practice, helping multi-disciplinary squads ship resilient platforms across fintech, retail, and consumer tech. He blends systems thinking with rapid prototyping to align product vision and velocity.",
+    mantra: "Never Stay Satisfied.",
+    mission: {
+      variant: "swiftsend",
+      title: "SwiftSend Mission Lead",
+      subtitle: "Orchestrates weekly launch cadences that keep clients ahead.",
+    },
+    achievements: [
+      {
+        variant: "honors",
+        title: "National Honors Scholar",
+        subtitle: "Top 1% recognition for computational design research.",
+      },
+      {
+        variant: "stem",
+        title: "STEM Innovation Fellow",
+        subtitle: "Launched robotics programs empowering 200+ emerging builders.",
+      },
+      {
+        variant: "adidas",
+        title: "Adidas Future Lab Partner",
+        subtitle: "Engineered personalization pilots across global product drops.",
+      },
+      {
+        variant: "consult",
+        title: "Fractional Product Consultant",
+        subtitle: "Scaled delivery rituals for fintech, health, and climate ventures.",
+      },
+    ],
+  },
+  jaden: {
+    name: "Jaden Padilla",
+    title: "Co-Founder & Systems Architect",
+    toggleTitle: "Systems Architect",
+    avatar: "/me2.jpg",
+    bio: "Jaden architects SwiftSend's technical runway, pairing infrastructure rigor with a brand-first mindset. He connects product strategy to platform decisions so every release stays fast, stable, and unmistakably polished.",
+    mantra: "Design Momentum. Deliver Proof.",
+    mission: {
+      variant: "swiftsend",
+      title: "Launch Systems Director",
+      subtitle: "Keeps cross-discipline pods aligned from discovery to daily releases.",
+    },
+    achievements: [
+      {
+        variant: "honors",
+        title: "Global Hackathon Finalist",
+        subtitle: "Piloted AI logistics tools recognized across three product summits.",
+      },
+      {
+        variant: "stem",
+        title: "SaaS Platform Architect",
+        subtitle: "Stabilized multi-tenant stacks serving millions of on-demand requests.",
+      },
+      {
+        variant: "adidas",
+        title: "Creative Systems Builder",
+        subtitle: "Unified brand and engineering workflows for Fortune 500 concept labs.",
+      },
+      {
+        variant: "consult",
+        title: "Fractional CTO Partner",
+        subtitle: "Guides founders through go-to-market readiness and technical audits.",
+      },
+    ],
+  },
+};
+
+function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
+  switch (variant) {
+    case "honors":
+      return (
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 21c2.5-1.6 4-4.4 4-7.4V7l4-2 4 2v6.6c0 3 1.5 5.8 4 7.4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="14" cy="21" r="3" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case "stem":
+      return (
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="14" cy="14" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M5 8.5C8.2 10 11.1 10.8 14 10.8c2.9 0 5.8-.8 9-2.3"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M5 19.5c3.2-1.5 6.1-2.3 9-2.3s5.8.8 9 2.3"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "adidas":
+      return (
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7 18.5l14-9.5M7 14l14-9.5M7 23l14-9.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M6.5 6.5h3v3h-3zM18.5 18.5h3v3h-3z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "consult":
+      return (
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 9.5l5.5-3 5.5 3v6l-5.5 3-5.5-3v-6z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M14 6V3M6 14H3M25 14h-3M14 25v-3"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "swiftsend":
+    default:
+      return (
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 19l2.5-7h5L14 25l-1.8-4.4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M11.5 12L15 3l3.5 3.5-3 5.5H11.5z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path d="M7 21.5l2.5-1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+  }
+}
+
 function AboutSection() {
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1999,6 +2215,9 @@ function AboutSection() {
     };
   }, []);
 
+  const [activeLeader, setActiveLeader] = useState<LeaderKey>("edgar");
+  const leader = leaders[activeLeader];
+
   const getRevealStyle = (index: number): CSSProperties => ({
     transitionDelay: `${index * 90}ms`,
   });
@@ -2019,6 +2238,32 @@ function AboutSection() {
           <h2 id="about-title" className="about__title">
             About <span className="about__title-highlight">SwiftSend</span>
           </h2>
+          <div className="about__leaders" role="group" aria-label="SwiftSend leadership">
+            {leaderOrder.map((key) => {
+              const item = leaders[key];
+              const isActive = key === activeLeader;
+
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  className={`about__leaderBtn${isActive ? " is-active" : ""}`}
+                  onClick={() => setActiveLeader(key)}
+                  aria-pressed={isActive}
+                >
+                  <span
+                    className="about__leaderThumb"
+                    aria-hidden="true"
+                    style={{ backgroundImage: `url(${item.avatar})` }}
+                  />
+                  <span className="about__leaderCopy">
+                    <span className="about__leaderName">{item.name}</span>
+                    <span className="about__leaderRole">{item.toggleTitle ?? item.title}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </header>
         <div className="about__inner">
           <div
@@ -2028,24 +2273,12 @@ function AboutSection() {
             style={getRevealStyle(1)}
           >
             <div className="about__avatar">
-              <img src="/me1.jpg" alt="Edgar Colmenero" loading="lazy" />
+              <img src={leader.avatar} alt={leader.name} loading="lazy" />
             </div>
             <div className="about__profile-details">
-              <p className="about__name">Edgar Colmenero</p>
-              <p className="about__role">Founder &amp; Delivery Principal</p>
-              <p className="about__bio">
-                Edgar guides SwiftSend's delivery practice, helping multi-disciplinary squads ship
-                resilient platforms across fintech, retail, and consumer tech. He blends systems
-                thinking with rapid prototyping to align product vision and velocity.
-              </p>
-            </div>
-            <div
-              className="about__quote"
-              data-reveal
-              data-reveal-index="3"
-              style={getRevealStyle(3)}
-            >
-              <p>Never Stay Satisfied.</p>
+              <p className="about__name">{leader.name}</p>
+              <p className="about__role">{leader.title}</p>
+              <p className="about__bio">{leader.bio}</p>
             </div>
           </div>
           <div
@@ -2058,195 +2291,81 @@ function AboutSection() {
               Experience &amp; Achievements
             </h3>
             <ul className="achv-list">
-              <li className="achv-card" data-variant="honors" tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 21c2.5-1.6 4-4.4 4-7.4V7l4-2 4 2v6.6c0 3 1.5 5.8 4 7.4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle
-                      cx="14"
-                      cy="21"
-                      r="3"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">National Honors Scholar</span>
-                  <span className="achv-card__sub">Top 1% recognition for computational design research.</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </li>
-              <li className="achv-card" data-variant="stem" tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="14" cy="14" r="4.5" stroke="currentColor" strokeWidth="1.5" />
-                    <path
-                      d="M5 8.5C8.2 10 11.1 10.8 14 10.8c2.9 0 5.8-.8 9-2.3"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M5 19.5c3.2-1.5 6.1-2.3 9-2.3s5.8.8 9 2.3"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">STEM Innovation Fellow</span>
-                  <span className="achv-card__sub">Launched robotics programs empowering 200+ emerging builders.</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </li>
-              <li className="achv-card" data-variant="adidas" tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7 18.5l14-9.5M7 14l14-9.5M7 23l14-9.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M6.5 6.5h3v3h-3zM18.5 18.5h3v3h-3z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">Adidas Future Lab Partner</span>
-                  <span className="achv-card__sub">Engineered personalization pilots across global product drops.</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </li>
-              <li className="achv-card" data-variant="consult" tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8.5 9.5l5.5-3 5.5 3v6l-5.5 3-5.5-3v-6z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M14 6V3M6 14H3M25 14h-3M14 25v-3"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">Fractional Product Consultant</span>
-                  <span className="achv-card__sub">Scaled delivery rituals for fintech, health, and climate ventures.</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </li>
-              <li className="achv-card" data-variant="swiftsend" tabIndex={0}>
-                <span className="achv-card__icon" aria-hidden="true">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 19l2.5-7h5L14 25l-1.8-4.4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M11.5 12L15 3l3.5 3.5-3 5.5H11.5z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M7 21.5l2.5-1.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-                <div className="achv-card__text">
-                  <span className="achv-card__title">SwiftSend Mission Lead</span>
-                  <span className="achv-card__sub">Orchestrates weekly launch cadences that keep clients ahead.</span>
-                </div>
-                <span className="achv-card__status" aria-hidden="true" />
-              </li>
+              {leader.achievements.map((achievement) => (
+                <li
+                  key={achievement.title}
+                  className="achv-card"
+                  data-variant={achievement.variant}
+                  tabIndex={0}
+                >
+                  <span className="achv-card__icon" aria-hidden="true">
+                    {renderAchievementIcon(achievement.variant)}
+                  </span>
+                  <div className="achv-card__text">
+                    <span className="achv-card__title">{achievement.title}</span>
+                    <span className="achv-card__sub">{achievement.subtitle}</span>
+                  </div>
+                  <span className="achv-card__status" aria-hidden="true" />
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-        <div className="certs" data-reveal data-reveal-index="4" style={getRevealStyle(4)}>
-          <div className="cert">
-            <img src="/color1.jpg" alt="SwiftSend spectrum tile 01" loading="lazy" />
-            <a className="cert__caption underline-seq" href="#" role="link">
-              Platform Velocity
-            </a>
+        <div
+          className="about__mission"
+          data-reveal
+          data-reveal-index="3"
+          style={getRevealStyle(3)}
+        >
+          <div className="about__missionHead">
+            <div className="about__quote">
+              <p>{leader.mantra}</p>
+            </div>
+            <div className="about__mission-card">
+              <article className="achv-card" data-variant={leader.mission.variant} tabIndex={0}>
+                <span className="achv-card__icon" aria-hidden="true">
+                  {renderAchievementIcon(leader.mission.variant)}
+                </span>
+                <div className="achv-card__text">
+                  <span className="achv-card__title">{leader.mission.title}</span>
+                  <span className="achv-card__sub">{leader.mission.subtitle}</span>
+                </div>
+                <span className="achv-card__status" aria-hidden="true" />
+              </article>
+            </div>
           </div>
-          <div className="cert">
-            <img src="/color2.jpg" alt="SwiftSend spectrum tile 02" loading="lazy" />
-            <a className="cert__caption underline-seq" href="#" role="link">
-              Creative Systems
-            </a>
-          </div>
-          <div className="cert">
-            <img src="/color3.jpg" alt="SwiftSend spectrum tile 03" loading="lazy" />
-            <a className="cert__caption underline-seq" href="#" role="link">
-              Delivery Ops
-            </a>
-          </div>
-          <div className="cert">
-            <img src="/color4.jpg" alt="SwiftSend spectrum tile 04" loading="lazy" />
-            <a className="cert__caption underline-seq" href="#" role="link">
-              R&amp;D Sprint Labs
-            </a>
+          <div className="certs">
+            <div className="cert">
+              <img src="/color1.jpg" alt="SwiftSend spectrum tile 01" loading="lazy" />
+              <a className="cert__caption underline-seq" href="#" role="link">
+                Platform Velocity
+              </a>
+            </div>
+            <div className="cert">
+              <img src="/color2.jpg" alt="SwiftSend spectrum tile 02" loading="lazy" />
+              <a className="cert__caption underline-seq" href="#" role="link">
+                Creative Systems
+              </a>
+            </div>
+            <div className="cert">
+              <img src="/color3.jpg" alt="SwiftSend spectrum tile 03" loading="lazy" />
+              <a className="cert__caption underline-seq" href="#" role="link">
+                Delivery Ops
+              </a>
+            </div>
+            <div className="cert">
+              <img src="/color4.jpg" alt="SwiftSend spectrum tile 04" loading="lazy" />
+              <a className="cert__caption underline-seq" href="#" role="link">
+                R&amp;D Sprint Labs
+              </a>
+            </div>
           </div>
         </div>
         <div
           className="about__quote about__quote--long"
           data-reveal
-          data-reveal-index="5"
-          style={getRevealStyle(5)}
+          data-reveal-index="4"
+          style={getRevealStyle(4)}
         >
           <p>
             “We engineer clarity and tempo so every launch feels intentional, confident, and
