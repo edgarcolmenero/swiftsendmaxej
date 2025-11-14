@@ -41,7 +41,6 @@ const DEFAULT_QUICK_LINKS: FooterLink[] = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/#about" },
   { label: "Services", href: "/#services" },
-  { label: "Work", href: "/#work" },
   { label: "Labs", href: "/#labs" },
   { label: "Packs", href: "/#packs" },
   { label: "Save", href: "/#contact" },
