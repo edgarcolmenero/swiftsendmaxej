@@ -1901,7 +1901,7 @@ main {
 .display {
   font-weight: 700;
   letter-spacing: -0.015em;
-  font-size: clamp(40px, 6vw, 76px);
+  font-size: clamp(36px, 5vw, 64px);
   line-height: 1.08;
   margin: 0 0 0.4rem;
 }
@@ -1936,6 +1936,8 @@ main {
   width: min(1020px, 100%);
   margin-top: clamp(2.4rem, 6vw, 3.8rem);
   margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   align-self: stretch;
 }
 

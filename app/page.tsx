@@ -1301,8 +1301,7 @@ export default function HomePage() {
               Your Future.
             </h1>
             <p className="lede hero__lede" data-hero-reveal data-hero-order="3">
-              SwiftSend Max 3.0 powers ambitious builders with a battle-tested engineering core,
-              product accelerators, and a crew obsessed with velocity and polish.
+              Full-stack engineering, intelligent automation, real-time data systems, and seamless digital experiences — delivered with precision and velocity.
             </p>
             <div className="cta" data-hero-reveal data-hero-order="4">
               <a href="#contact" className="btn btn-primary">
@@ -1369,8 +1368,15 @@ export default function HomePage() {
             <article className="hero-stat" data-hero-reveal data-hero-order="7" role="listitem">
               <div className="hero-stat__meta">
                 <h3 className="hero-stat__title">System Reliability</h3>
-                <p className="hero-stat__value">
-                  <span>99.99%</span>
+                <p className="hero-stat__value" aria-label="Ninety-nine point ninety-nine percent uptime" aria-live="polite">
+                  <span
+                    data-count-target="99.99"
+                    data-count-start="0"
+                    data-count-duration="1600"
+                    data-count-format="number"
+                    data-count-decimals="2"
+                    data-count-suffix="%"
+                  >99.99%</span>
                 </p>
                 <p className="hero-stat__label">Uptime</p>
               </div>
