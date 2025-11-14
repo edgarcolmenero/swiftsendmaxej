@@ -1,6 +1,6 @@
 {
-  "//": "SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z \u2014 real implementation to follow",
-  "_repaired": "/* repaired: 2025-10-07T23:34:08Z \u2014 normalized package metadata for stable dev scripts */",
+  "//": "SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow",
+  "_repaired": "/* repaired: 2025-10-07T23:34:08Z — normalized package metadata for stable dev scripts */",
   "name": "swiftsendmaxej",
   "private": true,
   "version": "0.1.0",
@@ -14,6 +14,7 @@
     "node": ">=18.17"
   },
   "dependencies": {
+    "lucide-react": "^0.553.0",
     "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1"
