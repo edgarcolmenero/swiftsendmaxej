@@ -129,24 +129,47 @@ export function Services() {
       className="relative scroll-mt-28 md:scroll-mt-32 px-4 sm:px-6 lg:px-8 py-20 md:py-28 overflow-hidden"
       aria-labelledby="services-title"
     >
+      {/* Deep space gradient background */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgb(2, 6, 23) 0%, rgba(11, 22, 50, 0.2) 50%, rgba(30, 17, 10, 0.1) 100%)',
+            'linear-gradient(180deg, #020617 0%, #020b3a 40%, #020617 70%, rgba(28, 10, 2, 0.15) 100%)',
         }}
       />
 
+      {/* Starfield overlay - subtle static effect */}
       <div
-        className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-20 blur-3xl -z-10"
+        className="absolute inset-0 -z-10 opacity-30"
+        style={{
+          backgroundImage: `
+            radial-gradient(1px 1px at 20% 30%, white, transparent),
+            radial-gradient(1px 1px at 60% 70%, white, transparent),
+            radial-gradient(1px 1px at 50% 50%, white, transparent),
+            radial-gradient(1px 1px at 80% 10%, white, transparent),
+            radial-gradient(1px 1px at 90% 60%, white, transparent),
+            radial-gradient(0.5px 0.5px at 33% 77%, white, transparent),
+            radial-gradient(0.5px 0.5px at 66% 44%, white, transparent),
+            radial-gradient(1px 1px at 15% 85%, white, transparent),
+            radial-gradient(0.5px 0.5px at 75% 20%, white, transparent),
+            radial-gradient(1px 1px at 40% 15%, white, transparent)
+          `,
+          backgroundSize: '200% 200%, 250% 250%, 300% 300%, 350% 350%, 200% 200%, 250% 250%, 300% 300%, 200% 200%, 250% 250%, 300% 300%',
+          backgroundPosition: '0% 0%',
+        }}
+      />
+
+      {/* Ambient orb glows */}
+      <div
+        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl -z-10"
         style={{ background: 'radial-gradient(circle, rgb(59, 130, 246) 0%, transparent 70%)' }}
       />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10 blur-3xl -z-10"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-3xl -z-10"
         style={{ background: 'radial-gradient(circle, rgb(168, 85, 247) 0%, transparent 70%)' }}
       />
       <div
-        className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-20 blur-3xl -z-10"
+        className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl -z-10"
         style={{ background: 'radial-gradient(circle, rgb(249, 115, 22) 0%, transparent 70%)' }}
       />
 
@@ -201,17 +224,18 @@ export function Services() {
 
                 <div className="mb-6">
                   <div
-                    className="relative w-14 h-14 rounded-xl flex items-center justify-center"
+                    className="icon-tile relative w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
                     style={{
-                      background: `linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9))`,
-                      border: '1px solid',
+                      background: 'rgba(2, 6, 23, 0.7)',
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
                     }}
+                    data-gradient={pillar.gradient}
                   >
                     <div
-                      className="absolute inset-0 rounded-xl"
+                      className="absolute inset-0 rounded-xl opacity-5"
                       style={{
                         background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                        opacity: '0.3',
                       }}
                       data-gradient={pillar.gradient}
                     />
@@ -220,10 +244,7 @@ export function Services() {
                 </div>
 
                 <h3
-                  className="text-xl font-bold mb-2 bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                  }}
+                  className="text-xl font-bold mb-2"
                   data-gradient={pillar.gradient}
                 >
                   {pillar.title}
@@ -235,13 +256,10 @@ export function Services() {
                   {pillar.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span
-                        className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
-                        style={{
-                          background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                        }}
+                        className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
                         data-gradient={pillar.gradient}
                       />
-                      <span className="text-slate-500 text-xs">{bullet}</span>
+                      <span className="text-slate-400 text-xs">{bullet}</span>
                     </li>
                   ))}
                 </ul>
@@ -262,24 +280,109 @@ export function Services() {
           transform: translateY(0);
         }
 
+        /* Blue - Full-Stack Development */
         [data-gradient="from-blue-500 to-cyan-500"] {
           --tw-gradient-stops: rgb(59, 130, 246), rgb(6, 182, 212);
         }
 
+        [data-gradient="from-blue-500 to-cyan-500"] .icon-tile {
+          border-color: rgb(56, 189, 248);
+        }
+
+        [data-gradient="from-blue-500 to-cyan-500"] h3 {
+          color: rgb(56, 189, 248);
+        }
+
+        [data-gradient="from-blue-500 to-cyan-500"] li > span.w-1\.5 {
+          background-color: rgb(56, 189, 248);
+        }
+
+        .pillar-card:hover [data-gradient="from-blue-500 to-cyan-500"].icon-tile {
+          box-shadow: 0 0 32px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Magenta/Purple - Data Science */
         [data-gradient="from-purple-500 to-pink-500"] {
           --tw-gradient-stops: rgb(168, 85, 247), rgb(236, 72, 153);
         }
 
+        [data-gradient="from-purple-500 to-pink-500"] .icon-tile {
+          border-color: rgb(217, 70, 239);
+        }
+
+        [data-gradient="from-purple-500 to-pink-500"] h3 {
+          color: rgb(217, 70, 239);
+        }
+
+        [data-gradient="from-purple-500 to-pink-500"] li > span.w-1\.5 {
+          background-color: rgb(217, 70, 239);
+        }
+
+        .pillar-card:hover [data-gradient="from-purple-500 to-pink-500"].icon-tile {
+          box-shadow: 0 0 32px rgba(217, 70, 239, 0.4);
+        }
+
+        /* Teal/Emerald - AI Automations */
         [data-gradient="from-teal-500 to-emerald-500"] {
           --tw-gradient-stops: rgb(20, 184, 166), rgb(16, 185, 129);
         }
 
+        [data-gradient="from-teal-500 to-emerald-500"] .icon-tile {
+          border-color: rgb(52, 211, 153);
+        }
+
+        [data-gradient="from-teal-500 to-emerald-500"] h3 {
+          color: rgb(52, 211, 153);
+        }
+
+        [data-gradient="from-teal-500 to-emerald-500"] li > span.w-1\.5 {
+          background-color: rgb(52, 211, 153);
+        }
+
+        .pillar-card:hover [data-gradient="from-teal-500 to-emerald-500"].icon-tile {
+          box-shadow: 0 0 32px rgba(52, 211, 153, 0.4);
+        }
+
+        /* Orange/Amber - SwiftPay Systems */
         [data-gradient="from-orange-500 to-amber-500"] {
           --tw-gradient-stops: rgb(249, 115, 22), rgb(245, 158, 11);
         }
 
+        [data-gradient="from-orange-500 to-amber-500"] .icon-tile {
+          border-color: rgb(251, 146, 60);
+        }
+
+        [data-gradient="from-orange-500 to-amber-500"] h3 {
+          color: rgb(251, 146, 60);
+        }
+
+        [data-gradient="from-orange-500 to-amber-500"] li > span.w-1\.5 {
+          background-color: rgb(251, 146, 60);
+        }
+
+        .pillar-card:hover [data-gradient="from-orange-500 to-amber-500"].icon-tile {
+          box-shadow: 0 0 32px rgba(251, 146, 60, 0.4);
+        }
+
+        /* Rose/Orange - Digital Growth */
         [data-gradient="from-rose-500 to-orange-500"] {
           --tw-gradient-stops: rgb(244, 63, 94), rgb(249, 115, 22);
+        }
+
+        [data-gradient="from-rose-500 to-orange-500"] .icon-tile {
+          border-color: rgb(251, 113, 133);
+        }
+
+        [data-gradient="from-rose-500 to-orange-500"] h3 {
+          color: rgb(251, 113, 133);
+        }
+
+        [data-gradient="from-rose-500 to-orange-500"] li > span.w-1\.5 {
+          background-color: rgb(251, 113, 133);
+        }
+
+        .pillar-card:hover [data-gradient="from-rose-500 to-orange-500"].icon-tile {
+          box-shadow: 0 0 32px rgba(251, 113, 133, 0.4);
         }
 
         @media (prefers-reduced-motion: reduce) {
