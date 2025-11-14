@@ -241,11 +241,13 @@ export default function HomePage() {
     if (typeof window === "undefined") return;
 
     const hero = document.querySelector<HTMLElement>('[data-hero]');
-    if (!hero || hero.dataset.heroReady === "done") return;
-    hero.dataset.heroReady = "done";
+    if (!hero || hero.dataset.heroReady === "enhanced") return;
+    hero.dataset.heroReady = "enhanced";
 
     const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const shouldReduceMotion = () => reduceMotionQuery.matches;
+    const supportsIntersectionObserver = "IntersectionObserver" in window;
+    const shouldAnimateMotion = () => supportsIntersectionObserver && !shouldReduceMotion();
 
     const revealables = Array.from(
       hero.querySelectorAll<HTMLElement>('[data-hero-reveal]')
@@ -253,6 +255,10 @@ export default function HomePage() {
     const counters = Array.from(
       hero.querySelectorAll<HTMLElement>('[data-count-target]')
     );
+
+    if (shouldAnimateMotion()) {
+      revealables.forEach((el) => el.classList.add("is-prepped"));
+    }
 
     const compactCurrencyFormatter = new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -293,7 +299,7 @@ export default function HomePage() {
       counters.forEach((counter) => {
         const targetValue = Number(counter.dataset.countTarget ?? "0");
         const startValue = Number(counter.dataset.countStart ?? "0");
-        const value = shouldReduceMotion() ? targetValue : startValue;
+        const value = shouldAnimateMotion() ? startValue : targetValue;
         applyValue(counter, value);
       });
     };
@@ -309,14 +315,14 @@ export default function HomePage() {
       const targetValue = Number(counter.dataset.countTarget ?? "0");
       if (!Number.isFinite(targetValue)) return;
 
-      const startValue = Number(counter.dataset.countStart ?? "0");
-      const duration = Number(counter.dataset.countDuration ?? "1400");
-
-      if (shouldReduceMotion()) {
+      if (!shouldAnimateMotion()) {
         applyValue(counter, targetValue);
         animatedCounters.add(counter);
         return;
       }
+
+      const startValue = Number(counter.dataset.countStart ?? "0");
+      const duration = Number(counter.dataset.countDuration ?? "1400");
 
       const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
       const startTimestamp = performance.now();
@@ -343,15 +349,19 @@ export default function HomePage() {
     };
 
     const revealElement = (element: HTMLElement) => {
-      if (!element.classList.contains("is-visible")) {
-        element.classList.add("is-visible");
-      }
+      element.classList.add("is-visible");
+      element.classList.remove("is-prepped");
       element.style.removeProperty("--hero-delay");
-      element.querySelectorAll<HTMLElement>('[data-count-target]').forEach(animateCounter);
+      if (!shouldAnimateMotion()) {
+        return;
+      }
+      element
+        .querySelectorAll<HTMLElement>('[data-count-target]')
+        .forEach(animateCounter);
     };
 
     const assignDelays = () => {
-      if (shouldReduceMotion()) {
+      if (!shouldAnimateMotion()) {
         revealables.forEach((el) => el.style.removeProperty("--hero-delay"));
         return;
       }
@@ -368,7 +378,7 @@ export default function HomePage() {
     let observer: IntersectionObserver | null = null;
 
     const startObserver = () => {
-      if (observer || shouldReduceMotion()) return;
+      if (observer || !shouldAnimateMotion()) return;
 
       observer = new IntersectionObserver(
         (entries) => {
@@ -393,7 +403,7 @@ export default function HomePage() {
       observer = null;
     };
 
-    if (shouldReduceMotion()) {
+    if (!shouldAnimateMotion()) {
       revealables.forEach(revealElement);
     } else {
       startObserver();
@@ -407,21 +417,21 @@ export default function HomePage() {
     const handleMotionChange = () => {
       cancelAllRafs();
       animatedCounters = new WeakSet<HTMLElement>();
-      assignDelays();
       setInitialValues();
+      assignDelays();
 
-      if (shouldReduceMotion()) {
+      if (!shouldAnimateMotion()) {
         stopObserver();
         revealables.forEach(revealElement);
         return;
       }
 
-      stopObserver();
       revealables.forEach((el) => {
-        if (el.classList.contains("is-visible")) {
-          el.classList.remove("is-visible");
-        }
+        el.classList.add("is-prepped");
+        el.classList.remove("is-visible");
       });
+
+      stopObserver();
       startObserver();
     };
 
@@ -1312,9 +1322,9 @@ export default function HomePage() {
                   aria-label="Six to eight week delivery timeline"
                   aria-live="polite"
                 >
-                  <span data-count-target="6" data-count-start="0" data-count-duration="1200" data-count-format="number">0</span>
+                  <span data-count-target="6" data-count-start="0" data-count-duration="1200" data-count-format="number">6</span>
                   <span className="hero-stat__range-divider" aria-hidden="true">–</span>
-                  <span data-count-target="8" data-count-start="0" data-count-duration="1400" data-count-format="number">0</span>
+                  <span data-count-target="8" data-count-start="0" data-count-duration="1400" data-count-format="number">8</span>
                   <span className="hero-stat__suffix">weeks</span>
                 </p>
               </div>
@@ -1334,7 +1344,7 @@ export default function HomePage() {
                     data-count-duration="1800"
                     data-count-format="compactCurrency"
                     data-count-suffix="+"
-                  >$0</span>
+                  >$100M+</span>
                 </p>
                 <p className="hero-stat__label">Commerce Supported</p>
               </div>

@@ -2029,12 +2029,17 @@ main {
 }
 
 [data-hero-reveal] {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
   transition:
     opacity 640ms ease,
     transform 640ms ease;
   transition-delay: var(--hero-delay, 0ms);
+}
+
+[data-hero-reveal].is-prepped {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
 }
 
 [data-hero-reveal].is-visible {
