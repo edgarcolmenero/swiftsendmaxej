@@ -14,12 +14,12 @@ import {
 } from "react";
 
 import Logo from "@/components/shared/Logo";
+import MobileDrawer from "@/components/navigation/MobileDrawer";
 
 const SECTION_IDS = [
   "home",
   "about",
   "services",
-  "work",
   "labs",
   "packs",
   "contact",
@@ -44,7 +44,6 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/#home", label: "Home", section: "home" },
   { href: "/#about", label: "About", section: "about" },
   { href: "/#services", label: "Services", section: "services" },
-  { href: "/#work", label: "Work", section: "work" },
   { href: "/#labs", label: "Labs", section: "labs" },
   { href: "/#packs", label: "Packs", section: "packs" },
   {
@@ -64,8 +63,8 @@ type ActionItem = {
 
 const ACTION_ITEMS: ActionItem[] = [
   {
-    href: "/account",
-    ariaLabel: "Account",
+    href: "tel:510-519-1128",
+    ariaLabel: "Call 510-519-1128",
     icon: (
       <svg
         aria-hidden="true"
@@ -77,15 +76,15 @@ const ACTION_ITEMS: ActionItem[] = [
         className="action-icon"
       >
         <path
-          d="M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 10c4.42 0 8 2.24 8 5v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1c0-2.76 3.58-5 8-5Z"
+          d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2Z"
           fill="currentColor"
         />
       </svg>
     ),
   },
   {
-    href: "/schedule",
-    ariaLabel: "Schedule",
+    href: "mailto:swift.send.marketing@gmail.com",
+    ariaLabel: "Email swift.send.marketing@gmail.com",
     icon: (
       <svg
         aria-hidden="true"
@@ -97,7 +96,7 @@ const ACTION_ITEMS: ActionItem[] = [
         className="action-icon"
       >
         <path
-          d="M7 3a1 1 0 0 1 1 1v1h8V4a1 1 0 1 1 2 0v1h.5A2.5 2.5 0 0 1 21 7.5v11A2.5 2.5 0 0 1 18.5 21h-13A2.5 2.5 0 0 1 3 18.5v-11A2.5 2.5 0 0 1 5.5 5H6V4a1 1 0 0 1 1-1Zm12 6H5v9.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5V9Zm-5 3.5a1 1 0 0 1 .58.19l2 1.5a1 1 0 0 1-1.16 1.62l-.42-.32V17a1 1 0 1 1-2 0v-2.5a1 1 0 0 1 1-1Z"
+          d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"
           fill="currentColor"
         />
       </svg>
@@ -131,6 +130,7 @@ export default function Header() {
   const [hasShadow, setHasShadow] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const activeSectionRef = useRef<SectionId | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -356,75 +356,94 @@ export default function Header() {
   }
 
   return ReactDOM.createPortal(
-    <header
-      ref={headerRef}
-      data-header
-      className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
-    >
-      <div className="header-container">
-        <div className="header-grid">
-          <div className="header-logo">
-            <Logo
-              className="brand"
-              showWordmark={false}
-              size="md"
-              priority
-              ariaLabel="SwiftSend — Home"
-              onClick={(event) => handleAnchorClick(event, "/#home", "home")}
-            />
-          </div>
-          <nav className="nav-desktop" aria-label="Primary">
-            <ul className="nav-list" role="list">
-              {NAV_ITEMS.map((item) => {
-                const isActive = activeSection === item.section;
-                return (
-                  <li key={item.section} className="nav-item">
-                    <Link
-                      href={item.href}
-                      className={`nav-link${isActive ? " nav-link--active" : ""}`}
-                      aria-label={item.ariaLabel}
-                      aria-current={isActive ? "true" : undefined}
-                      onClick={(event) => handleAnchorClick(event, item.href, item.section)}
-                      prefetch={false}
-                    >
-                      <span
-                        className={`nav-label${item.gradient ? " nav-label--gradient" : ""}`}
-                      >
-                        {item.label}
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className={`nav-underline${isActive ? " nav-underline--active" : ""}`}
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-          <div className="header-actions">
-            <div className="header-actions__cluster">
-              {ACTION_ITEMS.map((action) => (
-                <Link
-                  key={action.ariaLabel}
-                  href={action.href}
-                  aria-label={action.ariaLabel}
-                  className="icon-btn"
-                  prefetch={false}
-                >
-                  {action.icon}
-                </Link>
-              ))}
+    <>
+      <header
+        ref={headerRef}
+        data-header
+        className={`header ss-header header--fixed${hasShadow ? " has-shadow" : ""}`}
+      >
+        <div className="header-container">
+          <div className="header-grid">
+            <div className="header-logo">
+              <Logo
+                className="brand"
+                showWordmark={false}
+                size="md"
+                priority
+                ariaLabel="SwiftSend — Home"
+                onClick={(event) => handleAnchorClick(event, "/#home", "home")}
+              />
             </div>
-            <button type="button" className="hamburger" aria-label="Open navigation">
-              <span />
-              <span />
-              <span />
-            </button>
+            <nav className="nav-desktop" aria-label="Primary">
+              <ul className="nav-list" role="list">
+                {NAV_ITEMS.map((item) => {
+                  const isActive = activeSection === item.section;
+                  return (
+                    <li key={item.section} className="nav-item">
+                      <Link
+                        href={item.href}
+                        className={`nav-link${isActive ? " nav-link--active" : ""}`}
+                        aria-label={item.ariaLabel}
+                        aria-current={isActive ? "true" : undefined}
+                        onClick={(event) => handleAnchorClick(event, item.href, item.section)}
+                        prefetch={false}
+                      >
+                        <span
+                          className={`nav-label${item.gradient ? " nav-label--gradient" : ""}`}
+                        >
+                          {item.label}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className={`nav-underline${isActive ? " nav-underline--active" : ""}`}
+                        />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+            <div className="header-actions">
+              <div className="header-actions__cluster">
+                {ACTION_ITEMS.map((action) => (
+                  <Link
+                    key={action.ariaLabel}
+                    href={action.href}
+                    aria-label={action.ariaLabel}
+                    className="icon-btn"
+                    prefetch={false}
+                  >
+                    {action.icon}
+                  </Link>
+                ))}
+              </div>
+              <button 
+                type="button" 
+                className="hamburger" 
+                aria-label="Open navigation"
+                aria-expanded={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>,
+      </header>
+      {mobileMenuOpen && (
+        <MobileDrawer
+          open={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          navItems={NAV_ITEMS}
+          onNavigate={(event, href, section) => {
+            handleAnchorClick(event, href, section);
+            setMobileMenuOpen(false);
+          }}
+        />
+      )}
+    </>,
     portalTarget
   );
 }
