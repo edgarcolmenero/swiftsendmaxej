@@ -406,7 +406,21 @@ export default function HomePage() {
     if (!shouldAnimateMotion()) {
       revealables.forEach(revealElement);
     } else {
-      startObserver();
+      // For hero section, immediately reveal elements that are in viewport
+      // to avoid the disappearing bug on initial load
+      const heroRect = hero.getBoundingClientRect();
+      const isHeroInView = heroRect.top < window.innerHeight && heroRect.bottom > 0;
+      
+      if (isHeroInView) {
+        // Hero is in viewport on load, reveal immediately with staggered delays
+        revealables.forEach((el) => {
+          const delay = parseInt(el.style.getPropertyValue("--hero-delay") || "0", 10);
+          setTimeout(() => revealElement(el), delay);
+        });
+      } else {
+        // Hero not in viewport, use observer
+        startObserver();
+      }
     }
 
     const cancelAllRafs = () => {
@@ -1267,22 +1281,30 @@ export default function HomePage() {
         <canvas id="fx-stars" aria-hidden="true" />
         <div className="spark-field" data-spark-field aria-hidden="true" />
         <div className="hero-inner">
+          <div className="tile-wrap" aria-hidden="true" data-hero-reveal data-hero-order="0">
+            <div className="tile">
+              <span className="tile-s">s</span>
+              <span className="orbit o1" />
+              <span className="orbit o2" />
+              <span className="orbit o3" />
+            </div>
+          </div>
           <div className="hero__content">
-            <span className="hero__badge" data-hero-reveal data-hero-order="0">
+            <span className="hero__badge" data-hero-reveal data-hero-order="1">
               FULL-STACK INNOVATION PARTNER
             </span>
-            <h1 className="display hero__title" data-hero-reveal data-hero-order="1">
+            <h1 className="display hero__title" data-hero-reveal data-hero-order="2">
               Your Systems.
               <br />
               <span className="grad-word">Your</span> Savings.
               <br />
               Your Future.
             </h1>
-            <p className="lede hero__lede" data-hero-reveal data-hero-order="2">
+            <p className="lede hero__lede" data-hero-reveal data-hero-order="3">
               SwiftSend Max 3.0 powers ambitious builders with a battle-tested engineering core,
               product accelerators, and a crew obsessed with velocity and polish.
             </p>
-            <div className="cta" data-hero-reveal data-hero-order="3">
+            <div className="cta" data-hero-reveal data-hero-order="4">
               <a href="#contact" className="btn btn-primary">
                 Start a Build
                 <svg
@@ -1303,14 +1325,6 @@ export default function HomePage() {
               <a href="#services" className="btn btn-ghost underline-seq">
                 Explore Services
               </a>
-            </div>
-          </div>
-          <div className="tile-wrap" aria-hidden="true" data-hero-reveal data-hero-order="4">
-            <div className="tile">
-              <span className="tile-s">s</span>
-              <span className="orbit o1" />
-              <span className="orbit o2" />
-              <span className="orbit o3" />
             </div>
           </div>
           <div className="hero__stats" role="list">
