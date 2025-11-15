@@ -6,53 +6,50 @@ import { Services } from "@/app/(site)/sections/Services";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const LaunchVelocityIcon = () => (
-  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.6" role="presentation" aria-hidden="true">
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.45" role="presentation" aria-hidden="true">
     <path
-      d="M6 22c0-5.523 4.477-10 10-10s10 4.477 10 10"
+      d="M6.5 21c0-5.25 4.25-9.5 9.5-9.5s9.5 4.25 9.5 9.5"
       stroke="currentColor"
       strokeLinecap="round"
-      strokeLinejoin="round"
     />
-    <path d="M16 12v5l4 2.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="16" cy="22" r="1.4" fill="currentColor" />
-    <path d="M10 24h12" stroke="currentColor" strokeLinecap="round" />
+    <path d="M10 17.2 7.9 15.1" stroke="currentColor" strokeLinecap="round" />
+    <path d="M22 17.2 24.1 15.1" stroke="currentColor" strokeLinecap="round" />
+    <path d="M16 18.8 21 10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="16" cy="21" r="1.1" fill="currentColor" />
+    <path d="M9 24h14" stroke="currentColor" strokeLinecap="round" />
+    <path d="M12 24.5v2.4" stroke="currentColor" strokeLinecap="round" />
+    <path d="M20 24.5v2.4" stroke="currentColor" strokeLinecap="round" />
   </svg>
 );
 
 const InfrastructureIcon = () => (
-  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.55" role="presentation" aria-hidden="true">
-    <rect x="6" y="6" width="20" height="20" rx="4.5" stroke="currentColor" />
-    <path d="M11 12v-2.5" stroke="currentColor" strokeLinecap="round" />
-    <path d="M21 12v-2.5" stroke="currentColor" strokeLinecap="round" />
-    <path d="M11 25v-2.5" stroke="currentColor" strokeLinecap="round" />
-    <path d="M21 25v-2.5" stroke="currentColor" strokeLinecap="round" />
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.45" role="presentation" aria-hidden="true">
+    <rect x="5.5" y="5.5" width="21" height="21" rx="5" stroke="currentColor" />
+    <path d="M10 5.5v3" stroke="currentColor" strokeLinecap="round" />
+    <path d="M22 5.5v3" stroke="currentColor" strokeLinecap="round" />
+    <path d="M10 26.5v-3" stroke="currentColor" strokeLinecap="round" />
+    <path d="M22 26.5v-3" stroke="currentColor" strokeLinecap="round" />
+    <path d="M5.5 16h3" stroke="currentColor" strokeLinecap="round" />
+    <path d="M26.5 16h-3" stroke="currentColor" strokeLinecap="round" />
     <path
-      d="M16 11c-2.2 0-3.4.9-3.4 2.2 0 1.4 1.3 2 3.4 2s3.4.6 3.4 2-1.2 2.2-3.4 2.2-3.4.9-3.4 2.2c0 1.4 1.3 2.2 3.4 2.2"
+      d="M19.8 12.4c-.8-1.1-2.1-1.7-3.8-1.7-2.1 0-3.7 1-3.7 2.6s1.1 2.2 3.2 2.6l1.7.3c2 .4 3 1 3 2.6s-1.7 2.8-4 2.8c-1.9 0-3.4-.9-4-2.3"
       stroke="currentColor"
       strokeLinecap="round"
     />
-    <path d="M16 11v12" stroke="currentColor" strokeLinecap="round" />
+    <path d="M16 9.6v13" stroke="currentColor" strokeLinecap="round" />
   </svg>
 );
 
 const ReliabilityIcon = () => (
-  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.55" role="presentation" aria-hidden="true">
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.45" role="presentation" aria-hidden="true">
     <path
-      d="M16 5.5 8.8 8.1a1 1 0 0 0-.65.94v5.25c0 5.63 3.63 10.79 7.85 12.6.3.13.64.13.94 0 4.22-1.81 7.81-6.93 7.81-12.56V9.04a1 1 0 0 0-.67-.95Z"
+      d="M16 5.5 8.65 8.02a1 1 0 0 0-.65.94V15c0 5.43 3.47 10.49 7.74 12.33.3.13.64.13.94 0C21.94 25.49 25 20.43 25 15V8.96a1 1 0 0 0-.65-.94Z"
       stroke="currentColor"
       strokeLinejoin="round"
     />
-    <path
-      d="M11.5 16.5c1.1-1.2 2.5-1.8 4.1-1.8s3 .6 4.1 1.8"
-      stroke="currentColor"
-      strokeLinecap="round"
-    />
-    <path
-      d="M13.5 19.5c.7-.7 1.5-1.1 2.5-1.1s1.8.4 2.5 1.1"
-      stroke="currentColor"
-      strokeLinecap="round"
-    />
-    <path d="M15.6 22.5h.8" stroke="currentColor" strokeLinecap="round" />
+    <path d="M11.5 17.2c1.2-1.4 2.8-2.1 4.5-2.1s3.3.7 4.5 2.1" stroke="currentColor" strokeLinecap="round" />
+    <path d="M13.8 20.6a3.4 3.4 0 0 1 4.4 0" stroke="currentColor" strokeLinecap="round" />
+    <path d="M12.5 21.8l1.6 2.4 2.1-3 1.8 2.4h3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -1163,7 +1160,6 @@ export default function HomePage() {
                   role="listitem"
                 >
                   <div className="hero-stat__icon" aria-hidden="true">
-                    <span className="hero-stat__icon-glow" />
                     <Icon />
                   </div>
                   <div className="hero-stat__body">
