@@ -5,6 +5,138 @@ import { Process } from "@/app/(site)/sections/Process";
 import { Services } from "@/app/(site)/sections/Services";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+const LaunchVelocityIcon = () => (
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.6" role="presentation" aria-hidden="true">
+    <path
+      d="M6 22c0-5.523 4.477-10 10-10s10 4.477 10 10"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M16 12v5l4 2.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="16" cy="22" r="1.4" fill="currentColor" />
+    <path d="M10 24h12" stroke="currentColor" strokeLinecap="round" />
+  </svg>
+);
+
+const InfrastructureIcon = () => (
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.55" role="presentation" aria-hidden="true">
+    <rect x="6" y="6" width="20" height="20" rx="4.5" stroke="currentColor" />
+    <path d="M11 12v-2.5" stroke="currentColor" strokeLinecap="round" />
+    <path d="M21 12v-2.5" stroke="currentColor" strokeLinecap="round" />
+    <path d="M11 25v-2.5" stroke="currentColor" strokeLinecap="round" />
+    <path d="M21 25v-2.5" stroke="currentColor" strokeLinecap="round" />
+    <path
+      d="M16 11c-2.2 0-3.4.9-3.4 2.2 0 1.4 1.3 2 3.4 2s3.4.6 3.4 2-1.2 2.2-3.4 2.2-3.4.9-3.4 2.2c0 1.4 1.3 2.2 3.4 2.2"
+      stroke="currentColor"
+      strokeLinecap="round"
+    />
+    <path d="M16 11v12" stroke="currentColor" strokeLinecap="round" />
+  </svg>
+);
+
+const ReliabilityIcon = () => (
+  <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.55" role="presentation" aria-hidden="true">
+    <path
+      d="M16 5.5 8.8 8.1a1 1 0 0 0-.65.94v5.25c0 5.63 3.63 10.79 7.85 12.6.3.13.64.13.94 0 4.22-1.81 7.81-6.93 7.81-12.56V9.04a1 1 0 0 0-.67-.95Z"
+      stroke="currentColor"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11.5 16.5c1.1-1.2 2.5-1.8 4.1-1.8s3 .6 4.1 1.8"
+      stroke="currentColor"
+      strokeLinecap="round"
+    />
+    <path
+      d="M13.5 19.5c.7-.7 1.5-1.1 2.5-1.1s1.8.4 2.5 1.1"
+      stroke="currentColor"
+      strokeLinecap="round"
+    />
+    <path d="M15.6 22.5h.8" stroke="currentColor" strokeLinecap="round" />
+  </svg>
+);
+
+type HeroStatDefinition = {
+  key: string;
+  title: string;
+  description: string;
+  label?: string;
+  tone: "velocity" | "infrastructure" | "reliability";
+  icon: () => JSX.Element;
+  renderValue: () => JSX.Element;
+};
+
+const HERO_STATS: HeroStatDefinition[] = [
+  {
+    key: "launch",
+    title: "Launch Velocity",
+    description: "Production-ready systems delivered fast.",
+    tone: "velocity",
+    icon: LaunchVelocityIcon,
+    renderValue: () => (
+      <p
+        className="hero-stat__value hero-stat__value--range"
+        aria-label="Six to eight week delivery timeline"
+        aria-live="polite"
+      >
+        <span data-count-target="6" data-count-start="0" data-count-duration="1200" data-count-format="number">
+          6
+        </span>
+        <span className="hero-stat__range-divider" aria-hidden="true">
+          –
+        </span>
+        <span data-count-target="8" data-count-start="0" data-count-duration="1400" data-count-format="number">
+          8
+        </span>
+        <span className="hero-stat__suffix">weeks</span>
+      </p>
+    ),
+  },
+  {
+    key: "enterprise",
+    title: "Enterprise-Scale Infrastructure",
+    description: "Digital infrastructure powering a high-growth, nine-figure operation.",
+    tone: "infrastructure",
+    label: "Commerce Supported",
+    icon: InfrastructureIcon,
+    renderValue: () => (
+      <p className="hero-stat__value" aria-label="Over one hundred million dollars in commerce supported" aria-live="polite">
+        <span
+          data-count-target="100000000"
+          data-count-start="0"
+          data-count-duration="1800"
+          data-count-format="compactCurrency"
+          data-count-suffix="+"
+        >
+          $100M+
+        </span>
+      </p>
+    ),
+  },
+  {
+    key: "reliability",
+    title: "System Reliability",
+    description: "Enterprise-grade stability across every deployment.",
+    tone: "reliability",
+    label: "Uptime",
+    icon: ReliabilityIcon,
+    renderValue: () => (
+      <p className="hero-stat__value" aria-label="Ninety-nine point ninety-nine percent uptime" aria-live="polite">
+        <span
+          data-count-target="99.99"
+          data-count-start="0"
+          data-count-duration="1600"
+          data-count-format="number"
+          data-count-decimals="2"
+          data-count-suffix="%"
+        >
+          99.99%
+        </span>
+      </p>
+    ),
+  },
+];
+
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 export default function HomePage() {
   useEffect(() => {
@@ -969,12 +1101,13 @@ export default function HomePage() {
         <canvas id="fx-stars" aria-hidden="true" />
         <div className="spark-field" data-spark-field aria-hidden="true" />
         <div className="hero-inner">
-          <div className="tile-wrap" aria-hidden="true" data-hero-reveal data-hero-order="0">
-            <div className="tile">
-              <span className="tile-s">s</span>
-              <span className="orbit o1" />
-              <span className="orbit o2" />
-              <span className="orbit o3" />
+          <div className="hero__crest-wrap" aria-hidden="true" data-hero-reveal data-hero-order="0">
+            <div className="hero__crest">
+              <span className="hero__crest-neon" />
+              <div className="hero__crest-inner">
+                <span className="hero__crest-halo" />
+                <img src="/brand/swiftsend-logo.png" alt="SwiftSend monogram" width={96} height={96} loading="lazy" />
+              </div>
             </div>
           </div>
           <div className="hero__content">
@@ -982,17 +1115,21 @@ export default function HomePage() {
               FULL-STACK INNOVATION PARTNER
             </span>
             <h1 className="display hero__title" data-hero-reveal data-hero-order="2">
-              Your Systems.
+              <span className="hero__accent hero__accent--sunset">Your</span> Systems.
               <br />
-              <span className="grad-word">Your</span> Savings.
+              <span className="hero__accent hero__accent--violet">Your</span> Savings.
               <br />
-              Your Future.
+              <span className="hero__accent hero__accent--aqua">Your</span> Future.
             </h1>
-            <p className="lede hero__lede" data-hero-reveal data-hero-order="3">
-              Full-stack engineering, intelligent automation, real-time data systems, and seamless digital experiences — delivered with precision and velocity.
-            </p>
+            <div className="hero__lede-block" data-hero-reveal data-hero-order="3">
+              <p className="lede hero__lede">
+                Full-stack engineering, intelligent automation, real-time data systems, and seamless digital experiences —
+                delivered with precision and velocity.
+              </p>
+              <span className="hero__lede-line" aria-hidden="true" />
+            </div>
             <div className="cta" data-hero-reveal data-hero-order="4">
-              <a href="#contact" className="btn btn-primary">
+              <a href="#contact" className="btn btn-primary btn-primary--purple-blue">
                 Start a Build
                 <svg
                   aria-hidden="true"
@@ -1009,69 +1146,37 @@ export default function HomePage() {
                   />
                 </svg>
               </a>
-              <a href="#services" className="btn btn-ghost underline-seq">
+              <a href="#services" className="btn btn-ghost btn-ghost--night">
                 Explore Services
               </a>
             </div>
           </div>
           <div className="hero__stats" role="list">
-            <article className="hero-stat" data-hero-reveal data-hero-order="5" role="listitem">
-              <div className="hero-stat__meta">
-                <h3 className="hero-stat__title">Launch Velocity</h3>
-                <p
-                  className="hero-stat__value hero-stat__value--range"
-                  aria-label="Six to eight week delivery timeline"
-                  aria-live="polite"
+            {HERO_STATS.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <article
+                  key={stat.key}
+                  className={`hero-stat hero-stat--${stat.tone}`}
+                  data-hero-reveal
+                  data-hero-order={5 + index}
+                  role="listitem"
                 >
-                  <span data-count-target="6" data-count-start="0" data-count-duration="1200" data-count-format="number">6</span>
-                  <span className="hero-stat__range-divider" aria-hidden="true">–</span>
-                  <span data-count-target="8" data-count-start="0" data-count-duration="1400" data-count-format="number">8</span>
-                  <span className="hero-stat__suffix">weeks</span>
-                </p>
-              </div>
-              <p className="hero-stat__description">Production-ready systems delivered fast.</p>
-            </article>
-            <article className="hero-stat" data-hero-reveal data-hero-order="6" role="listitem">
-              <div className="hero-stat__meta">
-                <h3 className="hero-stat__title">Enterprise-Scale Infrastructure</h3>
-                <p
-                  className="hero-stat__value"
-                  aria-label="Over one hundred million dollars in commerce supported"
-                  aria-live="polite"
-                >
-                  <span
-                    data-count-target="100000000"
-                    data-count-start="0"
-                    data-count-duration="1800"
-                    data-count-format="compactCurrency"
-                    data-count-suffix="+"
-                  >$100M+</span>
-                </p>
-                <p className="hero-stat__label">Commerce Supported</p>
-              </div>
-              <p className="hero-stat__description">
-                Digital infrastructure powering a high-growth, nine-figure operation.
-              </p>
-            </article>
-            <article className="hero-stat" data-hero-reveal data-hero-order="7" role="listitem">
-              <div className="hero-stat__meta">
-                <h3 className="hero-stat__title">System Reliability</h3>
-                <p className="hero-stat__value" aria-label="Ninety-nine point ninety-nine percent uptime" aria-live="polite">
-                  <span
-                    data-count-target="99.99"
-                    data-count-start="0"
-                    data-count-duration="1600"
-                    data-count-format="number"
-                    data-count-decimals="2"
-                    data-count-suffix="%"
-                  >99.99%</span>
-                </p>
-                <p className="hero-stat__label">Uptime</p>
-              </div>
-              <p className="hero-stat__description">
-                Enterprise-grade stability across every deployment.
-              </p>
-            </article>
+                  <div className="hero-stat__icon" aria-hidden="true">
+                    <span className="hero-stat__icon-glow" />
+                    <Icon />
+                  </div>
+                  <div className="hero-stat__body">
+                    <div className="hero-stat__meta">
+                      <h3 className="hero-stat__title">{stat.title}</h3>
+                      {stat.renderValue()}
+                      {stat.label ? <p className="hero-stat__label">{stat.label}</p> : null}
+                    </div>
+                    <p className="hero-stat__description">{stat.description}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
