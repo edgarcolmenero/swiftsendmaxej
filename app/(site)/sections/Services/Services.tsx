@@ -394,7 +394,11 @@ export function Services() {
                     </div>
                   </div>
 
-                  <h3 className="mb-3 text-xl font-semibold tracking-tight text-white">{pillar.title}</h3>
+                  <h3
+                    className="mb-3 text-xl font-semibold tracking-tight text-[var(--accent-start)] transition-colors duration-300 group-hover:text-[var(--accent-dot)]"
+                  >
+                    {pillar.title}
+                  </h3>
 
                   <p className="mb-6 text-sm leading-relaxed text-slate-300/90">{pillar.description}</p>
 
