@@ -196,11 +196,12 @@ export function Services() {
               <article
                 key={pillar.title}
                 data-pillar
-                className="pillar-card group relative flex flex-col h-full rounded-3xl p-6 transition-all duration-500"
+                className="pillar-card group relative flex flex-col h-full rounded-3xl p-6 border border-slate-900/60 transition-all duration-500"
                 style={{
                   transitionDelay: `${index * 100}ms`,
                 }}
               >
+                {/* Subtle gradient accent background */}
                 <div
                   className="absolute inset-0 rounded-3xl opacity-20 -z-10"
                   style={{
@@ -208,10 +209,12 @@ export function Services() {
                   }}
                   data-gradient={pillar.gradient}
                 />
+                {/* Dark glassmorphic overlay */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-900/60 backdrop-blur-xl -z-10" />
 
+                {/* Hover-only gradient border glow */}
                 <div
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none -z-10"
                   style={{
                     padding: '2px',
                     background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
@@ -226,14 +229,14 @@ export function Services() {
                   <div
                     className="icon-tile relative w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
                     style={{
-                      background: 'rgba(2, 6, 23, 0.7)',
+                      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7))',
                       borderWidth: '1px',
                       borderStyle: 'solid',
                     }}
                     data-gradient={pillar.gradient}
                   >
                     <div
-                      className="absolute inset-0 rounded-xl opacity-5"
+                      className="absolute inset-0 rounded-xl opacity-10"
                       style={{
                         background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
                       }}
@@ -244,22 +247,22 @@ export function Services() {
                 </div>
 
                 <h3
-                  className="text-xl font-bold mb-2"
+                  className="text-xl font-bold mb-3"
                   data-gradient={pillar.gradient}
                 >
                   {pillar.title}
                 </h3>
 
-                <p className="text-slate-400 text-sm mb-4">{pillar.description}</p>
+                <p className="text-slate-400 text-sm mb-6">{pillar.description}</p>
 
                 <ul className="mt-auto space-y-2">
                   {pillar.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span
-                        className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                        className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
                         data-gradient={pillar.gradient}
                       />
-                      <span className="text-slate-400 text-xs">{bullet}</span>
+                      <span className="text-slate-500 text-xs">{bullet}</span>
                     </li>
                   ))}
                 </ul>
@@ -293,7 +296,7 @@ export function Services() {
           color: rgb(56, 189, 248);
         }
 
-        [data-gradient="from-blue-500 to-cyan-500"] li > span.w-1\.5 {
+        [data-gradient="from-blue-500 to-cyan-500"] li > span.w-1 {
           background-color: rgb(56, 189, 248);
         }
 
@@ -314,7 +317,7 @@ export function Services() {
           color: rgb(217, 70, 239);
         }
 
-        [data-gradient="from-purple-500 to-pink-500"] li > span.w-1\.5 {
+        [data-gradient="from-purple-500 to-pink-500"] li > span.w-1 {
           background-color: rgb(217, 70, 239);
         }
 
@@ -335,7 +338,7 @@ export function Services() {
           color: rgb(52, 211, 153);
         }
 
-        [data-gradient="from-teal-500 to-emerald-500"] li > span.w-1\.5 {
+        [data-gradient="from-teal-500 to-emerald-500"] li > span.w-1 {
           background-color: rgb(52, 211, 153);
         }
 
@@ -356,7 +359,7 @@ export function Services() {
           color: rgb(251, 146, 60);
         }
 
-        [data-gradient="from-orange-500 to-amber-500"] li > span.w-1\.5 {
+        [data-gradient="from-orange-500 to-amber-500"] li > span.w-1 {
           background-color: rgb(251, 146, 60);
         }
 
@@ -377,7 +380,7 @@ export function Services() {
           color: rgb(251, 113, 133);
         }
 
-        [data-gradient="from-rose-500 to-orange-500"] li > span.w-1\.5 {
+        [data-gradient="from-rose-500 to-orange-500"] li > span.w-1 {
           background-color: rgb(251, 113, 133);
         }
 
