@@ -1154,15 +1154,23 @@ export default function HomePage() {
               return (
                 <article
                   key={stat.key}
-                  className={`hero-stat hero-stat--${stat.tone}`}
+                  className={`hero-stat pillar-card group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/10 bg-transparent px-6 py-8 transition-all duration-500 ease-out sm:px-8 sm:py-10 hero-stat--${stat.tone}`}
                   data-hero-reveal
                   data-hero-order={5 + index}
                   role="listitem"
                 >
-                  <div className="hero-stat__icon" aria-hidden="true">
-                    <Icon />
-                  </div>
-                  <div className="hero-stat__body">
+                  <div className="card-accent" aria-hidden="true" />
+                  <div className="card-glass" aria-hidden="true" />
+                  <div className="card-border" aria-hidden="true" />
+
+                  <div className="hero-stat__body relative z-10 flex h-full flex-col">
+                    <div className="hero-stat__icon" aria-hidden="true">
+                      <div className="icon-tile">
+                        <div className="icon-tile__inner">
+                          <Icon />
+                        </div>
+                      </div>
+                    </div>
                     <div className="hero-stat__meta">
                       <h3 className="hero-stat__title">{stat.title}</h3>
                       {stat.renderValue()}
