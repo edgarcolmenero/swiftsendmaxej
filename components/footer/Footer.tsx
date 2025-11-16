@@ -217,7 +217,7 @@ const Footer = ({
             imageSizes="44px"
           />
           {tagline ? (
-            <p className={`${styles["f-tag"]} swift-gradient-text`}>{tagline}</p>
+            <p className={`${styles["f-tag"]} ${styles["f-tagGradient"]}`}>{tagline}</p>
           ) : null}
           {description ? <p className={styles["f-desc"]}>{description}</p> : null}
         </section>

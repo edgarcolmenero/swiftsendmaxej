@@ -63,6 +63,12 @@ type HeroStatDefinition = {
   renderValue: () => JSX.Element;
 };
 
+const HERO_ORBIT_MOONS = [
+  { colorClass: "hero__orbit-moon--warm", angle: 0 },
+  { colorClass: "hero__orbit-moon--violet", angle: 120 },
+  { colorClass: "hero__orbit-moon--cool", angle: 240 },
+] as const;
+
 const HERO_STATS: HeroStatDefinition[] = [
   {
     key: "launch",
@@ -1101,8 +1107,13 @@ export default function HomePage() {
           <div className="hero__crest-wrap" aria-hidden="true" data-hero-reveal data-hero-order="0">
             <div className="hero__crest-orbit">
               <div className="hero__orbit-moons animate-spin-slower" aria-hidden="true">
-                <span className="hero__orbit-moon hero__orbit-moon--warm" />
-                <span className="hero__orbit-moon hero__orbit-moon--cool" />
+                {HERO_ORBIT_MOONS.map(({ colorClass, angle }) => (
+                  <span
+                    key={`${colorClass}-${angle}`}
+                    className={`hero__orbit-moon ${colorClass}`}
+                    style={{ "--orbit-angle": `${angle}deg` } as CSSProperties}
+                  />
+                ))}
               </div>
               <div className="hero__crest-core">
                 <img

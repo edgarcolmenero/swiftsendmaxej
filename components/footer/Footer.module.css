@@ -89,6 +89,14 @@
   display: inline-block;
 }
 
+.f-tagGradient {
+  background-image: linear-gradient(90deg, #ff8a3d 0%, #a855f7 50%, #3b82f6 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 .f-desc {
   margin: 0;
   color: rgba(244, 236, 255, 0.7);
@@ -117,9 +125,9 @@
   width: clamp(48px, 10vw, 120px);
   height: 2px;
   border-radius: 999px;
-  display: inline-block;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  display: none;
 }
 
 .f-cols {
