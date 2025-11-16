@@ -1983,10 +1983,77 @@ main {
   margin-bottom: clamp(1.5rem, 4vw, 2.8rem);
 }
 
+.hero__crest-orbit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 9999px;
+  background: conic-gradient(from 180deg, #ff8a3d, #c084fc, #3b82f6, #ff8a3d);
+  box-shadow: 0 0 32px rgba(66, 136, 255, 0.35);
+}
+
+.hero__crest-core {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.45rem, 1vw, 0.6rem);
+  border-radius: inherit;
+  background: rgba(3, 7, 24, 0.95);
+}
+
 .hero__crest-logo {
   width: clamp(72px, 12vw, 92px);
   height: auto;
+  display: block;
+  border-radius: 9999px;
   filter: drop-shadow(0 0 24px rgba(76, 124, 255, 0.6));
+}
+
+.hero__orbit-moons {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.hero__orbit-moon {
+  position: absolute;
+  border-radius: 9999px;
+  display: block;
+}
+
+.hero__orbit-moon--warm {
+  width: 10px;
+  height: 10px;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff8a3d, #f8b147);
+  box-shadow: 0 0 10px rgba(248, 153, 46, 0.8);
+}
+
+.hero__orbit-moon--cool {
+  width: 12px;
+  height: 12px;
+  bottom: -10px;
+  right: 25%;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+}
+
+@keyframes spin-slower {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slower {
+  animation: spin-slower 14s linear infinite;
 }
 
 .display {
