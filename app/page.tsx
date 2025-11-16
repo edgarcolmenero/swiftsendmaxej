@@ -2233,10 +2233,19 @@ function AboutSection() {
   return (
     <section
       id="about"
-      className={`about scroll-mt-28 md:scroll-mt-32 about--${activeLeader} ${midnightMinimal.background}`}
+      className={`about relative overflow-hidden scroll-mt-28 md:scroll-mt-32 about--${activeLeader} ${midnightMinimal.background}`}
       aria-labelledby="about-title"
       data-leader={activeLeader}
     >
+      <div className="about__atmosphere" aria-hidden="true">
+        <span className="about__glow about__glow--warm" />
+        <span className="about__glow about__glow--violet" />
+        <span className="about__glow about__glow--cool" />
+        <span className="about__stars about__stars--near" />
+        <span className="about__stars about__stars--far" />
+        <span className="about__comet about__comet--one" />
+        <span className="about__comet about__comet--two" />
+      </div>
       <div className="about__container">
         <header
           className="about__head"
