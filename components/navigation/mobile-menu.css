@@ -166,7 +166,9 @@
   width: 96px;
   height: 2px;
   border-radius: 999px;
-  background: var(--underline-gradient);
+  background-image: var(--swift-accent-gradient);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
@@ -240,7 +242,9 @@
   width: 72px;
   height: 2px;
   border-radius: 999px;
-  background: var(--underline-gradient);
+  background-image: var(--swift-accent-gradient);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
