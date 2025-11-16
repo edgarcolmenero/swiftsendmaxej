@@ -389,7 +389,7 @@ export default function Header() {
                         prefetch={false}
                       >
                         <span
-                          className={`nav-label${item.gradient ? " nav-label--gradient" : ""}`}
+                          className={`nav-label${item.gradient ? " nav-label--gradient swift-gradient-text" : ""}`}
                         >
                           {item.label}
                         </span>

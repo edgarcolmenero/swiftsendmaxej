@@ -131,7 +131,7 @@ export default function MobileDrawer({
               <li key={item.section} className="mobile-drawer__item">
                 <Link
                   href={item.href}
-                  className={`mobile-drawer__link${item.gradient ? " mobile-drawer__link--gradient" : ""}`}
+                  className={`mobile-drawer__link${item.gradient ? " mobile-drawer__link--gradient swift-gradient-text" : ""}`}
                   onClick={(event) => onNavigate(event, item.href, item.section)}
                 >
                   {item.label.toUpperCase()}

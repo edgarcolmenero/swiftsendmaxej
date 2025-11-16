@@ -208,20 +208,31 @@ const Footer = ({
     <footer ref={rootRef} className={rootClassName} data-footer>
       <div className={styles.inner}>
         <section className={styles["footer__brand"]} data-animate="true">
-        <Logo
-          className={styles["f-logoLink"]}
-          showWordmark={false}
-          size="lg"
-          ariaLabel="SwiftSend — Home"
-          prefetch={false}
-          imageSizes="44px"
-        />
-          {tagline ? <p className={styles["f-tag"]}>{tagline}</p> : null}
+          <Logo
+            className={styles["f-logoLink"]}
+            showWordmark={false}
+            size="lg"
+            ariaLabel="SwiftSend — Home"
+            prefetch={false}
+            imageSizes="44px"
+          />
+          {tagline ? (
+            <p className={`${styles["f-tag"]} swift-gradient-text`}>{tagline}</p>
+          ) : null}
           {description ? <p className={styles["f-desc"]}>{description}</p> : null}
         </section>
 
         <nav className={styles["footer__links"]} aria-label="Quick Links" data-animate="true">
-          <h4 className={styles["f-colTitle"]}>Quick Links</h4>
+          <h4 className={styles["f-colTitle"]}>
+            <span>Quick Links</span>
+            <span
+              aria-hidden="true"
+              className={combineClassNames(
+                "swift-gradient-bar",
+                styles["f-colLine"]
+              )}
+            />
+          </h4>
           <ul className={styles["f-cols"]}>
             {quickLinks.map((link) => (
               <li
@@ -238,7 +249,16 @@ const Footer = ({
         </nav>
 
         <section className={styles["footer__contact"]} aria-label="Connect" data-animate="true">
-          <h4 className={styles["f-colTitle"]}>Connect</h4>
+          <h4 className={styles["f-colTitle"]}>
+            <span>Connect</span>
+            <span
+              aria-hidden="true"
+              className={combineClassNames(
+                "swift-gradient-bar",
+                styles["f-colLine"]
+              )}
+            />
+          </h4>
           <ul className={styles["f-connect"]}>
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
