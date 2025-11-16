@@ -1878,6 +1878,33 @@ type LeaderProfile = {
   achievements: Achievement[];
 };
 
+const midnightMinimal = {
+  name: "Midnight Minimal",
+  background: "bg-[#050510]",
+  text: "text-white",
+  stars: "opacity-10",
+  glows: [] as string[],
+  headingSecondary: "text-gray-600",
+  headingGradient:
+    "bg-gradient-to-r from-orange-500 via-pink-500 to-blue-500 bg-clip-text text-transparent",
+  bodyText: "text-gray-500",
+  cardBackground: "bg-[#0a0a14]",
+  cardBorder: "border-gray-900",
+  cardHover: "hover:bg-[#0c0c18]",
+  mantraButton:
+    "border-purple-500/30 text-purple-400 hover:border-purple-400 hover:text-purple-300",
+  sectionSubtitle: "text-orange-500",
+  navBorder: "border-gray-900",
+  navIconBorder: "border-gray-900 hover:border-gray-800",
+  orbitalRing: "from-purple-500/20 via-blue-500/10 to-transparent",
+  orbitalBackground: "bg-[#08080f]",
+  orbitalDots: [
+    "bg-orange-500",
+    "bg-purple-500",
+    "bg-blue-500",
+  ],
+};
+
 const leaderOrder: LeaderKey[] = ["edgar", "jaden"];
 
 const leaders: Record<LeaderKey, LeaderProfile> = {
@@ -2197,6 +2224,7 @@ function AboutSection() {
 
   const [activeLeader, setActiveLeader] = useState<LeaderKey>("edgar");
   const leader = leaders[activeLeader];
+  const leaderInitial = leader.name.charAt(0).toUpperCase();
 
   const getRevealStyle = (index: number): CSSProperties => ({
     transitionDelay: `${index * 90}ms`,
@@ -2205,7 +2233,7 @@ function AboutSection() {
   return (
     <section
       id="about"
-      className={`about scroll-mt-28 md:scroll-mt-32 about--${activeLeader}`}
+      className={`about scroll-mt-28 md:scroll-mt-32 about--${activeLeader} ${midnightMinimal.background}`}
       aria-labelledby="about-title"
       data-leader={activeLeader}
     >
@@ -2217,8 +2245,8 @@ function AboutSection() {
           style={getRevealStyle(0)}
         >
           <h2 id="about-title" className="about__title">
-            <span>About</span>
-            <span className="grad-word">SwiftSend</span>
+            <span className={midnightMinimal.headingSecondary}>About</span>
+            <span className={midnightMinimal.headingGradient}>SwiftSend</span>
           </h2>
           <span className="about__title-line" aria-hidden="true" />
           <div className="about__leaders" role="group" aria-label="SwiftSend leadership">
@@ -2235,12 +2263,6 @@ function AboutSection() {
                   aria-pressed={isActive}
                   data-leader={key}
                 >
-                  <span className="about__leaderGlow" aria-hidden="true" />
-                  <span
-                    className="about__leaderThumb"
-                    aria-hidden="true"
-                    style={{ backgroundImage: `url(${item.avatar})` }}
-                  />
                   <span className="about__leaderCopy">
                     <span className="about__leaderName">{item.name}</span>
                     <span className="about__leaderRole">{item.toggleTitle ?? item.title}</span>
@@ -2259,8 +2281,8 @@ function AboutSection() {
           >
             <div className="about__avatar">
               <div className="about__avatar-ring">
-                <div className="about__avatar-inner">
-                  <img src={leader.avatar} alt={leader.name} loading="lazy" />
+                <div className="about__avatar-inner" aria-hidden="true">
+                  <span className="about__avatar-initial">{leaderInitial}</span>
                 </div>
                 <div className="about__avatar-orbit" aria-hidden="true">
                   {orbitMoons.map((moon) => (
@@ -2275,9 +2297,9 @@ function AboutSection() {
               </div>
             </div>
             <div className="about__profile-details">
-              <p className="about__name">{leader.name}</p>
-              <p className="about__role">{leader.title}</p>
-              <p className="about__bio">{leader.bio}</p>
+              <p className={`about__name ${midnightMinimal.text}`}>{leader.name}</p>
+              <p className={`about__role ${midnightMinimal.bodyText}`}>{leader.title}</p>
+              <p className={`about__bio ${midnightMinimal.bodyText}`}>{leader.bio}</p>
             </div>
           </div>
           <div
@@ -2286,7 +2308,7 @@ function AboutSection() {
             data-reveal-index="2"
             style={getRevealStyle(2)}
           >
-            <h3 className="about__subhead" aria-hidden="true">
+            <h3 className={`about__subhead ${midnightMinimal.sectionSubtitle}`} aria-hidden="true">
               Experience &amp; Achievements
             </h3>
             <ul className="achv-list">
@@ -2316,9 +2338,9 @@ function AboutSection() {
           style={getRevealStyle(3)}
         >
           <div className="about__missionHead">
-            <div className="about__quote about__quote--mantra">
-              <p>{leader.mantra}</p>
-            </div>
+            <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
+              {leader.mantra}
+            </button>
           </div>
           <div className="certs">
             {certificates.map((cert) => (
@@ -2342,8 +2364,11 @@ function AboutSection() {
           style={getRevealStyle(4)}
         >
           <p>
-            “We engineer <span>clarity</span> and <span>tempo</span> so every launch feels <span>intentional</span>,
-            confident, and unmistakably <span>SwiftSend.</span>”
+            “We engineer <span className="about__quoteHighlight about__quoteHighlight--clarity">clarity</span> and{" "}
+            <span className="about__quoteHighlight about__quoteHighlight--tempo">tempo</span> so every launch feels{" "}
+            <span className="about__quoteHighlight about__quoteHighlight--intentional">intentional</span>, confident, and{" "}
+            unmistakably{" "}
+            <span className="about__quoteHighlight about__quoteHighlight--brand">SwiftSend.</span>”
           </p>
         </div>
       </div>
