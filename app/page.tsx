@@ -1099,14 +1099,22 @@ export default function HomePage() {
         <div className="spark-field" data-spark-field aria-hidden="true" />
         <div className="hero-inner">
           <div className="hero__crest-wrap" aria-hidden="true" data-hero-reveal data-hero-order="0">
-            <img
-              className="hero__crest-logo"
-              src="/brand/swiftsend-logo.png"
-              alt="SwiftSend monogram"
-              width={96}
-              height={96}
-              loading="lazy"
-            />
+            <div className="hero__crest-orbit">
+              <div className="hero__orbit-moons animate-spin-slower" aria-hidden="true">
+                <span className="hero__orbit-moon hero__orbit-moon--warm" />
+                <span className="hero__orbit-moon hero__orbit-moon--cool" />
+              </div>
+              <div className="hero__crest-core">
+                <img
+                  className="hero__crest-logo"
+                  src="/brand/swiftsend-logo.png"
+                  alt="SwiftSend monogram"
+                  width={96}
+                  height={96}
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
           <div className="hero__content">
             <span className="hero__badge" data-hero-reveal data-hero-order="1">
