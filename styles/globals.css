@@ -3242,6 +3242,25 @@ main {
   gap: clamp(10px, 1.8vw, 16px);
 }
 
+.about__color-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.8vw, 16px);
+}
+
+.about__color-card {
+  position: relative;
+  border-radius: clamp(12px, 1.8vw, 18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 9, 18, 0.85);
+  overflow: hidden;
+  min-height: clamp(72px, 8vw, 110px);
+}
+
+.about__color-card img {
+  object-fit: cover;
+}
+
 .about__capability {
   --cap-start: #ee895a;
   --cap-end: #de7dd7;
@@ -3408,6 +3427,10 @@ body.is-about-js .about [data-reveal].is-in {
 @media (max-width: 720px) {
   .about__capabilities {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about__color-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
