@@ -1976,69 +1976,6 @@ const orbitMoons = [
   { id: "cool", className: "about__avatar-moon about__avatar-moon--cool", angle: "240deg" },
 ];
 
-const certificates = [
-  {
-    label: "Platform Velocity",
-    gradient: "from-orange-500 to-amber-500",
-    icon: (
-      <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
-        <path
-          d="M6 22l4-10 5 6 4-8 7 12"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M5 25h22" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Creative Systems",
-    gradient: "from-purple-500 to-pink-500",
-    icon: (
-      <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
-        <rect x="6" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
-        <rect x="18" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
-        <rect x="12" y="18" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M10 10h4M22 10h4M16 22h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Delivery Ops",
-    gradient: "from-teal-500 to-emerald-500",
-    icon: (
-      <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
-        <path
-          d="M7 22v-8h6V9h12l4 5v8H17"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-        <circle cx="12" cy="23" r="3" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="22" cy="23" r="3" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    ),
-  },
-  {
-    label: "R&D Sprint Labs",
-    gradient: "from-blue-500 to-cyan-500",
-    icon: (
-      <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
-        <path d="M11 6h10l-2 6h-6z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-        <path
-          d="M11 13h10l3 5-8 8-8-8 3-5z"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-        <path d="M16 13v13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-];
-
 function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
   switch (variant) {
     case "honors":
@@ -2234,7 +2171,7 @@ function AboutSection() {
     <section
       id="about"
       className={`about scroll-mt-28 md:scroll-mt-32 about--${activeLeader} ${midnightMinimal.background}`}
-      aria-labelledby="about-title"
+      aria-label="SwiftSend leadership insights"
       data-leader={activeLeader}
     >
       <div className="about__container">
@@ -2244,10 +2181,6 @@ function AboutSection() {
           data-reveal-index="0"
           style={getRevealStyle(0)}
         >
-          <h2 id="about-title" className="about__title">
-            <span className={midnightMinimal.headingSecondary}>About</span>
-            <span className={midnightMinimal.headingGradient}>SwiftSend</span>
-          </h2>
           <span className="about__title-line" aria-hidden="true" />
           <div className="about__leaders" role="group" aria-label="SwiftSend leadership">
             {leaderOrder.map((key) => {
@@ -2302,74 +2235,18 @@ function AboutSection() {
               <p className={`about__bio ${midnightMinimal.bodyText}`}>{leader.bio}</p>
             </div>
           </div>
-          <div
-            className="about__achievements"
-            data-reveal
-            data-reveal-index="2"
-            style={getRevealStyle(2)}
-          >
-            <h3 className={`about__subhead ${midnightMinimal.sectionSubtitle}`} aria-hidden="true">
-              Experience &amp; Achievements
-            </h3>
-            <ul className="achv-list">
-              {leader.achievements.slice(0, 4).map((achievement) => (
-                <li
-                  key={achievement.title}
-                  className="achv-card"
-                  data-variant={achievement.variant}
-                  tabIndex={0}
-                >
-                  <span className="achv-card__icon" aria-hidden="true">
-                    {renderAchievementIcon(achievement.variant)}
-                  </span>
-                  <div className="achv-card__text">
-                    <span className="achv-card__title">{achievement.title}</span>
-                    <span className="achv-card__sub">{achievement.subtitle}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
         <div
           className="about__mission"
           data-reveal
-          data-reveal-index="3"
-          style={getRevealStyle(3)}
+          data-reveal-index="2"
+          style={getRevealStyle(2)}
         >
           <div className="about__missionHead">
             <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
               {leader.mantra}
             </button>
           </div>
-          <div className="certs">
-            {certificates.map((cert) => (
-              <div
-                className="cert"
-                data-gradient={cert.gradient}
-                key={cert.label}
-              >
-                <div className="cert__icon" aria-hidden="true">
-                  {cert.icon}
-                </div>
-                <p className="cert__caption">{cert.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div
-          className="about__quote about__quote--long"
-          data-reveal
-          data-reveal-index="4"
-          style={getRevealStyle(4)}
-        >
-          <p>
-            “We engineer <span className="about__quoteHighlight about__quoteHighlight--clarity">clarity</span> and{" "}
-            <span className="about__quoteHighlight about__quoteHighlight--tempo">tempo</span> so every launch feels{" "}
-            <span className="about__quoteHighlight about__quoteHighlight--intentional">intentional</span>, confident, and{" "}
-            unmistakably{" "}
-            <span className="about__quoteHighlight about__quoteHighlight--brand">SwiftSend.</span>”
-          </p>
         </div>
       </div>
     </section>
