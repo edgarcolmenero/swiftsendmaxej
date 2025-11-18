@@ -329,7 +329,7 @@ export function Services() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, #020518 0%, rgba(7, 20, 41, 0.95) 48%, rgba(32, 14, 8, 0.92) 100%)",
+              "linear-gradient(180deg, #020518 0%, rgba(7, 20, 41, 0.95) 36%, rgba(67, 24, 94, 0.9) 64%, rgba(32, 14, 8, 0.92) 100%)",
           }}
         />
         <div
@@ -365,7 +365,7 @@ export function Services() {
           className="mb-14 text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:mb-16 lg:text-6xl xl:text-7xl"
         >
           <span className="text-white">What We </span>
-          <span className="bg-gradient-to-r from-[#f97316] to-[#3b82f6] bg-clip-text text-transparent">Build</span>
+          <span className="ss-text-gradient">Build</span>
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5 lg:gap-7">
