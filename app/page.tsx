@@ -2174,6 +2174,7 @@ function AboutSection() {
       aria-label="SwiftSend leadership insights"
       data-leader={activeLeader}
     >
+      <div className="about__bg-orbs" aria-hidden="true" />
       <div className="about__container">
         <header
           className="about__head"

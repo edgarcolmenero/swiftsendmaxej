@@ -11,6 +11,15 @@
   --accent-cool: #57a3ff;
   --underline-gradient: linear-gradient(90deg, var(--brand-warm) 0%, var(--brand-cool) 100%);
   --hero-accent-gradient: linear-gradient(120deg, #ff8a3d 0%, #9c5cff 45%, #4da3ff 100%);
+  --hero-warm-start: #ff8a3d;
+  --hero-warm-mid: #ff6f72;
+  --hero-warm-end: #ffd0a4;
+  --hero-violet-start: #ff7ad1;
+  --hero-violet-mid: #c46bf7;
+  --hero-violet-end: #8d6bff;
+  --hero-aqua-start: #4da3ff;
+  --hero-aqua-mid: #3ed0ff;
+  --hero-aqua-end: #8af9ff;
   --swift-accent-gradient: linear-gradient(
     90deg,
     #ff8a3d,
@@ -1962,15 +1971,15 @@ main {
 }
 
 .hero__accent--sunset {
-  background-image: linear-gradient(120deg, #ff8a3d 0%, #ff6f72 45%, #ffd0a4 100%);
+  background-image: linear-gradient(120deg, var(--hero-warm-start) 0%, var(--hero-warm-mid) 45%, var(--hero-warm-end) 100%);
 }
 
 .hero__accent--violet {
-  background-image: linear-gradient(120deg, #ff7ad1 0%, #c46bf7 45%, #8d6bff 100%);
+  background-image: linear-gradient(120deg, var(--hero-violet-start) 0%, var(--hero-violet-mid) 45%, var(--hero-violet-end) 100%);
 }
 
 .hero__accent--aqua {
-  background-image: linear-gradient(120deg, #4da3ff 0%, #3ed0ff 45%, #8af9ff 100%);
+  background-image: linear-gradient(120deg, var(--hero-aqua-start) 0%, var(--hero-aqua-mid) 45%, var(--hero-aqua-end) 100%);
 }
 
 .hero__title {
@@ -2700,70 +2709,6 @@ main {
 
 /* ===== About Section ===== */
 .about {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: clamp(32px, 4.8vw, 60px) 0;
-  background: radial-gradient(140% 110% at 50% 0%, rgba(30, 36, 66, 0.45) 0%, rgba(7, 10, 22, 0.94) 55%, #050510 100%);
-  background-color: #050510;
-  color: var(--about-body, #6b7280);
-}
-
-.about::before,
-.about::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-
-.about::before {
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 2px;
-  background: transparent;
-  box-shadow:
-    40px 120px rgba(255, 255, 255, 0.15),
-    180px 60px rgba(255, 255, 255, 0.13),
-    320px 160px rgba(255, 255, 255, 0.16),
-    520px 80px rgba(255, 255, 255, 0.14),
-    680px 140px rgba(255, 255, 255, 0.17),
-    860px 30px rgba(255, 255, 255, 0.15),
-    960px 200px rgba(255, 255, 255, 0.12);
-  opacity: 0.16;
-}
-
-.about::after {
-  inset: auto;
-  bottom: -30%;
-  left: 50%;
-  width: 120%;
-  height: 160%;
-  transform: translateX(-50%);
-  background:
-    radial-gradient(circle at 15% 25%, rgba(249, 115, 22, 0.18), transparent 42%),
-    radial-gradient(circle at 80% 10%, rgba(79, 70, 229, 0.16), transparent 46%),
-    radial-gradient(circle at 65% 70%, rgba(14, 165, 233, 0.14), transparent 52%),
-    radial-gradient(circle at 30% 80%, rgba(251, 146, 60, 0.12), transparent 60%);
-  filter: blur(10px);
-  opacity: 0.7;
-}
-
-@keyframes aboutTwinkle {
-  from {
-    opacity: 0.35;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1.04);
-  }
-}
-
-.about {
   --about-accent-start: #f97316;
   --about-accent-mid: #a855f7;
   --about-accent-end: #3b82f6;
@@ -2774,6 +2719,94 @@ main {
   --about-body: #6b7280;
   --about-muted: #9ca3af;
   --about-heading: #ffffff;
+  --about-warm-rgb: 255, 138, 61;
+  --about-violet-rgb: 196, 107, 247;
+  --about-aqua-rgb: 61, 208, 255;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(32px, 4.8vw, 60px) 0;
+  color: var(--about-body, #6b7280);
+  background:
+    radial-gradient(circle at 12% 82%, rgba(var(--about-warm-rgb), 0.18), transparent 55%),
+    radial-gradient(circle at 18% 18%, rgba(var(--about-violet-rgb), 0.16), transparent 50%),
+    radial-gradient(circle at 78% 58%, rgba(var(--about-aqua-rgb), 0.15), transparent 55%),
+    linear-gradient(180deg, #050510 0%, #02030b 55%, #01020a 100%);
+}
+
+.about::before,
+.about::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+}
+
+.about::before {
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1px 1px at 30% 80%, rgba(176, 210, 255, 0.55), transparent 55%),
+    radial-gradient(1px 1px at 60% 10%, rgba(255, 255, 255, 0.5), transparent 55%),
+    radial-gradient(1px 1px at 85% 50%, rgba(200, 220, 255, 0.5), transparent 55%),
+    radial-gradient(1px 1px at 45% 35%, rgba(255, 255, 255, 0.45), transparent 55%),
+    radial-gradient(1px 1px at 70% 75%, rgba(168, 198, 255, 0.5), transparent 55%);
+  opacity: 0.45;
+  background-size: cover;
+}
+
+.about::after {
+  background-image:
+    radial-gradient(1px 1px at 25% 35%, rgba(255, 255, 255, 0.35), transparent 55%),
+    radial-gradient(1px 1px at 55% 75%, rgba(168, 208, 255, 0.3), transparent 55%),
+    radial-gradient(1px 1px at 75% 25%, rgba(255, 255, 255, 0.32), transparent 55%),
+    radial-gradient(1px 1px at 90% 70%, rgba(140, 190, 255, 0.28), transparent 55%),
+    radial-gradient(1px 1px at 40% 60%, rgba(255, 255, 255, 0.32), transparent 55%),
+    radial-gradient(1px 1px at 65% 40%, rgba(210, 230, 255, 0.28), transparent 55%);
+  opacity: 0.25;
+  filter: drop-shadow(0 0 18px rgba(9, 20, 48, 0.8));
+}
+
+@keyframes aboutStarsTwinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .about::before {
+    animation: aboutStarsTwinkle 18s ease-in-out infinite alternate;
+  }
+
+  .about::after {
+    animation: aboutStarsTwinkle 24s ease-in-out infinite alternate;
+  }
+}
+
+.about__bg-orbs {
+  position: absolute;
+  inset: -10% -5% -5%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 15% 70%, rgba(var(--about-warm-rgb), 0.22) 0%, rgba(var(--about-warm-rgb), 0) 60%),
+    radial-gradient(circle at 25% 20%, rgba(var(--about-violet-rgb), 0.2) 0%, rgba(var(--about-violet-rgb), 0) 60%),
+    radial-gradient(circle at 82% 55%, rgba(var(--about-aqua-rgb), 0.22) 0%, rgba(var(--about-aqua-rgb), 0) 60%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .about__bg-orbs {
+    opacity: 0.7;
+    background-size: 120% 120%;
+  }
 }
 
 .about__container {
