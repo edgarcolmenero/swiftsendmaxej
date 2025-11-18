@@ -1884,7 +1884,7 @@ const midnightMinimal = {
   text: "text-white",
   stars: "opacity-10",
   glows: [] as string[],
-  headingSecondary: "text-white",
+  headingSecondary: "text-gray-600",
   headingGradient:
     "bg-[var(--hero-accent-gradient)] bg-clip-text text-transparent",
   bodyText: "text-gray-500",
