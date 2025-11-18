@@ -10,12 +10,16 @@
   --accent-warm: #ffb36b;
   --accent-cool: #57a3ff;
   --underline-gradient: linear-gradient(90deg, var(--brand-warm) 0%, var(--brand-cool) 100%);
+  --hero-accent-gradient: linear-gradient(120deg, #ff8a3d 0%, #9c5cff 45%, #4da3ff 100%);
   --swift-accent-gradient: linear-gradient(
     90deg,
     #ff8a3d,
     #a855f7,
     #3b82f6
   );
+  --orbit-warm: #ff8a3d;
+  --orbit-violet: #c46bf7;
+  --orbit-aqua: #4da3ff;
   --icon-ink: rgba(255, 255, 255, 0.92);
   --icon-bloom: 0.32;
   --card-radius: 22px;
@@ -2783,7 +2787,7 @@ main {
 
 .about__head {
   display: grid;
-  gap: clamp(8px, 1.6vw, 14px);
+  gap: clamp(6px, 1.2vw, 12px);
   align-items: start;
 }
 
@@ -2793,13 +2797,13 @@ main {
   flex-wrap: wrap;
   gap: 0.6rem;
   align-items: baseline;
-  font-size: clamp(32px, 4.4vw, 52px);
+  font-size: clamp(30px, 3.4vw, 40px);
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
 
 .about__title span:first-child {
-  color: inherit;
+  color: #fff;
   font-weight: 600;
 }
 
@@ -2807,14 +2811,14 @@ main {
   width: clamp(120px, 18vw, 200px);
   height: 2px;
   border-radius: 999px;
-  background: var(--swift-accent-gradient);
+  background: var(--hero-accent-gradient);
 }
 
 .about__leaders {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(6px, 1.4vw, 14px);
+  gap: clamp(4px, 1vw, 10px);
 }
 
 .about__leaderBtn {
@@ -2890,20 +2894,20 @@ main {
 .about__inner {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(360px, 1fr);
-  gap: clamp(16px, 2.2vw, 26px);
+  gap: clamp(14px, 2vw, 24px);
   align-items: start;
 }
 
 .about__profile {
   display: grid;
-  gap: clamp(10px, 2vw, 16px);
+  gap: clamp(8px, 1.6vw, 14px);
   align-content: start;
   justify-items: start;
 }
 
 .about__profile-details {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .about__avatar {
@@ -2963,18 +2967,18 @@ main {
 }
 
 .about__avatar-moon--warm {
-  background: #f97316;
-  color: rgba(249, 115, 22, 0.7);
+  background: var(--orbit-warm);
+  color: color-mix(in srgb, var(--orbit-warm) 70%, transparent);
 }
 
 .about__avatar-moon--violet {
-  background: #a855f7;
-  color: rgba(168, 85, 247, 0.65);
+  background: var(--orbit-violet);
+  color: color-mix(in srgb, var(--orbit-violet) 70%, transparent);
 }
 
 .about__avatar-moon--cool {
-  background: #3b82f6;
-  color: rgba(59, 130, 246, 0.65);
+  background: var(--orbit-aqua);
+  color: color-mix(in srgb, var(--orbit-aqua) 70%, transparent);
 }
 
 @keyframes aboutOrbit {
@@ -2989,27 +2993,27 @@ main {
 
 .about__name {
   margin: 0;
-  font-size: clamp(24px, 3vw, 30px);
+  font-size: clamp(22px, 2.6vw, 28px);
   font-weight: 700;
 }
 
 .about__role {
   margin: 0;
-  font-size: clamp(14px, 1.8vw, 16px);
+  font-size: clamp(13px, 1.5vw, 15px);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .about__bio {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.6;
   max-width: 48ch;
 }
 
 .about__achievements {
   display: grid;
-  gap: clamp(12px, 2.4vw, 20px);
+  gap: clamp(10px, 2vw, 16px);
   width: min(540px, 100%);
 }
 
@@ -3023,7 +3027,7 @@ main {
 
 .achv-list {
   display: grid;
-  gap: clamp(10px, 1.8vw, 16px);
+  gap: clamp(8px, 1.6vw, 14px);
   padding: 0;
   margin: 0;
   list-style: none;
@@ -3037,11 +3041,10 @@ main {
   border-radius: clamp(16px, 2.2vw, 22px);
   border: 1px solid transparent;
   background:
-    linear-gradient(var(--about-card-bg), var(--about-card-bg)) padding-box,
+    linear-gradient(180deg, rgba(6, 10, 24, 0.95) 0%, rgba(7, 11, 22, 0.84) 55%, rgba(8, 13, 26, 0.94) 100%) padding-box,
     linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
-  box-shadow:
-    0 12px 30px rgba(3, 6, 18, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 32px rgba(3, 6, 18, 0.5);
   transition:
     transform 280ms var(--ease),
     box-shadow 280ms var(--ease),
@@ -3052,19 +3055,17 @@ main {
 .achv-card {
   display: flex;
   align-items: flex-start;
-  gap: clamp(12px, 1.8vw, 16px);
-  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.2vw, 22px);
+  gap: clamp(10px, 1.6vw, 14px);
+  padding: clamp(14px, 1.8vw, 18px) clamp(16px, 2vw, 20px);
 }
 
 .achv-card:is(:hover, :focus-visible),
 .cert:is(:hover, :focus-within) {
   transform: translateY(-4px);
   background:
-    linear-gradient(var(--about-card-hover), var(--about-card-hover)) padding-box,
+    linear-gradient(180deg, rgba(8, 13, 28, 0.95) 0%, rgba(10, 16, 30, 0.92) 60%, rgba(11, 18, 32, 0.96) 100%) padding-box,
     linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
-  box-shadow:
-    0 20px 42px rgba(4, 8, 20, 0.6),
-    0 36px 76px rgba(5, 10, 26, 0.55);
+  box-shadow: 0 22px 46px rgba(4, 8, 20, 0.55);
 }
 
 .achv-card:focus-visible {
@@ -3080,7 +3081,7 @@ main {
   place-items: center;
   background: linear-gradient(160deg, rgba(6, 10, 24, 0.96), rgba(3, 6, 18, 0.96));
   border: 1px solid color-mix(in srgb, var(--card-border-end) 60%, rgba(255, 255, 255, 0.08));
-  color: #fdfdff;
+  color: #ffffff;
   box-shadow: 0 12px 28px rgba(3, 6, 18, 0.55);
   overflow: hidden;
 }
@@ -3108,18 +3109,19 @@ main {
 .achv-card__text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .achv-card__title {
   font-weight: 700;
-  font-size: 1.05rem;
-  color: color-mix(in srgb, var(--card-border-start) 78%, #ffffff 22%);
+  font-size: 1rem;
+  line-height: 1.35;
+  color: var(--card-border-start);
 }
 
 .achv-card__sub {
   font-size: 0.92rem;
-  color: var(--about-card-copy);
+  color: rgba(226, 232, 240, 0.88);
 }
 
 .achv-card[data-variant="honors"] {
@@ -3144,7 +3146,7 @@ main {
 
 .about__mission {
   display: grid;
-  gap: clamp(14px, 2.4vw, 22px);
+  gap: clamp(12px, 2vw, 20px);
 }
 
 .about__missionHead {
@@ -3183,14 +3185,14 @@ main {
 .certs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(10px, 1.8vw, 16px);
+  gap: clamp(8px, 1.6vw, 14px);
 }
 
 .cert {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: clamp(16px, 1.8vw, 20px);
+  gap: 0.65rem;
+  padding: clamp(14px, 1.6vw, 18px);
 }
 
 .cert__caption {
@@ -3199,7 +3201,7 @@ main {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 0.8rem;
-  color: var(--about-card-copy);
+  color: var(--card-border-start);
 }
 
 .about__quote--long {
@@ -3208,21 +3210,19 @@ main {
   margin-top: clamp(16px, 2.4vw, 24px);
   padding: clamp(20px, 3.6vw, 34px) clamp(24px, 4.4vw, 44px);
   background:
-    linear-gradient(var(--about-card-bg), var(--about-card-bg)) padding-box,
-    linear-gradient(135deg, #f97316, #a855f7, #3b82f6) border-box;
+    linear-gradient(180deg, rgba(6, 10, 24, 0.96) 0%, rgba(8, 13, 28, 0.88) 55%, rgba(9, 14, 30, 0.96) 100%) padding-box,
+    var(--hero-accent-gradient) border-box;
   border-radius: clamp(20px, 2.4vw, 26px);
   border: 1px solid transparent;
-  box-shadow:
-    0 16px 36px rgba(3, 6, 18, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  box-shadow: 0 18px 40px rgba(4, 8, 20, 0.52);
   text-align: center;
 }
 
 .about__quote--long p {
   margin: 0;
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  line-height: 1.65;
-  color: var(--about-card-copy);
+  font-size: clamp(0.98rem, 2vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(226, 232, 240, 0.92);
 }
 
 .about__quoteHighlight {
@@ -3233,19 +3233,19 @@ main {
 }
 
 .about__quoteHighlight--clarity {
-  background-image: linear-gradient(120deg, #a855f7, #3b82f6);
+  background-image: linear-gradient(120deg, rgba(164, 99, 255, 0.9), rgba(77, 163, 255, 0.9));
 }
 
 .about__quoteHighlight--tempo {
-  background-image: linear-gradient(120deg, #3b82f6, #f97316);
+  background-image: linear-gradient(120deg, rgba(77, 163, 255, 0.9), rgba(255, 138, 61, 0.9));
 }
 
 .about__quoteHighlight--intentional {
-  background-image: linear-gradient(120deg, #f97316, #a855f7);
+  background-image: linear-gradient(120deg, rgba(255, 138, 61, 0.9), rgba(164, 99, 255, 0.9));
 }
 
 .about__quoteHighlight--brand {
-  background-image: linear-gradient(120deg, #f97316, #a855f7, #3b82f6);
+  background-image: var(--hero-accent-gradient);
 }
 
 .about__missionHead .about__quote {
