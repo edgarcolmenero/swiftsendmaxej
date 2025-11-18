@@ -2761,12 +2761,12 @@ main {
 
 .about {
   --about-accent-start: #f97316;
-  --about-accent-mid: #ec4899;
+  --about-accent-mid: #a855f7;
   --about-accent-end: #3b82f6;
-  --about-card-bg: #0a0a14;
-  --about-card-hover: #0c0c18;
+  --about-card-bg: #050510;
+  --about-card-hover: #080818;
   --about-card-border: #1f2937;
-  --about-card-copy: rgba(204, 214, 238, 0.78);
+  --about-card-copy: rgba(200, 218, 248, 0.86);
   --about-body: #6b7280;
   --about-muted: #9ca3af;
   --about-heading: #ffffff;
@@ -2807,7 +2807,7 @@ main {
   width: clamp(120px, 18vw, 200px);
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #f97316 0%, #ec4899 50%, #3b82f6 100%);
+  background: var(--swift-accent-gradient);
 }
 
 .about__leaders {
@@ -2964,17 +2964,17 @@ main {
 
 .about__avatar-moon--warm {
   background: #f97316;
-  color: rgba(249, 115, 22, 0.35);
+  color: rgba(249, 115, 22, 0.7);
 }
 
 .about__avatar-moon--violet {
   background: #a855f7;
-  color: rgba(168, 85, 247, 0.35);
+  color: rgba(168, 85, 247, 0.65);
 }
 
 .about__avatar-moon--cool {
   background: #3b82f6;
-  color: rgba(59, 130, 246, 0.35);
+  color: rgba(59, 130, 246, 0.65);
 }
 
 @keyframes aboutOrbit {
@@ -3037,13 +3037,16 @@ main {
   border-radius: clamp(16px, 2.2vw, 22px);
   border: 1px solid transparent;
   background:
-    radial-gradient(140% 150% at 30% 0%, rgba(38, 48, 88, 0.35) 0%, rgba(7, 10, 22, 0.96) 55%, rgba(3, 6, 18, 0.98) 100%) padding-box,
+    linear-gradient(var(--about-card-bg), var(--about-card-bg)) padding-box,
     linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
   box-shadow:
-    0 8px 22px rgba(3, 6, 18, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(18px);
-  transition: transform 280ms var(--ease), box-shadow 280ms var(--ease), border-color 280ms var(--ease);
+    0 12px 30px rgba(3, 6, 18, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  transition:
+    transform 280ms var(--ease),
+    box-shadow 280ms var(--ease),
+    border-color 280ms var(--ease),
+    background 280ms var(--ease);
 }
 
 .achv-card {
@@ -3056,9 +3059,12 @@ main {
 .achv-card:is(:hover, :focus-visible),
 .cert:is(:hover, :focus-within) {
   transform: translateY(-4px);
+  background:
+    linear-gradient(var(--about-card-hover), var(--about-card-hover)) padding-box,
+    linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
   box-shadow:
-    0 18px 36px rgba(4, 8, 20, 0.55),
-    0 32px 68px rgba(5, 10, 26, 0.5);
+    0 20px 42px rgba(4, 8, 20, 0.6),
+    0 36px 76px rgba(5, 10, 26, 0.55);
 }
 
 .achv-card:focus-visible {
@@ -3072,24 +3078,11 @@ main {
   border-radius: clamp(14px, 1.8vw, 18px);
   display: grid;
   place-items: center;
-  background:
-    linear-gradient(160deg, rgba(8, 14, 32, 0.98), rgba(3, 6, 18, 0.98)) padding-box,
-    linear-gradient(140deg, var(--card-border-start), var(--card-border-end)) border-box;
-  border: 1px solid transparent;
-  color: #f8fbff;
-  box-shadow: 0 10px 26px rgba(3, 6, 18, 0.45);
+  background: linear-gradient(160deg, rgba(6, 10, 24, 0.96), rgba(3, 6, 18, 0.96));
+  border: 1px solid color-mix(in srgb, var(--card-border-end) 60%, rgba(255, 255, 255, 0.08));
+  color: #fdfdff;
+  box-shadow: 0 12px 28px rgba(3, 6, 18, 0.55);
   overflow: hidden;
-}
-
-.achv-card__icon::before,
-.cert__icon::before {
-  content: "";
-  position: absolute;
-  inset: -30%;
-  border-radius: inherit;
-  background: radial-gradient(circle, color-mix(in srgb, var(--card-border-end) 48%, transparent) 0%, transparent 70%);
-  opacity: 0.45;
-  filter: blur(18px);
 }
 
 .achv-card__icon svg,
@@ -3121,7 +3114,7 @@ main {
 .achv-card__title {
   font-weight: 700;
   font-size: 1.05rem;
-  color: color-mix(in srgb, var(--card-border-start) 72%, white 28%);
+  color: color-mix(in srgb, var(--card-border-start) 78%, #ffffff 22%);
 }
 
 .achv-card__sub {
@@ -3215,14 +3208,13 @@ main {
   margin-top: clamp(16px, 2.4vw, 24px);
   padding: clamp(20px, 3.6vw, 34px) clamp(24px, 4.4vw, 44px);
   background:
-    radial-gradient(140% 150% at 30% 0%, rgba(38, 48, 88, 0.32) 0%, rgba(7, 10, 22, 0.96) 52%, rgba(3, 6, 18, 0.98) 100%) padding-box,
+    linear-gradient(var(--about-card-bg), var(--about-card-bg)) padding-box,
     linear-gradient(135deg, #f97316, #a855f7, #3b82f6) border-box;
   border-radius: clamp(20px, 2.4vw, 26px);
   border: 1px solid transparent;
   box-shadow:
     0 16px 36px rgba(3, 6, 18, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(18px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
   text-align: center;
 }
 
@@ -3241,19 +3233,19 @@ main {
 }
 
 .about__quoteHighlight--clarity {
-  background-image: linear-gradient(120deg, #a855f7, #ec4899);
+  background-image: linear-gradient(120deg, #a855f7, #3b82f6);
 }
 
 .about__quoteHighlight--tempo {
-  background-image: linear-gradient(120deg, #ec4899, #f97316);
+  background-image: linear-gradient(120deg, #3b82f6, #f97316);
 }
 
 .about__quoteHighlight--intentional {
-  background-image: linear-gradient(120deg, #f97316, #fb923c);
+  background-image: linear-gradient(120deg, #f97316, #a855f7);
 }
 
 .about__quoteHighlight--brand {
-  background-image: linear-gradient(120deg, #f97316, #ec4899, #3b82f6);
+  background-image: linear-gradient(120deg, #f97316, #a855f7, #3b82f6);
 }
 
 .about__missionHead .about__quote {
