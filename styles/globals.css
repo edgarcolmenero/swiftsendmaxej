@@ -3314,7 +3314,8 @@ main {
   transition: transform 180ms var(--ease, ease-out);
 }
 
-.about__palette-label:is(:hover, :focus-visible)::after {
+.about__palette-label:is(:hover, :focus-visible)::after,
+.about__palette-item:is(:hover, :focus-within) .about__palette-label::after {
   transform: scaleX(1);
 }
 
