@@ -1992,10 +1992,34 @@ const capabilityTiles = [
 ] as const;
 
 const colorStripImages = [
-  { src: "/brand/color1.png", alt: "Brand color 1" },
-  { src: "/brand/color2.png", alt: "Brand color 2" },
-  { src: "/brand/color3.png", alt: "Brand color 3" },
-  { src: "/brand/color4.png", alt: "Brand color 4" },
+  {
+    src: "/brand/color1.png",
+    alt: "Brand color 1",
+    label: "Certificate One",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/brand/color2.png",
+    alt: "Brand color 2",
+    label: "Certificate Two",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/brand/color3.png",
+    alt: "Brand color 3",
+    label: "Certificate Three",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/brand/color4.png",
+    alt: "Brand color 4",
+    label: "Certificate Four",
+    width: 1024,
+    height: 1024,
+  },
 ] as const;
 
 function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
@@ -2279,14 +2303,21 @@ function AboutSection() {
             {activeLeader === "edgar" ? (
               <div className="about__color-strip">
                 {colorStripImages.map((image) => (
-                  <div key={image.src} className="about__color-card">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      sizes="(max-width: 720px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      priority={false}
-                    />
+                  <div key={image.src} className="about__palette-item">
+                    <div className="about__color-card">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={image.width}
+                        height={image.height}
+                        sizes="(max-width: 720px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        priority={false}
+                        className="about__color-cardImage"
+                      />
+                    </div>
+                    <button type="button" className="about__palette-label">
+                      {image.label}
+                    </button>
                   </div>
                 ))}
               </div>
