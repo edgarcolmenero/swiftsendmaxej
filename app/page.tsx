@@ -1886,7 +1886,7 @@ const midnightMinimal = {
   glows: [] as string[],
   headingSecondary: "text-white",
   headingGradient:
-    "bg-[var(--swift-accent-gradient)] bg-clip-text text-transparent",
+    "bg-[var(--hero-accent-gradient)] bg-clip-text text-transparent",
   bodyText: "text-gray-500",
   cardBackground: "bg-[#0a0a14]",
   cardBorder: "border-gray-900",
