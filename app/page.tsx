@@ -1907,6 +1907,13 @@ const midnightMinimal = {
 
 const leaderOrder: LeaderKey[] = ["edgar", "jaden"];
 
+const achievementGradients: Record<AchievementVariant, string> = {
+  honors: "from-orange-500 to-amber-500",
+  stem: "from-purple-500 to-pink-500",
+  adidas: "from-teal-500 to-emerald-500",
+  consult: "from-blue-500 to-cyan-500",
+};
+
 const leaders: Record<LeaderKey, LeaderProfile> = {
   edgar: {
     name: "Edgar Colmenero",
@@ -2287,19 +2294,35 @@ function AboutSection() {
             <div className="about__achievements">
               <p className="about__subhead">Experience & Achievements</p>
               <ul className="achv-list">
-                {leader.achievements.map((achievement) => (
-                  <li key={achievement.title}>
-                    <div className="achv-card" data-variant={achievement.variant}>
-                      <div className="achv-card__icon" aria-hidden="true">
-                        {renderAchievementIcon(achievement.variant)}
-                      </div>
-                      <div className="achv-card__text">
-                        <p className="achv-card__title">{achievement.title}</p>
-                        <p className="achv-card__sub">{achievement.subtitle}</p>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                {leader.achievements.map((achievement) => {
+                  const gradient = achievementGradients[achievement.variant];
+                  return (
+                    <li key={achievement.title}>
+                      <article
+                        className="achv-card pillar-card group relative overflow-hidden rounded-[28px] border border-white/10 bg-transparent px-6 py-7 transition-all duration-500 ease-out sm:px-7"
+                        data-gradient={gradient}
+                      >
+                        <div className="card-accent" aria-hidden="true" />
+                        <div className="card-glass" aria-hidden="true" />
+                        <div className="card-border" aria-hidden="true" />
+
+                        <div className="achv-card__content">
+                          <div className="achv-card__icon" aria-hidden="true">
+                            <div className="icon-tile">
+                              <div className="icon-tile__inner">
+                                {renderAchievementIcon(achievement.variant)}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="achv-card__text">
+                            <p className="achv-card__title">{achievement.title}</p>
+                            <p className="achv-card__sub">{achievement.subtitle}</p>
+                          </div>
+                        </div>
+                      </article>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

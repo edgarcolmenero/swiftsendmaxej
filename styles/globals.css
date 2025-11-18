@@ -2175,7 +2175,8 @@ main {
   opacity: 0.36;
 }
 
-.pillar-card {
+.pillar-card,
+.achv-card {
   --accent-start: rgba(59, 130, 246, 1);
   --accent-end: rgba(14, 165, 233, 1);
   --accent-sheen: rgba(56, 189, 248, 0.3);
@@ -2201,12 +2202,15 @@ main {
 }
 
 .pillar-card:hover,
-.pillar-card:focus-within {
+.pillar-card:focus-within,
+.achv-card:hover,
+.achv-card:focus-within {
   transform: translateY(-8px) scale(1.015);
   box-shadow: 0 0 42px var(--accent-shadow, rgba(59, 130, 246, 0.4));
 }
 
-.pillar-card .card-accent {
+.pillar-card .card-accent,
+.achv-card .card-accent {
   position: absolute;
   inset: -1px;
   border-radius: 28px;
@@ -2221,11 +2225,14 @@ main {
 }
 
 .pillar-card:hover .card-accent,
-.pillar-card:focus-within .card-accent {
+.pillar-card:focus-within .card-accent,
+.achv-card:hover .card-accent,
+.achv-card:focus-within .card-accent {
   opacity: 0.48;
 }
 
-.pillar-card .card-glass {
+.pillar-card .card-glass,
+.achv-card .card-glass {
   position: absolute;
   inset: 1px;
   border-radius: 26px;
@@ -2240,7 +2247,8 @@ main {
   pointer-events: none;
 }
 
-.pillar-card .card-border {
+.pillar-card .card-border,
+.achv-card .card-border {
   position: absolute;
   inset: 0;
   border-radius: 28px;
@@ -2259,7 +2267,9 @@ main {
 }
 
 .pillar-card:hover .card-border,
-.pillar-card:focus-within .card-border {
+.pillar-card:focus-within .card-border,
+.achv-card:hover .card-border,
+.achv-card:focus-within .card-border {
   opacity: 1;
 }
 
@@ -2309,7 +2319,9 @@ main {
 }
 
 .pillar-card:hover .icon-tile,
-.pillar-card:focus-within .icon-tile {
+.pillar-card:focus-within .icon-tile,
+.achv-card:hover .icon-tile,
+.achv-card:focus-within .icon-tile {
   box-shadow: 0 0 26px var(--accent-shadow, rgba(59, 130, 246, 0.45));
 }
 
@@ -3162,54 +3174,25 @@ main {
 }
 
 .achv-card {
-  --card-border-start: #ee895a;
-  --card-border-end: #de7dd7;
+  position: relative;
+  isolation: isolate;
+}
+
+.achv-card__content {
+  position: relative;
+  z-index: 10;
   display: flex;
-  align-items: flex-start;
-  gap: clamp(14px, 2vw, 18px);
-  padding: clamp(18px, 2vw, 24px) clamp(20px, 2.4vw, 28px);
-  border-radius: clamp(16px, 2.2vw, 22px);
-  border: 1px solid transparent;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 20, 0.96), rgba(7, 8, 16, 0.96)) padding-box,
-    linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
-  box-shadow: 0 20px 40px rgba(2, 3, 10, 0.45);
-  transition:
-    background 280ms var(--ease),
-    transform 280ms var(--ease),
-    box-shadow 280ms var(--ease);
-}
-
-.achv-card:is(:hover, :focus-visible) {
-  transform: translateY(-4px);
-  background:
-    linear-gradient(180deg, rgba(12, 12, 24, 0.98), rgba(8, 10, 18, 0.98)) padding-box,
-    linear-gradient(135deg, var(--card-border-start), var(--card-border-end)) border-box;
-  box-shadow: 0 28px 48px rgba(0, 0, 10, 0.55);
-}
-
-.achv-card:focus-visible {
-  outline: 2px solid rgba(255, 200, 150, 0.35);
-  outline-offset: 4px;
+  align-items: center;
+  gap: clamp(16px, 2vw, 22px);
 }
 
 .achv-card__icon {
   flex-shrink: 0;
-  width: clamp(48px, 5vw, 52px);
-  height: clamp(48px, 5vw, 52px);
-  border-radius: clamp(14px, 1.8vw, 18px);
-  display: grid;
-  place-items: center;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.08)),
-    linear-gradient(135deg, color-mix(in srgb, var(--card-border-start) 25%, transparent), color-mix(in srgb, var(--card-border-end) 25%, transparent));
-  color: #fff;
-  border: 1px solid color-mix(in srgb, var(--card-border-end) 35%, rgba(255, 255, 255, 0.08));
 }
 
 .achv-card__icon svg {
-  width: clamp(28px, 3vw, 32px);
-  height: clamp(28px, 3vw, 32px);
+  width: clamp(26px, 3vw, 30px);
+  height: clamp(26px, 3vw, 30px);
   stroke: currentColor;
   fill: none;
 }
@@ -3222,35 +3205,23 @@ main {
 
 .achv-card__title {
   margin: 0;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #f9fafb;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--accent-start, rgba(148, 163, 184, 1));
+  transition: color 300ms ease;
+}
+
+.achv-card:hover .achv-card__title,
+.achv-card:focus-within .achv-card__title {
+  color: var(--accent-dot, rgba(255, 255, 255, 1));
 }
 
 .achv-card__sub {
   margin: 0;
-  font-size: 0.92rem;
-  color: #94a3b8;
-}
-
-.achv-card[data-variant="honors"] {
-  --card-border-start: #ee895a;
-  --card-border-end: #de7dd7;
-}
-
-.achv-card[data-variant="stem"] {
-  --card-border-start: #de7dd7;
-  --card-border-end: #ee895a;
-}
-
-.achv-card[data-variant="adidas"] {
-  --card-border-start: #de7dd7;
-  --card-border-end: #66aef9;
-}
-
-.achv-card[data-variant="consult"] {
-  --card-border-start: #ee895a;
-  --card-border-end: #66aef9;
+  font-size: 0.95rem;
+  color: rgba(148, 163, 184, 0.88);
+  line-height: 1.4;
 }
 
 .about__mission {
