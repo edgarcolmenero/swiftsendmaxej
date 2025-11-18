@@ -3,6 +3,7 @@
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
 import { Services } from "@/app/(site)/sections/Services";
+import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const LaunchVelocityIcon = () => (
@@ -1990,6 +1991,13 @@ const capabilityTiles = [
   { label: "R&D Sprint Labs", variant: "violet-warm" },
 ] as const;
 
+const colorStripImages = [
+  { src: "/brand/color1.png", alt: "Brand color 1" },
+  { src: "/brand/color2.png", alt: "Brand color 2" },
+  { src: "/brand/color3.png", alt: "Brand color 3" },
+  { src: "/brand/color4.png", alt: "Brand color 4" },
+] as const;
+
 function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
   switch (variant) {
     case "honors":
@@ -2265,12 +2273,27 @@ function AboutSection() {
                 <p className={`about__bio ${midnightMinimal.bodyText}`}>{leader.bio}</p>
               </div>
             </div>
-            <div className="about__mission">
-              <div className="about__missionHead">
-                <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
-                  {leader.mantra}
-                </button>
+          <div className="about__mission">
+            <div className="about__missionHead">
+              <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
+                {leader.mantra}
+              </button>
+            </div>
+            {activeLeader === "edgar" ? (
+              <div className="about__color-strip">
+                {colorStripImages.map((image) => (
+                  <div key={image.src} className="about__color-card">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      sizes="(max-width: 720px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                      priority={false}
+                    />
+                  </div>
+                ))}
               </div>
+            ) : (
               <div className="about__capabilities" role="list">
                 {capabilityTiles.map((tile) => (
                   <div
@@ -2283,7 +2306,8 @@ function AboutSection() {
                   </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
           </div>
           <div
             className="about__column about__column--secondary"
