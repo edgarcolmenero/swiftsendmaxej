@@ -378,18 +378,21 @@ export default function Header() {
               <ul className="nav-list" role="list">
                 {NAV_ITEMS.map((item) => {
                   const isActive = activeSection === item.section;
+                  const isSaveLink = item.label === "Save";
                   return (
                     <li key={item.section} className="nav-item">
                       <Link
                         href={item.href}
-                        className={`nav-link${isActive ? " nav-link--active" : ""}`}
+                        className={`nav-link${isActive ? " nav-link--active" : ""}${
+                          isSaveLink ? " nav__save-link" : ""
+                        }`}
                         aria-label={item.ariaLabel}
                         aria-current={isActive ? "true" : undefined}
                         onClick={(event) => handleAnchorClick(event, item.href, item.section)}
                         prefetch={false}
                       >
                         <span
-                          className={`nav-label${item.gradient ? " nav-label--gradient swift-gradient-text" : ""}`}
+                          className={`nav-label${item.gradient ? " nav-label--gradient ss-text-gradient" : ""}`}
                         >
                           {item.label}
                         </span>

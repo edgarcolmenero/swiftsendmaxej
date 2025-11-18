@@ -2213,9 +2213,7 @@ function AboutSection() {
           <div className="about__headingBlock">
             <h2 className="about__headingTitle">
               About{" "}
-              <span className={`about__headingTitleAccent ${midnightMinimal.headingGradient}`}>
-                SwiftSend
-              </span>
+              <span className="about__heading-brand ss-text-gradient">SwiftSend</span>
             </h2>
           </div>
           <div className="about__leaders" role="group" aria-label="SwiftSend leadership">
@@ -2359,12 +2357,12 @@ function AboutSection() {
           <blockquote className="about__quote">
             <div className="about__quote-inner">
               <p className={midnightMinimal.bodyText}>
-                “We build quiet,{' '}
-                <span className="about__quote-accent about__quote-accent--magenta">compounding</span>{' '}
-                systems that make your growth feel{' '}
-                <span className="about__quote-accent about__quote-accent--sunset">inevitable</span>
-                —operations run clean, launches hit on time, and every touchpoint feels unmistakably{' '}
-                <span className={`about__quote-accent ${midnightMinimal.headingGradient}`}>SwiftSend</span>.”
+                “We build quiet,{" "}
+                <span className="ss-text-gradient about__quote-accent">compounding</span>{" "}
+                systems that make your growth feel{" "}
+                <span className="ss-text-gradient about__quote-accent">inevitable</span>
+                —operations run clean, launches hit on time, and every touchpoint feels unmistakably{" "}
+                <span className="ss-text-gradient about__quote-accent">SwiftSend</span>.”
               </p>
             </div>
           </blockquote>

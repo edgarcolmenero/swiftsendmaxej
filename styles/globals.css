@@ -117,7 +117,8 @@ body {
   background-repeat: no-repeat;
 }
 
-.swift-gradient-text {
+.swift-gradient-text,
+.ss-text-gradient {
   background-image: var(--swift-accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
@@ -320,6 +321,15 @@ body {
   outline-offset: 4px;
 }
 
+.nav__save-link {
+  display: inline-block;
+  transition: transform 180ms var(--ease, ease-out);
+}
+
+.nav__save-link:hover {
+  transform: translateY(-1px);
+}
+
 .nav-link--active .nav-label:not(.nav-label--gradient){
   color: #ffffff;
 }
@@ -335,7 +345,7 @@ body {
   text-shadow: 0 0 16px rgba(58, 141, 255, 0.25);
 }
 
-.nav-label--gradient:not(.swift-gradient-text){
+.nav-label--gradient:not(.ss-text-gradient):not(.swift-gradient-text){
   background-image: var(--swift-accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
@@ -2913,7 +2923,8 @@ main {
   color: var(--about-heading);
 }
 
-.about__headingTitleAccent {
+.about__headingTitleAccent,
+.about__heading-brand {
   display: inline-flex;
   align-items: center;
   margin-left: 0.35rem;
@@ -3319,69 +3330,54 @@ main {
   width: 100%;
   max-width: min(1024px, 100%);
   margin: 0;
-  padding: 1.5px;
-  border-radius: 28px;
-  background: linear-gradient(90deg, #ee895a, #de7dd7, #66aef9);
-  transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
+  border-radius: var(--card-radius, 28px);
+  border: 1px solid var(--about-card-border, rgba(148, 163, 184, 0.16));
+  background: var(--about-card-bg, #0a0a14);
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow: none;
+  text-align: center;
+  transition:
+    border 220ms var(--ease, ease-out),
+    background 220ms var(--ease, ease-out);
+  border-image: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .about__quote-inner {
   position: relative;
   border-radius: inherit;
-  padding: clamp(32px, 5vw, 48px);
-  background: linear-gradient(
-    180deg,
-    rgba(6, 10, 24, 0.9) 0%,
-    rgba(8, 13, 28, 0.78) 52%,
-    rgba(9, 14, 30, 0.88) 100%
-  );
-  border: 1px solid rgba(148, 163, 184, 0.08);
-  backdrop-filter: blur(22px);
-  text-align: center;
-  transition:
-    background 400ms var(--ease),
-    border-color 400ms var(--ease),
-    box-shadow 400ms var(--ease);
-}
-
-.about__quote:hover {
-  transform: translateY(-6px) scale(1.005);
-  box-shadow: 0 32px 65px rgba(8, 12, 24, 0.55);
-}
-
-.about__quote:hover .about__quote-inner {
-  background: linear-gradient(
-    180deg,
-    rgba(8, 12, 24, 0.92) 0%,
-    rgba(10, 15, 30, 0.82) 52%,
-    rgba(11, 16, 32, 0.92) 100%
-  );
-  border-color: rgba(148, 163, 184, 0.16);
+  padding: 0;
 }
 
 .about__quote p {
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.7;
-  color: #94a3b8;
 }
 
 .about__quote-accent {
   font-weight: 600;
   display: inline-block;
   white-space: nowrap;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  transition: filter 180ms var(--ease, ease-out);
 }
 
-.about__quote-accent--magenta {
-  background-image: linear-gradient(90deg, #de7dd7, #ee895a);
+.about__quote:hover {
+  border-color: transparent;
+  border-image: linear-gradient(
+      90deg,
+      var(--ss-brand-orange, #ee895a),
+      var(--ss-brand-purple, #de7dd7),
+      var(--ss-brand-blue, #66aef9)
+    )
+    1;
+  background: var(--about-card-hover, #0c0c18);
+  box-shadow: none;
 }
 
-.about__quote-accent--sunset {
-  background-image: linear-gradient(90deg, #ee895a, #de7dd7);
+.about__quote:hover .about__quote-accent {
+  filter: brightness(1.12);
 }
 
 .about__mantraBtn {

@@ -135,7 +135,7 @@
   text-shadow: 0 0 18px rgba(58, 141, 255, 0.25);
 }
 
-.mobile-drawer__link--gradient:not(.swift-gradient-text) {
+.mobile-drawer__link--gradient:not(.ss-text-gradient):not(.swift-gradient-text) {
   background-image: var(--swift-accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
