@@ -329,7 +329,7 @@ export function Services() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, #020518 0%, rgba(7, 20, 41, 0.95) 36%, rgba(67, 24, 94, 0.9) 64%, rgba(32, 14, 8, 0.92) 100%)",
+              "linear-gradient(180deg, #020518 0%, rgba(7, 20, 41, 0.95) 36%, rgba(52, 16, 86, 0.92) 63%, rgba(110, 39, 10, 0.94) 100%)",
           }}
         />
         <div
