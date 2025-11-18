@@ -2211,7 +2211,6 @@ function AboutSection() {
           style={getRevealStyle(0)}
         >
           <div className="about__headingBlock">
-            <p className="about__eyebrow">About</p>
             <h2 className="about__headingTitle">
               About{" "}
               <span className={`about__headingTitleAccent ${midnightMinimal.headingGradient}`}>
@@ -2358,13 +2357,16 @@ function AboutSection() {
           style={getRevealStyle(3)}
         >
           <blockquote className="about__quote">
-            <p className={midnightMinimal.bodyText}>
-              “We engineer <span className="about__quoteHighlight about__quoteHighlight--clarity">clarity</span> and
-              <span className="about__quoteHighlight about__quoteHighlight--tempo">tempo</span> so every launch feels
-              <span className="about__quoteHighlight about__quoteHighlight--intentional">intentional</span>, confident,
-              and unmistakably
-              <span className={`about__quoteHighlight ${midnightMinimal.headingGradient}`}>SwiftSend</span>.”
-            </p>
+            <div className="about__quote-inner">
+              <p className={midnightMinimal.bodyText}>
+                “We build quiet,{' '}
+                <span className="about__quote-accent about__quote-accent--magenta">compounding</span>{' '}
+                systems that make your growth feel{' '}
+                <span className="about__quote-accent about__quote-accent--sunset">inevitable</span>
+                —operations run clean, launches hit on time, and every touchpoint feels unmistakably{' '}
+                <span className={`about__quote-accent ${midnightMinimal.headingGradient}`}>SwiftSend</span>.”
+              </p>
+            </div>
           </blockquote>
         </div>
       </div>

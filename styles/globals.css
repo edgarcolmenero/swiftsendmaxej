@@ -3319,14 +3319,44 @@ main {
   width: 100%;
   max-width: min(1024px, 100%);
   margin: 0;
+  padding: 1.5px;
+  border-radius: 28px;
+  background: linear-gradient(90deg, #ee895a, #de7dd7, #66aef9);
+  transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
+}
+
+.about__quote-inner {
+  position: relative;
+  border-radius: inherit;
   padding: clamp(32px, 5vw, 48px);
-  border-radius: clamp(22px, 2.8vw, 32px);
-  border: 1px solid transparent;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 20, 0.96), rgba(7, 8, 16, 0.96)) padding-box,
-    linear-gradient(120deg, #ee895a, #de7dd7, #66aef9) border-box;
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(6, 10, 24, 0.9) 0%,
+    rgba(8, 13, 28, 0.78) 52%,
+    rgba(9, 14, 30, 0.88) 100%
+  );
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  backdrop-filter: blur(22px);
   text-align: center;
+  transition:
+    background 400ms var(--ease),
+    border-color 400ms var(--ease),
+    box-shadow 400ms var(--ease);
+}
+
+.about__quote:hover {
+  transform: translateY(-6px) scale(1.005);
+  box-shadow: 0 32px 65px rgba(8, 12, 24, 0.55);
+}
+
+.about__quote:hover .about__quote-inner {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 24, 0.92) 0%,
+    rgba(10, 15, 30, 0.82) 52%,
+    rgba(11, 16, 32, 0.92) 100%
+  );
+  border-color: rgba(148, 163, 184, 0.16);
 }
 
 .about__quote p {
@@ -3334,6 +3364,24 @@ main {
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.7;
   color: #94a3b8;
+}
+
+.about__quote-accent {
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.about__quote-accent--magenta {
+  background-image: linear-gradient(90deg, #de7dd7, #ee895a);
+}
+
+.about__quote-accent--sunset {
+  background-image: linear-gradient(90deg, #ee895a, #de7dd7);
 }
 
 .about__mantraBtn {
@@ -3381,27 +3429,6 @@ main {
   letter-spacing: 0.08em;
 }
 
-.about__quoteHighlight {
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  font-weight: 600;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.about__quoteHighlight--clarity {
-  background-image: linear-gradient(120deg, #de7dd7, #66aef9);
-}
-
-.about__quoteHighlight--tempo {
-  background-image: linear-gradient(120deg, #ee895a, #de7dd7);
-}
-
-.about__quoteHighlight--intentional {
-  background-image: linear-gradient(120deg, #ee895a, #de7dd7);
-}
 
 .about [data-reveal] {
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
@@ -3497,7 +3524,7 @@ body.is-about-js .about [data-reveal].is-in {
     --avatar-size: clamp(180px, 60vw, 220px);
   }
 
-  .about__quote {
+  .about__quote-inner {
     padding: clamp(24px, 7vw, 36px);
   }
 }
