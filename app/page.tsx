@@ -1886,7 +1886,7 @@ const midnightMinimal = {
   glows: [] as string[],
   headingSecondary: "text-gray-600",
   headingGradient:
-    "bg-[var(--hero-accent-gradient)] bg-clip-text text-transparent",
+    "bg-gradient-to-r from-[#ee895a] via-[#de7dd7] to-[#66aef9] bg-clip-text text-transparent",
   bodyText: "text-gray-500",
   cardBackground: "bg-[#0a0a14]",
   cardBorder: "border-gray-900",
@@ -1975,6 +1975,13 @@ const orbitMoons = [
   { id: "violet", className: "about__avatar-moon about__avatar-moon--violet", angle: "120deg" },
   { id: "cool", className: "about__avatar-moon about__avatar-moon--cool", angle: "240deg" },
 ];
+
+const capabilityTiles = [
+  { label: "Platform Velocity", variant: "warm-violet" },
+  { label: "Creative Systems", variant: "violet-aqua" },
+  { label: "Delivery Ops", variant: "warm-aqua" },
+  { label: "R&D Sprint Labs", variant: "violet-warm" },
+] as const;
 
 function renderAchievementIcon(variant: AchievementVariant): JSX.Element {
   switch (variant) {
@@ -2175,6 +2182,12 @@ function AboutSection() {
       data-leader={activeLeader}
     >
       <div className="about__bg-orbs" aria-hidden="true" />
+      <div className="about__bg-moons" aria-hidden="true">
+        <span className="about__bg-moon about__bg-moon--warm" style={{ top: "12%", right: "18%" }} />
+        <span className="about__bg-moon about__bg-moon--violet" style={{ top: "38%", right: "8%" }} />
+        <span className="about__bg-moon about__bg-moon--aqua" style={{ bottom: "18%", right: "22%" }} />
+        <span className="about__bg-moon about__bg-moon--warm" style={{ bottom: "10%", right: "8%" }} />
+      </div>
       <div className="about__container">
         <header
           className="about__head"
@@ -2182,7 +2195,15 @@ function AboutSection() {
           data-reveal-index="0"
           style={getRevealStyle(0)}
         >
-          <span className="about__title-line" aria-hidden="true" />
+          <div className="about__headingBlock">
+            <p className="about__eyebrow">About</p>
+            <h2 className="about__headingTitle">
+              About{" "}
+              <span className={`about__headingTitleAccent ${midnightMinimal.headingGradient}`}>
+                SwiftSend
+              </span>
+            </h2>
+          </div>
           <div className="about__leaders" role="group" aria-label="SwiftSend leadership">
             {leaderOrder.map((key) => {
               const item = leaders[key];
@@ -2208,46 +2229,96 @@ function AboutSection() {
         </header>
         <div className="about__inner">
           <div
-            className="about__profile"
+            className="about__column about__column--primary"
             data-reveal
             data-reveal-index="1"
             style={getRevealStyle(1)}
           >
-            <div className="about__avatar">
-              <div className="about__avatar-ring">
-                <div className="about__avatar-inner" aria-hidden="true">
-                  <span className="about__avatar-initial">{leaderInitial}</span>
-                </div>
-                <div className="about__avatar-orbit" aria-hidden="true">
-                  {orbitMoons.map((moon) => (
-                    <span
-                      key={moon.id}
-                      className={moon.className}
-                      style={{ "--orbit-angle": moon.angle } as CSSProperties}
-                      aria-hidden="true"
-                    />
-                  ))}
+            <div className="about__profile">
+              <div className="about__avatar">
+                <div className="about__avatar-ring">
+                  <div className="about__avatar-inner" aria-hidden="true">
+                    <span className="about__avatar-initial">{leaderInitial}</span>
+                  </div>
+                  <div className="about__avatar-orbit" aria-hidden="true">
+                    {orbitMoons.map((moon) => (
+                      <span
+                        key={moon.id}
+                        className={moon.className}
+                        style={{ "--orbit-angle": moon.angle } as CSSProperties}
+                        aria-hidden="true"
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
+              <div className="about__profile-details">
+                <p className={`about__name ${midnightMinimal.text}`}>{leader.name}</p>
+                <p className={`about__role ${midnightMinimal.bodyText}`}>{leader.title}</p>
+                <p className={`about__bio ${midnightMinimal.bodyText}`}>{leader.bio}</p>
+              </div>
             </div>
-            <div className="about__profile-details">
-              <p className={`about__name ${midnightMinimal.text}`}>{leader.name}</p>
-              <p className={`about__role ${midnightMinimal.bodyText}`}>{leader.title}</p>
-              <p className={`about__bio ${midnightMinimal.bodyText}`}>{leader.bio}</p>
+            <div className="about__mission">
+              <div className="about__missionHead">
+                <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
+                  {leader.mantra}
+                </button>
+              </div>
+              <div className="about__capabilities" role="list">
+                {capabilityTiles.map((tile) => (
+                  <div
+                    key={tile.label}
+                    className="about__capability"
+                    data-variant={tile.variant}
+                    role="listitem"
+                  >
+                    {tile.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className="about__column about__column--secondary"
+            data-reveal
+            data-reveal-index="2"
+            style={getRevealStyle(2)}
+          >
+            <div className="about__achievements">
+              <p className="about__subhead">Experience & Achievements</p>
+              <ul className="achv-list">
+                {leader.achievements.map((achievement) => (
+                  <li key={achievement.title}>
+                    <div className="achv-card" data-variant={achievement.variant}>
+                      <div className="achv-card__icon" aria-hidden="true">
+                        {renderAchievementIcon(achievement.variant)}
+                      </div>
+                      <div className="achv-card__text">
+                        <p className="achv-card__title">{achievement.title}</p>
+                        <p className="achv-card__sub">{achievement.subtitle}</p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
         <div
-          className="about__mission"
+          className="about__quoteRow"
           data-reveal
-          data-reveal-index="2"
-          style={getRevealStyle(2)}
+          data-reveal-index="3"
+          style={getRevealStyle(3)}
         >
-          <div className="about__missionHead">
-            <button type="button" className={`about__mantraBtn border ${midnightMinimal.mantraButton}`}>
-              {leader.mantra}
-            </button>
-          </div>
+          <blockquote className="about__quote">
+            <p className={midnightMinimal.bodyText}>
+              “We engineer <span className="about__quoteHighlight about__quoteHighlight--clarity">clarity</span> and
+              <span className="about__quoteHighlight about__quoteHighlight--tempo">tempo</span> so every launch feels
+              <span className="about__quoteHighlight about__quoteHighlight--intentional">intentional</span>, confident,
+              and unmistakably
+              <span className={`about__quoteHighlight ${midnightMinimal.headingGradient}`}>SwiftSend</span>.”
+            </p>
+          </blockquote>
         </div>
       </div>
     </section>
