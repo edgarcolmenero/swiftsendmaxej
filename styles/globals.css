@@ -3188,6 +3188,7 @@ main {
 
 .achv-card__icon {
   flex-shrink: 0;
+  color: #ffffff;
 }
 
 .achv-card__icon svg {
