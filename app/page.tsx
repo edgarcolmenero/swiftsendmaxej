@@ -1935,12 +1935,12 @@ const leaders: Record<LeaderKey, LeaderProfile> = {
         subtitle: "Launched robotics programs empowering 200+ emerging builders.",
       },
       {
-        variant: "adidas",
+        variant: "consult",
         title: "Adidas Future Lab Partner",
         subtitle: "Engineered personalization pilots across global product drops.",
       },
       {
-        variant: "consult",
+        variant: "adidas",
         title: "Fractional Product Consultant",
         subtitle: "Scaled delivery rituals for fintech, health, and climate ventures.",
       },
