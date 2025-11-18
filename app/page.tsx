@@ -1,5 +1,6 @@
 "use client";
 
+import BackgroundStarfield from "@/components/chrome/BackgroundStarfield";
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
 import { Services } from "@/app/(site)/sections/Services";
@@ -2196,6 +2197,7 @@ function AboutSection() {
       aria-label="SwiftSend leadership insights"
       data-leader={activeLeader}
     >
+      <BackgroundStarfield />
       <div className="about__bg-orbs" aria-hidden="true" />
       <div className="about__bg-moons" aria-hidden="true">
         <span className="about__bg-moon about__bg-moon--warm" style={{ top: "12%", right: "18%" }} />
