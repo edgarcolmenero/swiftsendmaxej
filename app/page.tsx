@@ -2361,7 +2361,7 @@ function AboutSection() {
           data-reveal-index="3"
           style={getRevealStyle(3)}
         >
-          <blockquote className="about__quote">
+          <blockquote className="about__quote" tabIndex={0}>
             <div className="about__quote-inner">
               <p className={midnightMinimal.bodyText}>
                 “We build quiet,{" "}
