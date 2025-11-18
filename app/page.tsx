@@ -2284,8 +2284,10 @@ function AboutSection() {
                       <Image
                         src={image.src}
                         alt={image.alt}
-                        fill
+                        width={480}
+                        height={320}
                         sizes="(max-width: 720px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        className="about__color-cardImage"
                         priority={false}
                       />
                     </div>
