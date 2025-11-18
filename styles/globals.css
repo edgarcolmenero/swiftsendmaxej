@@ -3379,15 +3379,22 @@ main {
     var(--ss-brand-purple, #de7dd7),
     var(--ss-brand-blue, #66aef9)
   );
+  --about-quote-gradient-hover: linear-gradient(
+    90deg,
+    #ff9c76,
+    #f19ff0,
+    #7bc2ff
+  );
   position: relative;
   z-index: 0;
   width: 100%;
   max-width: min(1024px, 100%);
   margin: 0;
   border-radius: var(--card-radius, 28px);
-  border: 1px solid var(--about-card-border, rgba(148, 163, 184, 0.16));
+  border: 1px solid transparent;
   background: var(--about-card-bg, #0a0a14);
   padding: clamp(24px, 3vw, 40px);
+  border-image: var(--about-quote-gradient) 1;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   text-align: center;
   transition:
@@ -3395,24 +3402,10 @@ main {
     box-shadow 200ms ease-out,
     border 220ms var(--ease, ease-out),
     background 220ms var(--ease, ease-out);
-  border-image: none;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   transform: translate3d(0, 0, 0) scale(1);
   isolation: isolate;
-}
-
-.about__quote::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: calc(var(--card-radius, 28px) + 8px);
-  background: var(--about-quote-gradient);
-  opacity: 0;
-  filter: blur(18px);
-  transition: opacity 200ms ease-out;
-  z-index: -1;
-  pointer-events: none;
 }
 
 .about__quote-inner {
@@ -3436,14 +3429,12 @@ main {
 
 .about__quote:is(:hover, :focus-visible) {
   border-color: transparent;
-  border-image: var(--about-quote-gradient) 1;
+  border-image: var(--about-quote-gradient-hover) 1;
   background: var(--about-card-hover, #0c0c18);
   transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 18px 40px rgba(3, 6, 18, 0.45);
-}
-
-.about__quote:is(:hover, :focus-visible)::after {
-  opacity: 0.8;
+  box-shadow:
+    0 0 32px rgba(238, 137, 90, 0.24),
+    0 0 48px rgba(102, 174, 249, 0.24);
 }
 
 .about__quote:is(:hover, :focus-visible) .about__quote-accent {
