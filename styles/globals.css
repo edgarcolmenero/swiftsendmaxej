@@ -26,6 +26,7 @@
     #a855f7,
     #3b82f6
   );
+  --ss-save-gradient: var(--swift-accent-gradient);
   --orbit-warm: #ff8a3d;
   --orbit-violet: #c46bf7;
   --orbit-aqua: #4da3ff;
@@ -3259,6 +3260,13 @@ main {
   gap: clamp(10px, 1.8vw, 16px);
 }
 
+.about__palette-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .about__color-card {
   position: relative;
   border-radius: clamp(12px, 1.8vw, 18px);
@@ -3270,6 +3278,37 @@ main {
 
 .about__color-card img {
   object-fit: cover;
+}
+
+.about__palette-label {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--about-muted, #9ca3af);
+  text-align: center;
+  cursor: pointer;
+}
+
+.about__palette-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.25rem;
+  width: 100%;
+  height: 2px;
+  background-image: var(--ss-save-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms var(--ease, ease-out);
+}
+
+.about__palette-label:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
 }
 
 .about__capability {
