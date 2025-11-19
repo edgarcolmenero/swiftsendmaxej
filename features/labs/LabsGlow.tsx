@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import {
   BarChart3,
   Cpu,
@@ -126,6 +127,10 @@ const formatIndex = (index: number) => `[${String(index + 1).padStart(2, "0")}]`
 export default function Labs() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const starsRef = useRef<HTMLDivElement | null>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [hasStatsAnimated, setHasStatsAnimated] = useState(false);
+  const [showVersionPatch, setShowVersionPatch] = useState(false);
 
   const modules = useMemo(() => LAB_MODULES, []);
 
@@ -207,6 +212,105 @@ export default function Labs() {
     revealTargets.forEach((target) => target.classList.add("is-in"));
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (hasStatsAnimated) return;
+
+    if (prefersReducedMotion) {
+      setHasStatsAnimated(true);
+      return;
+    }
+
+    if (typeof window === "undefined" || !statsRef.current) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setHasStatsAnimated(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          setHasStatsAnimated(true);
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(statsRef.current);
+
+    return () => observer.disconnect();
+  }, [hasStatsAnimated, prefersReducedMotion]);
+
+  const handleVersionDone = useCallback(() => {
+    setShowVersionPatch(true);
+  }, []);
+
+  const activeValue = useCountUp({
+    target: 8,
+    durationMs: 900,
+    isActive: hasStatsAnimated,
+    reducedMotion: prefersReducedMotion,
+  });
+
+  const developmentValue = useCountUp({
+    target: 4,
+    durationMs: 900,
+    isActive: hasStatsAnimated,
+    reducedMotion: prefersReducedMotion,
+  });
+
+  const versionValue = useCountUp({
+    target: 2.4,
+    durationMs: 1200,
+    isActive: hasStatsAnimated,
+    reducedMotion: prefersReducedMotion,
+    onDone: handleVersionDone,
+  });
+
+  const uptimeValue = useCountUp({
+    target: 99.9,
+    durationMs: 1300,
+    isActive: hasStatsAnimated,
+    reducedMotion: prefersReducedMotion,
+  });
+
+  const statDisplays: Record<StatDefinition["id"], ReactNode> = {
+    active: Math.round(activeValue).toString(),
+    development: Math.round(developmentValue).toString(),
+    version: (
+      <>
+        {versionValue.toFixed(1)}
+        <span className={`blueprint-version-patch${showVersionPatch ? " is-visible" : ""}`}>
+          .1
+        </span>
+      </>
+    ),
+    uptime: `${uptimeValue.toFixed(1)}%`,
+  };
+
   return (
     <section id="labs" className="labs-section labs-section--blueprint" aria-labelledby="labs-title" ref={sectionRef}>
       <div className="labs-backdrop" aria-hidden="true" />
@@ -269,16 +373,18 @@ export default function Labs() {
           })}
         </div>
 
-        <div className="blueprint-stats" data-reveal data-reveal-index="12">
-          {LAB_STATS.map((stat) => (
-            <div key={stat.id} className="blueprint-stats-item">
-              <span className={`blueprint-stat-value blueprint-stat-value--${stat.accent}`}>
-                {stat.value}
-              </span>
-              <span className="blueprint-stat-label">{stat.label}</span>
-            </div>
-          ))}
+        <div className="blueprint-stats" data-reveal data-reveal-index="12" ref={statsRef}>
+          {LAB_STATS.map((stat) => {
+            const valueClass = `blueprint-stat-value blueprint-stat-value--${stat.accent}${stat.id === "version" ? " blueprint-stat-value-version" : ""}`;
+            return (
+              <div key={stat.id} className="blueprint-stats-item">
+                <span className={valueClass}>{statDisplays[stat.id]}</span>
+                <span className="blueprint-stat-label">{stat.label}</span>
+              </div>
+            );
+          })}
         </div>
+
 
         <div className="blueprint-cta" data-reveal data-reveal-index="13">
           <a className="blueprint-cta-button" href="#contact">
@@ -288,4 +394,56 @@ export default function Labs() {
       </div>
     </section>
   );
+}
+
+type UseCountUpOptions = {
+  target: number;
+  durationMs: number;
+  isActive: boolean;
+  reducedMotion: boolean;
+  onDone?: () => void;
+};
+
+function useCountUp({ target, durationMs, isActive, reducedMotion, onDone }: UseCountUpOptions) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!isActive) {
+      setValue(0);
+      return;
+    }
+
+    if (reducedMotion || typeof window === "undefined") {
+      setValue(target);
+      onDone?.();
+      return;
+    }
+
+    let frame: number;
+    let start: number | null = null;
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const step = (timestamp: number) => {
+      if (start === null) start = timestamp;
+      const progress = Math.min((timestamp - start) / durationMs, 1);
+      const eased = easeOut(progress);
+      setValue(target * eased);
+
+      if (progress < 1) {
+        frame = window.requestAnimationFrame(step);
+      } else {
+        onDone?.();
+      }
+    };
+
+    frame = window.requestAnimationFrame(step);
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, [durationMs, isActive, onDone, reducedMotion, target]);
+
+  return value;
 }
