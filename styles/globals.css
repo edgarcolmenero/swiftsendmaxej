@@ -884,10 +884,10 @@ body {
   padding: clamp(72px, 9vw, 110px) 0 clamp(90px, 11vw, 132px);
   color: #eef4ff;
   background:
-    radial-gradient(80% 70% at 65% 78%, rgba(255, 142, 80, 0.08) 0%, rgba(255, 142, 80, 0) 70%),
-    radial-gradient(70% 60% at 24% 52%, rgba(142, 105, 255, 0.16) 0%, rgba(142, 105, 255, 0) 65%),
-    radial-gradient(120% 90% at 45% 18%, rgba(60, 132, 255, 0.22) 0%, rgba(60, 132, 255, 0) 75%),
-    linear-gradient(185deg, #01030b 0%, #05081b 50%, #010109 100%);
+    radial-gradient(circle at 12% 6%, rgba(255, 148, 94, 0.05) 0%, transparent 55%),
+    radial-gradient(circle at 88% 4%, rgba(129, 140, 248, 0.07) 0%, transparent 60%),
+    radial-gradient(65% 55% at 45% 68%, rgba(60, 132, 255, 0.08) 0%, transparent 75%),
+    linear-gradient(180deg, #020617 0%, #020617 40%, #03091a 100%);
   overflow: hidden;
   isolation: isolate;
 }
@@ -897,11 +897,11 @@ body {
   position: absolute;
   inset: -30% -10% -10%;
   background:
-    radial-gradient(60% 60% at 32% 46%, rgba(67, 143, 255, 0.5), transparent 70%),
-    radial-gradient(70% 75% at 72% 56%, rgba(110, 195, 255, 0.32), transparent 70%),
-    radial-gradient(65% 50% at 50% 88%, rgba(255, 138, 61, 0.14), transparent 75%);
+    radial-gradient(60% 60% at 32% 46%, rgba(67, 143, 255, 0.24), transparent 70%),
+    radial-gradient(70% 75% at 72% 56%, rgba(129, 140, 248, 0.18), transparent 70%),
+    radial-gradient(65% 50% at 50% 88%, rgba(255, 142, 80, 0.08), transparent 75%);
   filter: blur(190px);
-  opacity: 0.55;
+  opacity: 0.4;
   transform: translate3d(0, 0, 0);
   animation: packsAurora 28s ease-in-out infinite alternate;
   pointer-events: none;
@@ -1048,6 +1048,7 @@ body.is-packs-reduced .packs::before { animation: none; opacity: 0.26; }
   --accent-halo: rgba(82, 183, 255, 0.5);
   --pack-lift: 0px;
   --pack-icon-color: #b5f2ff;
+  --pack-icon-border: color-mix(in srgb, var(--accent-start) 40%, var(--accent-end) 60%);
   --pack-energy-gradient: linear-gradient(
     130deg,
     color-mix(in srgb, var(--accent-start) 60%, #ff8a3d 40%),
@@ -1179,16 +1180,16 @@ body.is-packs-reduced .packs::before { animation: none; opacity: 0.26; }
   width: 48px;
   height: 48px;
   border-radius: 16px;
-  border: 1px solid transparent;
+  border: 1.5px solid color-mix(in srgb, var(--pack-icon-border, var(--accent-end)) 80%, rgba(255, 255, 255, 0.85));
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background:
-    linear-gradient(150deg, rgba(8, 13, 28, 0.82), rgba(5, 8, 22, 0.45)) padding-box,
-    var(--pack-energy-gradient) border-box;
+  background: rgba(1, 4, 12, 0.35);
   color: var(--pack-icon-color, #f7fbff);
-  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.06), 0 8px 18px rgba(0, 0, 0, 0.35), 0 0 22px color-mix(in srgb, var(--pack-icon-color, #fff) 38%, transparent);
-  backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--pack-icon-border, var(--accent-end)) 45%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
 }
 
 .pack__icon svg {
