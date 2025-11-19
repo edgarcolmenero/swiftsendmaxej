@@ -3973,25 +3973,61 @@ body.is-about-js .about [data-reveal].is-in {
   box-shadow: 0 25px 50px rgba(5, 7, 17, 0.55);
   padding: clamp(1.4rem, 3vw, 1.7rem);
   overflow: hidden;
-  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition:
+    transform var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+  isolation: isolate;
 }
 
+.blueprint-card::before,
 .blueprint-card::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
+  pointer-events: none;
+}
+
+.blueprint-card::before {
+  padding: 1px;
+  background: linear-gradient(135deg, var(--card-glow-a, rgba(96, 165, 250, 0.45)), var(--card-glow-b, rgba(59, 130, 246, 0.4)));
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  z-index: 0;
+}
+
+.blueprint-card::after {
   background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.08), transparent 50%);
   opacity: 0;
   transition: opacity var(--dur) var(--ease);
-  pointer-events: none;
+  z-index: 0;
 }
 
 .blueprint-card:hover,
 .blueprint-card:focus-within {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 35px 60px rgba(5, 7, 17, 0.7);
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 18px 60px rgba(5, 7, 17, 0.8),
+    0 0 32px color-mix(in srgb, var(--card-glow-b, rgba(59, 130, 246, 0.5)) 55%, transparent);
+}
+
+.blueprint-card:hover::before,
+.blueprint-card:focus-within::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .blueprint-card:hover::after,
@@ -4058,8 +4094,11 @@ body.is-about-js .about [data-reveal].is-in {
   display: grid;
   place-items: center;
   color: var(--card-accent, #f4f6ff);
-  background: var(--card-accent-soft, rgba(255, 255, 255, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--card-accent, #f4f6ff) 35%, rgba(255, 255, 255, 0));
+  box-shadow:
+    0 0 12px var(--card-accent-soft, rgba(255, 255, 255, 0.12)),
+    0 0 4px color-mix(in srgb, var(--card-accent, #f4f6ff) 45%, transparent);
 }
 
 .blueprint-status {
@@ -4074,26 +4113,26 @@ body.is-about-js .about [data-reveal].is-in {
 
 .blueprint-status--live {
   color: #4ade80;
-  border-color: rgba(74, 222, 128, 0.5);
-  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(74, 222, 128, 0.7);
+  background: transparent;
 }
 
 .blueprint-status--beta {
   color: #60a5fa;
-  border-color: rgba(96, 165, 250, 0.5);
-  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(96, 165, 250, 0.7);
+  background: transparent;
 }
 
 .blueprint-status--prototype {
   color: #c084fc;
-  border-color: rgba(192, 132, 252, 0.5);
-  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(192, 132, 252, 0.7);
+  background: transparent;
 }
 
 .blueprint-status--soon {
   color: #fb923c;
-  border-color: rgba(251, 146, 60, 0.6);
-  background: rgba(251, 146, 60, 0.12);
+  border-color: rgba(251, 146, 60, 0.7);
+  background: transparent;
 }
 
 .blueprint-card h3 {
@@ -4125,7 +4164,7 @@ body.is-about-js .about [data-reveal].is-in {
   right: 0;
   bottom: -0.15rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 138, 0, 0.6), rgba(59, 130, 246, 0.7));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
@@ -4148,27 +4187,37 @@ body.is-about-js .about [data-reveal].is-in {
 
 .blueprint-card--orange {
   --card-accent: #ff8a3d;
-  --card-accent-soft: rgba(255, 138, 61, 0.15);
+  --card-accent-soft: rgba(255, 138, 61, 0.2);
+  --card-glow-a: rgba(255, 138, 61, 0.8);
+  --card-glow-b: rgba(255, 214, 166, 0.9);
 }
 
 .blueprint-card--purple {
   --card-accent: #c084fc;
-  --card-accent-soft: rgba(192, 132, 252, 0.17);
+  --card-accent-soft: rgba(192, 132, 252, 0.22);
+  --card-glow-a: rgba(192, 132, 252, 0.9);
+  --card-glow-b: rgba(147, 197, 253, 0.85);
 }
 
 .blueprint-card--blue {
   --card-accent: #60a5fa;
-  --card-accent-soft: rgba(96, 165, 250, 0.14);
+  --card-accent-soft: rgba(96, 165, 250, 0.2);
+  --card-glow-a: rgba(96, 165, 250, 0.9);
+  --card-glow-b: rgba(59, 130, 246, 0.85);
 }
 
 .blueprint-card--teal {
   --card-accent: #34d399;
-  --card-accent-soft: rgba(52, 211, 153, 0.15);
+  --card-accent-soft: rgba(52, 211, 153, 0.22);
+  --card-glow-a: rgba(52, 211, 153, 0.85);
+  --card-glow-b: rgba(45, 212, 191, 0.8);
 }
 
 .blueprint-card--rose {
   --card-accent: #fb7185;
-  --card-accent-soft: rgba(251, 113, 133, 0.18);
+  --card-accent-soft: rgba(251, 113, 133, 0.24);
+  --card-glow-a: rgba(251, 113, 133, 0.9);
+  --card-glow-b: rgba(255, 178, 178, 0.85);
 }
 
 .blueprint-stats {
