@@ -139,7 +139,9 @@ export default function Labs() {
     const stars = starsRef.current;
     if (stars && !stars.dataset.built) {
       const desktop = window.matchMedia("(min-width: 768px)").matches;
-      const starCount = (desktop ? 70 : 36) + Math.floor(Math.random() * 36);
+      const baseStarCount = desktop ? 120 : 60;
+      const starVariance = desktop ? 42 : 28;
+      const starCount = baseStarCount + Math.floor(Math.random() * starVariance);
       const glowCount = (desktop ? 14 : 8) + Math.floor(Math.random() * 10);
       const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 
@@ -219,7 +221,7 @@ export default function Labs() {
             <span className="ss-text-gradient">Concept 06 — Blueprint / Wireframe Theme</span>
           </span>
           <h2 id="labs-title" className="blueprint-title">
-            SwiftSend <span className="labs-title-gradient">Labs</span>
+            SwiftSend <span className="labs-title-gradient ss-text-gradient">Labs</span>
           </h2>
           <p className="blueprint-subtitle">
             Affordable, personalized experiments you can actually ship.
