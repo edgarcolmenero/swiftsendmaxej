@@ -1480,6 +1480,7 @@ function Packs() {
       data-packs-section
       ref={sectionRef}
     >
+      <div className="packs__sky" aria-hidden="true" />
       <div className="packs__inner">
         <header className="packs__head" data-reveal data-reveal-index="0">
           <h2 id="packs-title" className="packs__title">
