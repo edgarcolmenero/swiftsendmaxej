@@ -1499,32 +1499,34 @@ function Packs() {
               aria-labelledby="pack-starter-title"
               aria-describedby="pack-starter-price pack-starter-desc"
             >
-              <div className="pack__icon" aria-hidden="true">
-                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                  <path
-                    d="M14 2.5 17 10h7l-5.8 4.2 2.2 7-6.4-4.5-6.4 4.5 2.2-7L4 10h7z"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+              <div className="pack__body">
+                <div className="pack__icon" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                    <path
+                      d="M14 2.5 17 10h7l-5.8 4.2 2.2 7-6.4-4.5-6.4 4.5 2.2-7L4 10h7z"
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 id="pack-starter-title" className="pack__title">
+                  Starter
+                </h3>
+                <p id="pack-starter-desc" className="pack__desc">
+                  Perfect for businesses getting online
+                </p>
+                <p id="pack-starter-price" className="pack__price">
+                  <span className="val">$2,999</span> <span className="unit">/one-time</span>
+                </p>
+                <ul className="pack__list" role="list">
+                  <li>Industry-specific website</li>
+                  <li>CMS basics</li>
+                  <li>Contact forms</li>
+                  <li>Mobile responsive</li>
+                  <li>3 months support</li>
+                </ul>
               </div>
-              <h3 id="pack-starter-title" className="pack__title">
-                Starter
-              </h3>
-              <p id="pack-starter-desc" className="pack__desc">
-                Perfect for businesses getting online
-              </p>
-              <p id="pack-starter-price" className="pack__price">
-                <span className="val">$2,999</span> <span className="unit">/one-time</span>
-              </p>
-              <ul className="pack__list" role="list">
-                <li>Industry-specific website</li>
-                <li>CMS basics</li>
-                <li>Contact forms</li>
-                <li>Mobile responsive</li>
-                <li>3 months support</li>
-              </ul>
               <a
                 className="pack__cta"
                 href="#contact"
@@ -1546,33 +1548,35 @@ function Packs() {
               <div className="pack__badge" aria-hidden="true">
                 Most Popular
               </div>
-              <div className="pack__icon" aria-hidden="true">
-                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                  <path
-                    d="M13.5 2v9.5H8L14.5 26V16.5H20L13.5 2Z"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+              <div className="pack__body">
+                <div className="pack__icon" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                    <path
+                      d="M13.5 2v9.5H8L14.5 26V16.5H20L13.5 2Z"
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 id="pack-builder-title" className="pack__title">
+                  Builder
+                </h3>
+                <p id="pack-builder-desc" className="pack__desc">
+                  Advanced functionality and integrations
+                </p>
+                <p id="pack-builder-price" className="pack__price">
+                  <span className="val">$7,999</span> <span className="unit">/project</span>
+                </p>
+                <ul className="pack__list" role="list">
+                  <li>Custom APIs</li>
+                  <li>Admin dashboards</li>
+                  <li>CRM integration</li>
+                  <li>Payment processing</li>
+                  <li>Advanced analytics</li>
+                  <li>6 months support</li>
+                </ul>
               </div>
-              <h3 id="pack-builder-title" className="pack__title">
-                Builder
-              </h3>
-              <p id="pack-builder-desc" className="pack__desc">
-                Advanced functionality and integrations
-              </p>
-              <p id="pack-builder-price" className="pack__price">
-                <span className="val">$7,999</span> <span className="unit">/project</span>
-              </p>
-              <ul className="pack__list" role="list">
-                <li>Custom APIs</li>
-                <li>Admin dashboards</li>
-                <li>CRM integration</li>
-                <li>Payment processing</li>
-                <li>Advanced analytics</li>
-                <li>6 months support</li>
-              </ul>
               <a
                 className="pack__cta pack__cta--primary"
                 href="#contact"
@@ -1590,34 +1594,36 @@ function Packs() {
               aria-labelledby="pack-engine-title"
               aria-describedby="pack-engine-price pack-engine-desc"
             >
-              <div className="pack__icon" aria-hidden="true">
-                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                  <path
-                    d="M6 8.5c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5-3.6 5.5-8 5.5-8-2.2-8-5.5Zm0 5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5M6 18.5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  ></path>
-                </svg>
+              <div className="pack__body">
+                <div className="pack__icon" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                    <path
+                      d="M6 8.5c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5-3.6 5.5-8 5.5-8-2.2-8-5.5Zm0 5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5M6 18.5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 id="pack-engine-title" className="pack__title">
+                  Engine
+                </h3>
+                <p id="pack-engine-desc" className="pack__desc">
+                  Data-driven enterprise solutions
+                </p>
+                <p id="pack-engine-price" className="pack__price">
+                  <span className="val">$15,999</span> <span className="unit">/project</span>
+                </p>
+                <ul className="pack__list" role="list">
+                  <li>Data pipelines</li>
+                  <li>Data warehouses</li>
+                  <li>BI dashboards</li>
+                  <li>Real-time analytics</li>
+                  <li>Machine learning</li>
+                  <li>12 months support</li>
+                </ul>
               </div>
-              <h3 id="pack-engine-title" className="pack__title">
-                Engine
-              </h3>
-              <p id="pack-engine-desc" className="pack__desc">
-                Data-driven enterprise solutions
-              </p>
-              <p id="pack-engine-price" className="pack__price">
-                <span className="val">$15,999</span> <span className="unit">/project</span>
-              </p>
-              <ul className="pack__list" role="list">
-                <li>Data pipelines</li>
-                <li>Data warehouses</li>
-                <li>BI dashboards</li>
-                <li>Real-time analytics</li>
-                <li>Machine learning</li>
-                <li>12 months support</li>
-              </ul>
               <a
                 className="pack__cta"
                 href="#contact"
@@ -1635,43 +1641,45 @@ function Packs() {
               aria-labelledby="pack-growth-title"
               aria-describedby="pack-growth-price pack-growth-desc"
             >
-              <div className="pack__icon" aria-hidden="true">
-                <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                  <path
-                    d="M4 18.5 11.5 11l4 4L24 6.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>
-                  <path
-                    d="M18 6h6v6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>
-                </svg>
+              <div className="pack__body">
+                <div className="pack__icon" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
+                    <path
+                      d="M4 18.5 11.5 11l4 4L24 6.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                    <path
+                      d="M18 6h6v6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 id="pack-growth-title" className="pack__title">
+                  Growth
+                </h3>
+                <p id="pack-growth-desc" className="pack__desc">
+                  Complete digital marketing solution
+                </p>
+                <p id="pack-growth-price" className="pack__price">
+                  <span className="val">$12,999</span> <span className="unit">/campaign</span>
+                </p>
+                <ul className="pack__list" role="list">
+                  <li>SEO optimization</li>
+                  <li>Lead generation flows</li>
+                  <li>Fee-smart checkout</li>
+                  <li>Marketing automation</li>
+                  <li>Analytics &amp; reporting</li>
+                  <li>Ongoing optimization</li>
+                </ul>
               </div>
-              <h3 id="pack-growth-title" className="pack__title">
-                Growth
-              </h3>
-              <p id="pack-growth-desc" className="pack__desc">
-                Complete digital marketing solution
-              </p>
-              <p id="pack-growth-price" className="pack__price">
-                <span className="val">$12,999</span> <span className="unit">/campaign</span>
-              </p>
-              <ul className="pack__list" role="list">
-                <li>SEO optimization</li>
-                <li>Lead generation flows</li>
-                <li>Fee-smart checkout</li>
-                <li>Marketing automation</li>
-                <li>Analytics &amp; reporting</li>
-                <li>Ongoing optimization</li>
-              </ul>
               <a
                 className="pack__cta"
                 href="#contact"
