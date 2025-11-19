@@ -3787,37 +3787,43 @@ body.is-about-js .about [data-reveal].is-in {
 }
 
 
-/* === Labs Section === */
+/* === Labs Section (Blueprint Refresh) === */
 .labs-section {
   position: relative;
-  padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 7vw, 4rem);
+  padding: clamp(4rem, 12vw, 7.5rem) clamp(1.5rem, 7vw, 4.5rem);
   overflow: hidden;
   color: #f4f6ff;
+  isolation: isolate;
 }
 
 .labs-section * {
   box-sizing: border-box;
 }
 
+.labs-section--blueprint {
+  background: linear-gradient(160deg, rgba(5, 7, 17, 0.9) 0%, rgba(4, 9, 26, 0.92) 60%, rgba(6, 11, 28, 0.95) 100%);
+}
+
 .labs-backdrop {
   position: absolute;
-  inset: -18% -24%;
+  inset: -20% -25%;
   background:
-    radial-gradient(60% 60% at 18% 18%, rgba(255, 138, 0, 0.24) 0%, rgba(255, 138, 0, 0) 70%),
-    radial-gradient(80% 80% at 82% 22%, rgba(68, 132, 255, 0.3) 0%, rgba(68, 132, 255, 0) 62%),
-    linear-gradient(140deg, rgba(22, 7, 44, 0.92) 0%, rgba(15, 6, 32, 0.86) 45%, rgba(9, 3, 25, 0.9) 100%);
-  filter: blur(40px);
-  opacity: 0.92;
-  transform: scale(1.05);
+    radial-gradient(50% 50% at 20% 18%, rgba(255, 138, 0, 0.32) 0%, rgba(255, 138, 0, 0) 60%),
+    radial-gradient(70% 70% at 78% 18%, rgba(63, 131, 248, 0.32) 0%, rgba(63, 131, 248, 0) 65%),
+    linear-gradient(130deg, rgba(17, 8, 38, 0.9), rgba(5, 5, 18, 0.95));
+  filter: blur(42px);
+  opacity: 0.85;
+  transform: scale(1.04);
 }
 
 .labs-inner {
   position: relative;
   z-index: 1;
-  width: min(1080px, 100%);
+  width: min(1140px, 100%);
   margin: 0 auto;
-  display: grid;
-  gap: clamp(2.5rem, 5vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 3.75rem);
 }
 
 .labs-stars {
@@ -3825,7 +3831,7 @@ body.is-about-js .about [data-reveal].is-in {
   inset: clamp(-12rem, -10vw, -8rem);
   pointer-events: none;
   overflow: hidden;
-  z-index: -1;
+  z-index: 0;
 }
 
 .labs-star,
@@ -3852,33 +3858,62 @@ body.is-about-js .about [data-reveal].is-in {
   filter: blur(var(--blur, 6px));
 }
 
-.labs-orb {
+.labs-blueprint-grid,
+.labs-blueprint-rings {
   position: absolute;
-  inset: auto auto 12% 62%;
-  width: clamp(120px, 28vw, 220px);
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 174, 67, 0.55) 0%, rgba(255, 174, 67, 0) 60%),
-    radial-gradient(circle at 70% 70%, rgba(108, 214, 255, 0.6) 0%, rgba(108, 214, 255, 0) 65%),
-    radial-gradient(circle at 50% 50%, rgba(112, 40, 255, 0.5) 0%, rgba(112, 40, 255, 0) 70%);
-  filter: blur(12px);
-  opacity: 0.82;
-  mix-blend-mode: screen;
-  transition: transform 0.6s var(--ease);
+  inset: -16% -12%;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.labs-head {
+.labs-blueprint-grid {
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.09) 1px, transparent 1px);
+  background-size: 120px 120px;
+  opacity: 0.25;
+  mix-blend-mode: screen;
+}
+
+.labs-blueprint-rings {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.08) 2px, transparent 2px),
+    linear-gradient(transparent 49%, rgba(96, 165, 250, 0.05) 50%, transparent 51%),
+    linear-gradient(90deg, transparent 49%, rgba(96, 165, 250, 0.05) 50%, transparent 51%);
+  background-size: 220px 220px;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+.blueprint-inner {
+  position: relative;
+}
+
+.blueprint-head {
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
   text-align: center;
   justify-items: center;
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
-.labs-title {
-  font-size: clamp(2.4rem, 6vw, 3.4rem);
+.blueprint-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  background: linear-gradient(120deg, rgba(255, 138, 0, 0.15), rgba(168, 85, 247, 0.15), rgba(59, 130, 246, 0.15));
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blueprint-title {
+  font-size: clamp(2.4rem, 6vw, 3.5rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   margin: 0;
@@ -3887,311 +3922,352 @@ body.is-about-js .about [data-reveal].is-in {
 .labs-title-gradient {
   background: var(--grad);
   -webkit-background-clip: text;
-  color: transparent;
   background-clip: text;
+  color: transparent;
 }
 
-.labs-subtitle {
-  display: grid;
-  gap: 0.3rem;
+.blueprint-subtitle {
   color: rgba(244, 246, 255, 0.82);
-  font-size: clamp(1.05rem, 2.6vw, 1.2rem);
-  line-height: 1.55;
-}
-
-.labs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: clamp(1.5rem, 4vw, 2.2rem);
-  list-style: none;
-  padding: 0;
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  line-height: 1.6;
   margin: 0;
 }
 
-.labs-card {
-  position: relative;
-  padding: clamp(1.6rem, 2.5vw, 2.1rem);
-  border-radius: var(--radius-xl);
-  background: linear-gradient(160deg, rgba(24, 10, 46, 0.86) 0%, rgba(18, 6, 36, 0.92) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 20px 45px rgba(7, 3, 18, 0.6);
+.blueprint-measure {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.blueprint-measure-line {
+  width: clamp(40px, 18vw, 140px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.7), transparent);
+}
+
+.blueprint-measure-label {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  font-family: "Space Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: rgba(96, 165, 250, 0.9);
+  text-transform: uppercase;
+}
+
+.blueprint-grid {
   display: grid;
-  gap: 1.4rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 2.4rem);
+}
+
+.blueprint-card {
+  position: relative;
+  border-radius: var(--card-radius, 22px);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  background: rgba(7, 10, 22, 0.88);
+  box-shadow: 0 25px 50px rgba(5, 7, 17, 0.55);
+  padding: clamp(1.4rem, 3vw, 1.7rem);
   overflow: hidden;
-  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
-  isolation: isolate;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
-.labs-card::before {
-  content: "";
-  position: absolute;
-  inset: -40% -60% auto;
-  height: 220%;
-  background: radial-gradient(circle at 20% 20%, var(--labs-card-accent, rgba(255, 138, 0, 0.32)) 0%, rgba(0, 0, 0, 0) 65%);
-  opacity: 0;
-  transform: translate3d(0, 18px, 0) scale(0.9);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
-  z-index: -2;
-}
-
-.labs-card::after {
+.blueprint-card::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 60%);
+  background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.08), transparent 50%);
   opacity: 0;
-  transition: opacity 0.5s var(--ease);
-  z-index: -1;
-}
-
-.labs-card.is-in,
-.labs-card:hover,
-.labs-card:focus-within {
-  transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 26px 50px rgba(9, 3, 24, 0.7);
-}
-
-.labs-card:hover::before,
-.labs-card:focus-within::before {
-  opacity: 0.7;
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-.labs-card:hover::after,
-.labs-card:focus-within::after {
-  opacity: 0.2;
-}
-
-.labs-status {
-  justify-self: flex-start;
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.labs-status--beta {
-  background: rgba(255, 138, 0, 0.14);
-  border-color: rgba(255, 138, 0, 0.36);
-  color: #ffb057;
-}
-
-.labs-status--beta-alt {
-  background: rgba(95, 198, 255, 0.18);
-  border-color: rgba(95, 198, 255, 0.4);
-  color: #8edbff;
-}
-
-.labs-status--live {
-  background: rgba(40, 190, 120, 0.18);
-  border-color: rgba(40, 190, 120, 0.35);
-  color: #6ce2b3;
-}
-
-.labs-status--coming {
-  background: rgba(86, 198, 255, 0.18);
-  border-color: rgba(86, 198, 255, 0.4);
-  color: #7fd0ff;
-}
-
-.labs-status--prototype {
-  background: rgba(244, 123, 188, 0.2);
-  border-color: rgba(244, 123, 188, 0.4);
-  color: #ffd1a3;
-}
-
-.labs-icon {
-  width: clamp(58px, 8vw, 64px);
-  aspect-ratio: 1 / 1;
-  border-radius: 20px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08);
-}
-
-.labs-icon svg {
-  width: 28px;
-  height: 28px;
-  stroke-width: 1.6;
-  stroke: currentColor;
-  fill: none;
-}
-
-.labs-card-body {
-  display: grid;
-  gap: 0.8rem;
-}
-
-.labs-card-title {
-  margin: 0;
-  font-size: clamp(1.2rem, 2.8vw, 1.4rem);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: #f4fbff;
-}
-
-.labs-card-blurb {
-  margin: 0;
-  color: rgba(235, 238, 255, 0.76);
-  line-height: 1.55;
-  font-size: 0.98rem;
-}
-
-.labs-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 0.2rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s var(--ease);
-}
-
-.labs-cta::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.15rem;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.7));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s var(--ease);
-}
-
-.labs-card:hover .labs-cta,
-.labs-card:focus-within .labs-cta {
-  color: #ffffff;
-}
-
-.labs-card:hover .labs-cta::after,
-.labs-card:focus-within .labs-cta::after {
-  transform: scaleX(1);
-}
-
-.labs-rail {
-  position: absolute;
-  left: clamp(1.6rem, 5vw, 2.4rem);
-  right: clamp(1.6rem, 5vw, 2.4rem);
-  bottom: clamp(1.4rem, 4vw, 1.8rem);
-  height: 2px;
-  border-radius: 999px;
-  overflow: hidden;
+  transition: opacity var(--dur) var(--ease);
   pointer-events: none;
 }
 
-.labs-rail--comet::before,
-.labs-rail--comet::after {
-  content: "";
+.blueprint-card:hover,
+.blueprint-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 35px 60px rgba(5, 7, 17, 0.7);
+}
+
+.blueprint-card:hover::after,
+.blueprint-card:focus-within::after {
+  opacity: 1;
+}
+
+.blueprint-card-overlay,
+.blueprint-card-grid-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 45%, rgba(255, 255, 255, 0) 100%);
-  transform: translateX(-110%);
-  opacity: 0;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.labs-rail--comet::after {
-  filter: blur(6px);
+.blueprint-card-overlay {
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+  opacity: 0.8;
 }
 
-.labs-rail--comet.is-playing::before,
-.labs-rail--comet.is-playing::after,
-.labs-card:hover .labs-rail--comet::before,
-.labs-card:hover .labs-rail--comet::after,
-.labs-card:focus-within .labs-rail--comet::before,
-.labs-card:focus-within .labs-rail--comet::after {
-  animation: labs-comet 1.4s var(--ease) forwards;
+.blueprint-card-grid-overlay {
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.12) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.25;
+  mix-blend-mode: screen;
+  transition: opacity var(--dur) var(--ease);
 }
 
-.labs-card--orange {
-  --labs-card-accent: rgba(255, 138, 0, 0.34);
-  color: #fff0d8;
+.blueprint-card:hover .blueprint-card-grid-overlay,
+.blueprint-card:focus-within .blueprint-card-grid-overlay {
+  opacity: 0.4;
 }
 
-.labs-card--green {
-  --labs-card-accent: rgba(60, 215, 140, 0.32);
+.blueprint-card-index {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.9rem;
+  font-family: "Space Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  font-size: 0.78rem;
+  color: rgba(147, 197, 253, 0.5);
 }
 
-.labs-card--cyan {
-  --labs-card-accent: rgba(86, 198, 255, 0.36);
+.blueprint-card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
-.labs-card--purple {
-  --labs-card-accent: rgba(168, 120, 255, 0.32);
+.blueprint-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.labs-card--rose {
-  --labs-card-accent: rgba(244, 123, 188, 0.36);
-}
-
-.labs-card--blueCyan {
-  --labs-card-accent: rgba(95, 198, 255, 0.36);
-}
-
-.labs-card--green .labs-icon { color: #7decb7; }
-.labs-card--cyan .labs-icon { color: #7fd0ff; }
-.labs-card--purple .labs-icon { color: #c7dcff; }
-.labs-card--rose .labs-icon { color: #ffd1a3; }
-.labs-card--blueCyan .labs-icon { color: #8bdcff; }
-
-.labs-card--orange .labs-icon {
-  color: #ffbe76;
-}
-
-.labs-card--green .labs-status { color: #7decb7; }
-.labs-card--cyan .labs-status { color: #7fd0ff; }
-.labs-card--purple .labs-status { color: #d6e8ff; }
-.labs-card--rose .labs-status { color: #ffd1a3; }
-.labs-card--blueCyan .labs-status { color: #8edbff; }
-
-.labs-beta-cta {
+.blueprint-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   display: grid;
   place-items: center;
+  color: var(--card-accent, #f4f6ff);
+  background: var(--card-accent-soft, rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.labs-beta-button {
+.blueprint-status {
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.blueprint-status--live {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.5);
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.blueprint-status--beta {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.5);
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.blueprint-status--prototype {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.5);
+  background: rgba(168, 85, 247, 0.14);
+}
+
+.blueprint-status--soon {
+  color: #fb923c;
+  border-color: rgba(251, 146, 60, 0.6);
+  background: rgba(251, 146, 60, 0.12);
+}
+
+.blueprint-card h3 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.blueprint-card p {
+  margin: 0;
+  color: rgba(226, 230, 255, 0.75);
+  line-height: 1.5;
+}
+
+.blueprint-card-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e5edff;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.blueprint-card-cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.15rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 138, 0, 0.6), rgba(59, 130, 246, 0.7));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+
+.blueprint-card:hover .blueprint-card-cta::after,
+.blueprint-card:focus-within .blueprint-card-cta::after {
+  transform: scaleX(1);
+}
+
+.blueprint-card-arrow {
+  display: inline-flex;
+  transition: transform var(--dur) var(--ease);
+}
+
+.blueprint-card:hover .blueprint-card-arrow,
+.blueprint-card:focus-within .blueprint-card-arrow {
+  transform: translateX(4px);
+}
+
+.blueprint-card--orange {
+  --card-accent: #ff8a3d;
+  --card-accent-soft: rgba(255, 138, 61, 0.15);
+}
+
+.blueprint-card--purple {
+  --card-accent: #c084fc;
+  --card-accent-soft: rgba(192, 132, 252, 0.17);
+}
+
+.blueprint-card--blue {
+  --card-accent: #60a5fa;
+  --card-accent-soft: rgba(96, 165, 250, 0.14);
+}
+
+.blueprint-card--teal {
+  --card-accent: #34d399;
+  --card-accent-soft: rgba(52, 211, 153, 0.15);
+}
+
+.blueprint-card--rose {
+  --card-accent: #fb7185;
+  --card-accent-soft: rgba(251, 113, 133, 0.18);
+}
+
+.blueprint-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: var(--card-radius, 22px);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  background: rgba(6, 8, 18, 0.85);
+  box-shadow: inset 0 0 40px rgba(59, 130, 246, 0.08);
+}
+
+.blueprint-stats-item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.blueprint-stat-value {
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-weight: 700;
+  background: var(--swift-accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.blueprint-stat-value--orange {
+  background-image: linear-gradient(120deg, #ff8a3d, #fbbf24);
+}
+
+.blueprint-stat-value--purple {
+  background-image: linear-gradient(120deg, #a855f7, #6366f1);
+}
+
+.blueprint-stat-value--blue {
+  background-image: linear-gradient(120deg, #38bdf8, #2563eb);
+}
+
+.blueprint-stat-value--teal {
+  background-image: linear-gradient(120deg, #34d399, #0ea5e9);
+}
+
+.blueprint-stat-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(209, 222, 255, 0.75);
+  font-family: "Space Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+
+.blueprint-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.blueprint-cta-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 0.9rem clamp(1.8rem, 5vw, 2.6rem);
+  padding: 0.85rem 1.8rem;
   border-radius: 999px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #1d0f36;
-  background: var(--grad);
-  box-shadow: 0 18px 35px rgba(255, 138, 0, 0.28);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-}
-
-.labs-beta-button:hover,
-.labs-beta-button:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 24px 45px rgba(255, 138, 0, 0.35);
+  border: 1px solid rgba(148, 163, 255, 0.6);
+  background: linear-gradient(120deg, rgba(255, 138, 61, 0.2), rgba(168, 85, 247, 0.18), rgba(59, 130, 246, 0.2));
   text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
-.labs-beta-button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.7);
+.blueprint-cta-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-100%);
+  animation: labs-scan 4s linear infinite;
+}
+
+.blueprint-cta-button:hover,
+.blueprint-cta-button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.35);
+}
+
+.blueprint-cta-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
   outline-offset: 4px;
+}
+
+.blueprint-cta-button:hover::after,
+.blueprint-cta-button:focus-visible::after {
+  animation-duration: 2.5s;
 }
 
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(28px);
   transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
 
@@ -4210,49 +4286,40 @@ body.is-about-js .about [data-reveal].is-in {
   }
 }
 
-@keyframes labs-comet {
+@keyframes labs-scan {
   0% {
-    transform: translateX(-115%);
-    opacity: 0;
+    transform: translateX(-120%);
   }
-  10% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
+  60% {
+    transform: translateX(120%);
   }
   100% {
     transform: translateX(120%);
-    opacity: 0;
   }
 }
 
-@media (max-width: 768px) {
-  .labs-inner {
-    gap: 2.2rem;
+@media (max-width: 1024px) {
+  .blueprint-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .labs-head {
+  .blueprint-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .blueprint-head {
     text-align: left;
     justify-items: flex-start;
-    margin-inline: 0;
   }
 
-  .labs-subtitle {
-    justify-items: flex-start;
+  .blueprint-grid {
+    grid-template-columns: 1fr;
   }
 
-  .labs-rail {
-    left: clamp(1.2rem, 8vw, 1.8rem);
-    right: clamp(1.2rem, 8vw, 1.8rem);
-  }
-
-  .labs-beta-cta {
-    justify-items: stretch;
-  }
-
-  .labs-beta-button {
-    width: 100%;
+  .blueprint-stats {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -4264,15 +4331,11 @@ body.is-about-js .about [data-reveal].is-in {
     animation-iteration-count: 1 !important;
   }
 
-  .labs-rail--comet::before,
-  .labs-rail--comet::after {
+  .blueprint-cta-button::after {
     animation: none !important;
-    transform: translateX(0);
-    opacity: 0.4;
+    opacity: 0;
   }
 }
-
-
 /* ===========================
    SwiftSend Max 3.0 — Contact
    =========================== */
