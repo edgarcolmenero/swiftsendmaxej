@@ -1087,23 +1087,28 @@ body.is-packs-reduced .packs::before { animation: none; opacity: 0.32; }
   transition: opacity 520ms ease;
 }
 
-.pack:hover,
-.pack:focus-within,
-.pack.is-hover {
+.pack.service-card::before,
+.pack.service-card::after {
+  content: none;
+}
+
+.pack.service-card:hover,
+.pack.service-card:focus-within,
+.pack.service-card.is-hover {
   transform: translateY(-6px);
   box-shadow: 0 0 42px var(--accent-shadow, rgba(59, 130, 246, 0.38));
   border-color: color-mix(in srgb, var(--accent-start) 16%, rgba(148, 163, 184, 0.16));
 }
 
-.pack:hover .card-accent,
-.pack:focus-within .card-accent,
-.pack.is-hover .card-accent {
+.pack.service-card:hover .card-accent,
+.pack.service-card:focus-within .card-accent,
+.pack.service-card.is-hover .card-accent {
   opacity: 0.42;
 }
 
-.pack:hover .card-border,
-.pack:focus-within .card-border,
-.pack.is-hover .card-border {
+.pack.service-card:hover .card-border,
+.pack.service-card:focus-within .card-border,
+.pack.service-card.is-hover .card-border {
   opacity: 1;
 }
 
