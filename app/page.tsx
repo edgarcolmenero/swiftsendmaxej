@@ -1635,12 +1635,13 @@ function Packs() {
       <div className="packs__sky" aria-hidden="true" />
       <div className="packs__inner" data-reveal-root>
         <header className="packs__header" data-reveal="heading">
-          <p className="packs__eyebrow">Our Packs</p>
           <h2 id="packs-title" className="packs__title">
-            Transparent pricing for every stage of your digital journey.
+            <span className="packs__title-word">Our</span>{" "}
+            <span className="packs__title-word packs__title-word--accent ss-text-gradient">Packs</span>
           </h2>
           <p className="packs__lede">
-            Four product tiers plus add-ons, all designed to plug into the SwiftSend stack.
+            Transparent pricing for every stage of your digital journey — four product tiers plus add-ons, all designed to
+            plug into the SwiftSend stack.
           </p>
         </header>
 
