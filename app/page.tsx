@@ -1568,7 +1568,7 @@ function Packs() {
 
     const packEls = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal=\"pack\"]"));
     packEls.forEach((card, idx) => {
-      card.style.setProperty("--reveal-delay", `${idx * 80}ms`);
+      card.style.setProperty("--reveal-delay", `${idx * 100}ms`);
     });
 
     const revealEls = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal]"));
