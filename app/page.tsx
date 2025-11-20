@@ -1402,6 +1402,7 @@ function Packs() {
       name: "Starter",
       accent: "cyan",
       className: "pack--starter",
+      featured: false,
       tagline: "Perfect for businesses getting online",
       statusClass: "pack__status--live-cyan",
       statusLabel: "LIVE",
@@ -1436,6 +1437,7 @@ function Packs() {
       name: "Builder",
       accent: "purple",
       className: "pack--featured",
+      featured: true,
       tagline: "Advanced functionality and integrations",
       statusClass: "pack__status--live-purple",
       statusLabel: "LIVE",
@@ -1468,6 +1470,7 @@ function Packs() {
       name: "Engine",
       accent: "orange",
       className: "pack--engine",
+      featured: false,
       tagline: "Data-driven enterprise solutions",
       statusClass: "pack__status--prototype",
       statusLabel: "PROTOTYPE",
@@ -1501,6 +1504,7 @@ function Packs() {
       name: "Growth",
       accent: "emerald",
       className: "pack--growth",
+      featured: false,
       tagline: "Complete digital marketing solution",
       statusClass: "pack__status--beta",
       statusLabel: "BETA",
@@ -1644,23 +1648,24 @@ function Packs() {
           {packData.map((pack) => (
             <article
               key={pack.name}
-              className={`pack ${pack.className}`}
+              className={`pack service-card ${pack.className}`}
               data-reveal="pack"
               data-accent={pack.accent}
             >
               <div className="pack__left">
-                <div className="pack__meta">
-                  <span className="pack__id">[{pack.id}]</span>
-                  <div className={`pack__icon pack__icon--${pack.accent}`} aria-hidden="true">
-                    {pack.icon}
-                  </div>
+                <span className="pack__id">[{pack.id}]</span>
+                <div className={`pack__icon service-card__icon pack__icon--${pack.accent}`} aria-hidden="true">
+                  {pack.icon}
                 </div>
               </div>
 
               <div className="pack__middle">
                 <div className="pack__heading-row">
                   <div>
-                    <h3 className="pack__title-text">{pack.name}</h3>
+                    <div className="pack__title-line">
+                      <h3 className="pack__title-text">{pack.name}</h3>
+                      {pack.featured ? <span className="pack__badge">Most Popular</span> : null}
+                    </div>
                     <p className="pack__tagline">{pack.tagline}</p>
                   </div>
                   <span className={`pack__status ${pack.statusClass}`}>{pack.statusLabel}</span>
@@ -1700,7 +1705,7 @@ function Packs() {
 
           <div className="packs__addons-grid">
             {addons.map((addon) => (
-              <article key={addon.id} className={`packs__addon packs__addon--${addon.accent}`}>
+              <article key={addon.id} className={`packs__addon service-card packs__addon--${addon.accent}`}>
                 <div className="packs__addon-top">
                   <span className="packs__addon-id">[{addon.id}]</span>
                 </div>
@@ -1708,10 +1713,6 @@ function Packs() {
                 <p className="packs__addon-price">{addon.price}</p>
                 <p className="packs__addon-helper">{addon.helper}</p>
                 <div className="packs__addon-cta">Add to any pack</div>
-                <a href="#contact" className="packs__addons-button">
-                  <span>Get Custom Quote</span>
-                  <span aria-hidden className="pack__cta-arrow">↗</span>
-                </a>
               </article>
             ))}
           </div>
