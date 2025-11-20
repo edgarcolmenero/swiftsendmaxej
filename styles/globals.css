@@ -2187,6 +2187,18 @@ main {
   transform: scaleX(1);
 }
 
+.pack.service-card:is(:hover, :focus-visible, :focus-within, .is-hover) {
+  background: transparent;
+  box-shadow: 0 0 42px var(--accent-shadow, rgba(59, 130, 246, 0.38));
+  border-color: color-mix(in srgb, var(--accent-start) 16%, rgba(148, 163, 184, 0.16));
+}
+
+.packs__addon.service-card:is(:hover, :focus-visible, :focus-within, .is-hover) {
+  background: transparent;
+  box-shadow: 0 0 32px var(--accent-shadow, rgba(59, 130, 246, 0.35));
+  border-color: color-mix(in srgb, var(--accent-start) 18%, rgba(148, 163, 184, 0.16));
+}
+
 .service-card:active {
   --card-hover-lift: -2px;
   transform: translate3d(0, calc(var(--card-translate, 0px) + var(--card-hover-lift)), 0) scale(0.99);
