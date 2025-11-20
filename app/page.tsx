@@ -1392,11 +1392,155 @@ export default function HomePage() {
   );
 }
 
+
 function Packs() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const packsRef = useRef<HTMLElement | null>(null);
+
+  const packData = [
+    {
+      id: "01",
+      name: "Starter",
+      accent: "cyan",
+      className: "pack--starter",
+      tagline: "Perfect for businesses getting online",
+      statusClass: "pack__status--live-cyan",
+      statusLabel: "LIVE",
+      price: "$2,999",
+      unit: "/one-time",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" strokeWidth="1.6" aria-hidden="true">
+          <path
+            d="M16 4 27 9.5v10c0 4-2.5 6.8-6.1 8.7L16 28l-4.9.2C7.5 26.3 5 23.5 5 19.5v-10L16 4Z"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M12 17.3 16 13l4 4.3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="16" cy="20.4" r="1.1" fill="currentColor" />
+        </svg>
+      ),
+      features: [
+        "Industry-specific website",
+        "CMS basics",
+        "Contact forms",
+        "Mobile responsive",
+        "Performance tuning",
+        "3 months support",
+        "SEO checklist",
+        "Analytics starter",
+        "Secure hosting setup",
+      ],
+    },
+    {
+      id: "02",
+      name: "Builder",
+      accent: "purple",
+      className: "pack--featured",
+      tagline: "Advanced functionality and integrations",
+      statusClass: "pack__status--live-purple",
+      statusLabel: "LIVE",
+      price: "$7,999",
+      unit: "/project",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" strokeWidth="1.6" aria-hidden="true">
+          <path
+            d="M15.5 3v9H10L16.5 29V19h6L15.5 3Z"
+            fill="currentColor"
+            stroke="currentColor"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      features: [
+        "Custom APIs",
+        "Admin dashboards",
+        "CRM integration",
+        "Payment processing",
+        "Advanced analytics",
+        "6 months support",
+        "Access controls",
+        "Migration planning",
+        "QA automation setup",
+      ],
+    },
+    {
+      id: "03",
+      name: "Engine",
+      accent: "orange",
+      className: "pack--engine",
+      tagline: "Data-driven enterprise solutions",
+      statusClass: "pack__status--prototype",
+      statusLabel: "PROTOTYPE",
+      price: "$15,999",
+      unit: "/project",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" strokeWidth="1.6" aria-hidden="true">
+          <path
+            d="M6 9.5c0-3.3 4-6 10-6s10 2.7 10 6-4 6-10 6-10-2.7-10-6Zm0 6c0 3.3 4 6 10 6s10-2.7 10-6m-20 6c0 3.3 4 6 10 6s10-2.7 10-6"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M13 11.3c.8.5 1.8.7 3 .7 1.2 0 2.2-.2 3-.7" stroke="currentColor" strokeLinecap="round" />
+        </svg>
+      ),
+      features: [
+        "Data pipelines",
+        "Data warehouses",
+        "BI dashboards",
+        "Real-time analytics",
+        "Machine learning",
+        "12 months support",
+        "Observability",
+        "Security reviews",
+        "Platform governance",
+      ],
+    },
+    {
+      id: "04",
+      name: "Growth",
+      accent: "emerald",
+      className: "pack--growth",
+      tagline: "Complete digital marketing solution",
+      statusClass: "pack__status--beta",
+      statusLabel: "BETA",
+      price: "$12,999",
+      unit: "/campaign",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" strokeWidth="1.6" aria-hidden="true">
+          <path
+            d="M4 21 11.4 13.6l4.2 4.1L28 5.2"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M21.8 5.2H28v6.2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M11 17v9" stroke="currentColor" strokeLinecap="round" />
+        </svg>
+      ),
+      features: [
+        "SEO optimization",
+        "Lead generation flows",
+        "Fee-smart checkout",
+        "Marketing automation",
+        "Analytics & reporting",
+        "Ongoing optimization",
+        "Conversion testing",
+        "Campaign orchestration",
+        "5 months support",
+      ],
+    },
+  ];
+
+  const addons = [
+    { id: "05", title: "AI Bot", price: "$1,999", accent: "cyan", helper: "Conversational workflows" },
+    { id: "06", title: "SwiftPay Mini", price: "$999", accent: "orange", helper: "Embedded payments" },
+    { id: "07", title: "App Shell", price: "$3,999", accent: "purple", helper: "Cross-platform starter" },
+    { id: "08", title: "DevOps Setup", price: "$2,499", accent: "emerald", helper: "Pipelines & SRE" },
+  ];
 
   useEffect(() => {
-    const section = sectionRef.current;
+    const section = packsRef.current;
     if (!section) return;
 
     document.body.classList.add("is-packs-js");
@@ -1418,6 +1562,11 @@ function Packs() {
       else if (typeof mq.addListener === "function") mq.addListener(syncReduced);
     }
 
+    const packEls = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal=\"pack\"]"));
+    packEls.forEach((card, idx) => {
+      card.style.setProperty("--reveal-delay", `${idx * 80}ms`);
+    });
+
     const revealEls = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal]"));
     let io: IntersectionObserver | null = null;
     if ("IntersectionObserver" in window) {
@@ -1425,16 +1574,16 @@ function Packs() {
         (entries, obs) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
-              entry.target.classList.add("is-in");
+              (entry.target as HTMLElement).classList.add("is-visible");
               obs.unobserve(entry.target);
             }
           }
         },
-        { threshold: 0.16, rootMargin: "0px 0px -10% 0px" }
+        { threshold: 0.12, rootMargin: "-10% 0px -20% 0px" }
       );
       revealEls.forEach((el) => io!.observe(el));
     } else {
-      revealEls.forEach((el) => el.classList.add("is-in"));
+      revealEls.forEach((el) => el.classList.add("is-visible"));
     }
 
     const bindHover = (el: Element) => {
@@ -1460,9 +1609,9 @@ function Packs() {
     };
 
     const unbinders: Array<() => void> = [];
-    section.querySelectorAll(".pack, .addon").forEach((n) => unbinders.push(bindHover(n)));
+    section.querySelectorAll(".pack, .packs__addon").forEach((n) => unbinders.push(bindHover(n)));
 
-    section.querySelectorAll<HTMLAnchorElement>(".pack__cta, .addons__cta").forEach((a) => {
+    section.querySelectorAll<HTMLAnchorElement>(".pack__cta, .packs__addons-button").forEach((a) => {
       if (a.getAttribute("href") !== "#contact") a.setAttribute("href", "#contact");
     });
 
@@ -1476,262 +1625,102 @@ function Packs() {
     <section
       id="packs"
       className="packs scroll-mt-28 md:scroll-mt-32"
-      aria-labelledby="packs-title"
       data-packs-section
-      ref={sectionRef}
+      ref={packsRef}
     >
       <div className="packs__sky" aria-hidden="true" />
-      <div className="packs__inner">
-        <header className="packs__head" data-reveal data-reveal-index="0">
+      <div className="packs__inner" data-reveal-root>
+        <header className="packs__header" data-reveal="heading">
+          <p className="packs__eyebrow">Our Packs</p>
           <h2 id="packs-title" className="packs__title">
-            Choose Your <span className="grad-word">Pack</span>
+            Transparent pricing for every stage of your digital journey.
           </h2>
           <p className="packs__lede">
-            Transparent pricing for every stage of your digital journey
+            Four product tiers plus add-ons, all designed to plug into the SwiftSend stack.
           </p>
         </header>
 
-        <ul className="packs__grid" role="list" data-packs-grid data-reveal data-reveal-index="1">
-          <li>
+        <div className="packs__list" data-reveal-group="packs">
+          {packData.map((pack) => (
             <article
-              className="pack"
-              data-accent="starter"
-              aria-labelledby="pack-starter-title"
-              aria-describedby="pack-starter-price pack-starter-desc"
+              key={pack.name}
+              className={`pack ${pack.className}`}
+              data-reveal="pack"
+              data-accent={pack.accent}
             >
-              <div className="pack__body">
-                <div className="pack__icon" aria-hidden="true">
-                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                    <path
-                      d="M14 2.5 17 10h7l-5.8 4.2 2.2 7-6.4-4.5-6.4 4.5 2.2-7L4 10h7z"
-                      fill="currentColor"
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+              <div className="pack__left">
+                <div className="pack__meta">
+                  <span className="pack__id">[{pack.id}]</span>
+                  <div className={`pack__icon pack__icon--${pack.accent}`} aria-hidden="true">
+                    {pack.icon}
+                  </div>
                 </div>
-                <h3 id="pack-starter-title" className="pack__title">
-                  Starter
-                </h3>
-                <p id="pack-starter-desc" className="pack__desc">
-                  Perfect for businesses getting online
-                </p>
-                <p id="pack-starter-price" className="pack__price">
-                  <span className="val">$2,999</span> <span className="unit">/one-time</span>
-                </p>
-                <ul className="pack__list" role="list">
-                  <li>Industry-specific website</li>
-                  <li>CMS basics</li>
-                  <li>Contact forms</li>
-                  <li>Mobile responsive</li>
-                  <li>3 months support</li>
-                </ul>
               </div>
-              <a
-                className="pack__cta"
-                href="#contact"
-                aria-label="Get started: Starter, $2,999 one-time"
-              >
-                Get Started
-              </a>
-            </article>
-          </li>
 
-          <li>
-            <article
-              className="pack is-featured"
-              data-accent="builder"
-              aria-labelledby="pack-builder-title"
-              aria-describedby="pack-builder-price pack-builder-desc"
-              aria-label="Most Popular plan"
-            >
-              <div className="pack__badge" aria-hidden="true">
-                Most Popular
-              </div>
-              <div className="pack__body">
-                <div className="pack__icon" aria-hidden="true">
-                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                    <path
-                      d="M13.5 2v9.5H8L14.5 26V16.5H20L13.5 2Z"
-                      fill="currentColor"
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+              <div className="pack__middle">
+                <div className="pack__heading-row">
+                  <div>
+                    <h3 className="pack__title-text">{pack.name}</h3>
+                    <p className="pack__tagline">{pack.tagline}</p>
+                  </div>
+                  <span className={`pack__status ${pack.statusClass}`}>{pack.statusLabel}</span>
                 </div>
-                <h3 id="pack-builder-title" className="pack__title">
-                  Builder
-                </h3>
-                <p id="pack-builder-desc" className="pack__desc">
-                  Advanced functionality and integrations
-                </p>
-                <p id="pack-builder-price" className="pack__price">
-                  <span className="val">$7,999</span> <span className="unit">/project</span>
-                </p>
-                <ul className="pack__list" role="list">
-                  <li>Custom APIs</li>
-                  <li>Admin dashboards</li>
-                  <li>CRM integration</li>
-                  <li>Payment processing</li>
-                  <li>Advanced analytics</li>
-                  <li>6 months support</li>
-                </ul>
-              </div>
-              <a
-                className="pack__cta pack__cta--primary"
-                href="#contact"
-                aria-label="Get started: Builder, $7,999 per project"
-              >
-                Get Started
-              </a>
-            </article>
-          </li>
 
-          <li>
-            <article
-              className="pack"
-              data-accent="engine"
-              aria-labelledby="pack-engine-title"
-              aria-describedby="pack-engine-price pack-engine-desc"
-            >
-              <div className="pack__body">
-                <div className="pack__icon" aria-hidden="true">
-                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                    <path
-                      d="M6 8.5c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5-3.6 5.5-8 5.5-8-2.2-8-5.5Zm0 5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5M6 18.5c0 3.3 3.6 5.5 8 5.5s8-2.2 8-5.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    ></path>
-                  </svg>
+                <div className="pack__features">
+                  {pack.features.map((feature, index) => (
+                    <div className="pack__feature" key={feature + index}>
+                      <span className={`pack__feature-dot pack__feature-dot--${pack.accent}`} />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
-                <h3 id="pack-engine-title" className="pack__title">
-                  Engine
-                </h3>
-                <p id="pack-engine-desc" className="pack__desc">
-                  Data-driven enterprise solutions
-                </p>
-                <p id="pack-engine-price" className="pack__price">
-                  <span className="val">$15,999</span> <span className="unit">/project</span>
-                </p>
-                <ul className="pack__list" role="list">
-                  <li>Data pipelines</li>
-                  <li>Data warehouses</li>
-                  <li>BI dashboards</li>
-                  <li>Real-time analytics</li>
-                  <li>Machine learning</li>
-                  <li>12 months support</li>
-                </ul>
               </div>
-              <a
-                className="pack__cta"
-                href="#contact"
-                aria-label="Get started: Engine, $15,999 per project"
-              >
-                Get Started
-              </a>
-            </article>
-          </li>
 
-          <li>
-            <article
-              className="pack"
-              data-accent="growth"
-              aria-labelledby="pack-growth-title"
-              aria-describedby="pack-growth-price pack-growth-desc"
-            >
-              <div className="pack__body">
-                <div className="pack__icon" aria-hidden="true">
-                  <svg viewBox="0 0 28 28" width="28" height="28" role="img" aria-hidden="true">
-                    <path
-                      d="M4 18.5 11.5 11l4 4L24 6.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                    <path
-                      d="M18 6h6v6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                  </svg>
+              <div className="pack__right">
+                <div className="pack__price">
+                  <span className="pack__price-value">{pack.price}</span>
+                  <span className="pack__price-unit">{pack.unit}</span>
                 </div>
-                <h3 id="pack-growth-title" className="pack__title">
-                  Growth
-                </h3>
-                <p id="pack-growth-desc" className="pack__desc">
-                  Complete digital marketing solution
-                </p>
-                <p id="pack-growth-price" className="pack__price">
-                  <span className="val">$12,999</span> <span className="unit">/campaign</span>
-                </p>
-                <ul className="pack__list" role="list">
-                  <li>SEO optimization</li>
-                  <li>Lead generation flows</li>
-                  <li>Fee-smart checkout</li>
-                  <li>Marketing automation</li>
-                  <li>Analytics &amp; reporting</li>
-                  <li>Ongoing optimization</li>
-                </ul>
+                <a href="#contact" className="pack__cta">
+                  <span>Learn more</span>
+                  <span aria-hidden className="pack__cta-arrow">
+                    ↗
+                  </span>
+                </a>
               </div>
-              <a
-                className="pack__cta"
-                href="#contact"
-                aria-label="Get started: Growth, $12,999 per campaign"
-              >
-                Get Started
-              </a>
             </article>
-          </li>
-        </ul>
+          ))}
+        </div>
 
-        <section className="addons" aria-labelledby="addons-title" data-reveal data-reveal-index="2">
-          <header className="addons__head">
-            <h3 id="addons-title" className="addons__title">
-              Add-ons
-            </h3>
-            <p className="addons__lede">Enhance your pack with additional features</p>
+        <section className="packs__addons" aria-labelledby="packs-addons-heading" data-reveal="addons">
+          <header className="packs__addons-header">
+            <h3 id="packs-addons-heading">Add-ons</h3>
+            <p>Enhance your pack with additional features</p>
           </header>
 
-          <ul className="addons__grid" role="list">
-            <li>
-              <article className="addon" data-accent="ai">
-                <h4 className="addon__title">AI Bot</h4>
-                <p className="addon__price">$1,999</p>
+          <div className="packs__addons-grid">
+            {addons.map((addon) => (
+              <article key={addon.id} className={`packs__addon packs__addon--${addon.accent}`}>
+                <div className="packs__addon-top">
+                  <span className="packs__addon-id">[{addon.id}]</span>
+                </div>
+                <h4 className="packs__addon-title">{addon.title}</h4>
+                <p className="packs__addon-price">{addon.price}</p>
+                <p className="packs__addon-helper">{addon.helper}</p>
+                <div className="packs__addon-cta">Add to any pack</div>
+                <a href="#contact" className="packs__addons-button">
+                  <span>Get Custom Quote</span>
+                  <span aria-hidden className="pack__cta-arrow">↗</span>
+                </a>
               </article>
-            </li>
-            <li>
-              <article className="addon" data-accent="swiftpay">
-                <h4 className="addon__title">SwiftPay Mini</h4>
-                <p className="addon__price">$999</p>
-              </article>
-            </li>
-            <li>
-              <article className="addon" data-accent="app">
-                <h4 className="addon__title">App Shell</h4>
-                <p className="addon__price">$3,999</p>
-              </article>
-            </li>
-            <li>
-              <article className="addon" data-accent="devops">
-                <h4 className="addon__title">DevOps Setup</h4>
-                <p className="addon__price">$2,499</p>
-              </article>
-            </li>
-          </ul>
+            ))}
+          </div>
 
-          <div className="addons__ctaRow">
-            <p className="addons__prompt">
-              Need a custom solution? Let’s talk about your specific requirements.
-            </p>
-            <a className="addons__cta" href="#contact" aria-label="Request a custom quote">
-              Get Custom Quote
+          <div className="packs__addons-cta">
+            <p>Need a custom solution? Let’s talk about your specific requirements.</p>
+            <a href="#contact" className="packs__addons-button">
+              <span>Get Custom Quote</span>
+              <span aria-hidden className="pack__cta-arrow">↗</span>
             </a>
           </div>
         </section>
@@ -1739,7 +1728,6 @@ function Packs() {
     </section>
   );
 }
-
 type AchievementVariant = "honors" | "stem" | "adidas" | "consult";
 
 type Achievement = {
@@ -1767,24 +1755,18 @@ const midnightMinimal = {
   stars: "opacity-10",
   glows: [] as string[],
   headingSecondary: "text-gray-600",
-  headingGradient:
-    "bg-gradient-to-r from-[#ee895a] via-[#de7dd7] to-[#66aef9] bg-clip-text text-transparent",
+  headingGradient: "bg-gradient-to-r from-[#ee895a] via-[#de7dd7] to-[#66aef9] bg-clip-text text-transparent",
   bodyText: "text-gray-500",
   cardBackground: "bg-[#0a0a14]",
   cardBorder: "border-gray-900",
   cardHover: "hover:bg-[#0c0c18]",
-  mantraButton:
-    "border-purple-500/30 text-purple-400 hover:border-purple-400 hover:text-purple-300",
+  mantraButton: "border-purple-500/30 text-purple-400 hover:border-purple-400 hover:text-purple-300",
   sectionSubtitle: "text-orange-500",
   navBorder: "border-gray-900",
   navIconBorder: "border-gray-900 hover:border-gray-800",
   orbitalRing: "from-purple-500/20 via-blue-500/10 to-transparent",
   orbitalBackground: "bg-[#08080f]",
-  orbitalDots: [
-    "bg-orange-500",
-    "bg-purple-500",
-    "bg-blue-500",
-  ],
+  orbitalDots: ["bg-orange-500", "bg-purple-500", "bg-blue-500"],
 };
 
 const leaderOrder: LeaderKey[] = ["edgar", "jaden"];
