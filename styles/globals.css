@@ -1624,12 +1624,127 @@ body.is-packs-reduced .packs::before { animation: none; opacity: 0.32; }
 
 @media (max-width: 768px) {
   .packs__inner { padding: 48px 16px; gap: 24px; }
-  .packs__list { margin-bottom: 32px; }
-  .pack { gap: 16px; padding: 20px; }
-  .pack__features { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
-  .pack__right { width: 100%; align-items: flex-start; }
-  .packs__addons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .packs__addon { padding: 16px; }
+  .packs__list { margin-bottom: 32px; gap: 24px; }
+  
+  /* Mobile: Stack everything vertically, full-width cards */
+  .pack { 
+    gap: 16px; 
+    padding: 24px 20px; 
+    flex-direction: column;
+  }
+  
+  /* Mobile: Icon and title in a row at the top */
+  .pack__left { 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .pack__icon { 
+    width: 48px; 
+    height: 48px; 
+    flex-shrink: 0;
+  }
+  
+  .pack .icon-tile__inner svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Mobile: Middle section takes full width */
+  .pack__middle { 
+    width: 100%;
+    gap: 16px;
+  }
+  
+  /* Mobile: Heading row stacks on small screens with better spacing */
+  .pack__heading-row {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  /* Mobile: Reduce title size */
+  .pack__title-text {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  
+  /* Mobile: Tagline smaller */
+  .pack__tagline {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  /* Mobile: Status badge aligned to start */
+  .pack__status {
+    align-self: flex-start;
+  }
+  
+  /* Mobile: Single column for features */
+  .pack__features { 
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  /* Mobile: Slightly smaller feature text */
+  .pack__feature {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  /* Mobile: Price section at the end, full width, horizontal layout */
+  .pack__right { 
+    width: 100%; 
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  /* Mobile: Price aligned to start */
+  .pack__price {
+    align-items: flex-start;
+  }
+  
+  .pack__price-value { 
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .pack__price-unit { 
+    font-size: 12px;
+  }
+  
+  /* Mobile: CTA on the right */
+  .pack__cta {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  /* Add-ons: 2 columns on tablet, 1 on phone (handled in 560px breakpoint) */
+  .packs__addons-grid { 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 12px; 
+  }
+  
+  .packs__addon { 
+    padding: 16px; 
+  }
+  
+  /* Mobile: Adjust addon text sizes */
+  .packs__addon-title { 
+    font-size: 15px; 
+  }
+  
+  .packs__addon-price { 
+    font-size: 15px; 
+  }
+  
+  .packs__addon-helper { 
+    font-size: 13px; 
+  }
 }
 
 @media (max-width: 560px) {
