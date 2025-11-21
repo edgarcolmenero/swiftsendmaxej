@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { MessageCircle, Send } from "lucide-react";
 import { type CSSProperties } from "react";
 
 // Main container: full-height cosmic section with dark space background
@@ -78,10 +79,10 @@ const starsLayerTwoStyle: CSSProperties = {
   animation: "twinkle 10s ease-in-out infinite 1.5s",
 };
 
-// Central glassmorphic card
+// Central glassmorphic card - wider to accommodate two columns
 const cardStyle: CSSProperties = {
-  width: "min(680px, 100%)",
-  maxWidth: "680px",
+  width: "min(1100px, 100%)",
+  maxWidth: "1100px",
   padding: "clamp(42px, 6vw, 56px)",
   borderRadius: "32px",
   background:
@@ -91,7 +92,7 @@ const cardStyle: CSSProperties = {
     "0 0 1px rgba(77, 163, 255, 0.28) inset",
   border: "1px solid rgba(77, 163, 255, 0.32)",
   display: "grid",
-  gap: "clamp(20px, 4vw, 30px)",
+  gap: "clamp(24px, 4vw, 36px)",
   textAlign: "center",
   position: "relative",
   transition: "transform 320ms ease, box-shadow 320ms ease, border-color 320ms ease",
@@ -123,7 +124,7 @@ const subheadingStyle: CSSProperties = {
   fontSize: "1.08rem",
   lineHeight: 1.68,
   margin: 0,
-  maxWidth: "540px",
+  maxWidth: "720px",
   marginLeft: "auto",
   marginRight: "auto",
 };
@@ -135,23 +136,6 @@ const contactLineStyle: CSSProperties = {
   lineHeight: 1.62,
   margin: 0,
   marginTop: "4px",
-};
-
-// CTA row container
-const ctaRowStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "16px",
-  marginTop: "8px",
-};
-
-// Secondary email link (subtle, no button chrome)
-const emailLinkStyle: CSSProperties = {
-  color: "rgba(200, 215, 255, 0.76)",
-  fontSize: "0.94rem",
-  textDecoration: "none",
-  transition: "color 200ms ease",
 };
 
 export default function SupportPage() {
@@ -191,7 +175,7 @@ export default function SupportPage() {
         }}
       >
         {/* Label */}
-        <p style={labelStyle}>SwiftSend Support</p>
+        <p style={labelStyle}>SWIFTSEND SUPPORT</p>
 
         {/* Main heading */}
         <h1 id="support-title" style={headingStyle}>
@@ -209,15 +193,11 @@ export default function SupportPage() {
           Need help now? Start a build and we'll follow up with a scoped plan and timeline.
         </p>
 
-        {/* CTA row */}
-        <div style={ctaRowStyle}>
-          {/* Primary button: Start a build (matching hero button style) */}
+        {/* CTA Button */}
+        <div className="flex justify-center">
           <Link
             href="/#contact"
             className="btn btn-primary btn-primary--purple-blue"
-            style={{
-              scrollMarginTop: "calc(var(--header-h, 96px) + 8px)",
-            }}
           >
             Start a Build
             <svg
@@ -235,20 +215,147 @@ export default function SupportPage() {
               />
             </svg>
           </Link>
+        </div>
 
-          {/* Secondary email link */}
-          <a
-            href="mailto:swift.send.marketing@gmail.com"
-            style={emailLinkStyle}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "rgba(240, 245, 255, 0.92)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.color = "rgba(200, 215, 255, 0.76)";
-            }}
-          >
-            Or email us at swift.send.marketing@gmail.com
-          </a>
+        {/* Two-column layout: Chat placeholder + Contact methods */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mt-4">
+          {/* Left Column: Live Chat Placeholder */}
+          <div className="flex flex-col">
+            <div className="rounded-2xl bg-slate-950/60 border border-slate-700/50 shadow-xl overflow-hidden">
+              {/* Chat Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50 bg-slate-900/40">
+                <div className="flex flex-col items-start">
+                  <h3 className="text-slate-100 font-semibold text-base tracking-tight">
+                    Live Chat
+                  </h3>
+                  <p className="text-slate-400 text-xs mt-0.5">
+                    Online support available daily 9am–5pm
+                  </p>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/60 text-slate-300 text-xs font-medium">
+                  Coming soon
+                </div>
+              </div>
+
+              {/* Chat Messages Area */}
+              <div className="p-5 space-y-4 min-h-[280px] flex flex-col justify-end bg-slate-950/30">
+                {/* Agent Message */}
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800/80 border border-slate-600/50 flex items-center justify-center">
+                    <MessageCircle className="w-4 h-4 text-slate-300" />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <div className="rounded-2xl rounded-tl-sm bg-slate-800/70 border border-slate-700/40 px-4 py-2.5 max-w-xs">
+                      <p className="text-slate-200 text-sm leading-relaxed">
+                        Welcome to SwiftSend Live Chat. We're online 9am–5pm daily. How can we help?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* User Message Placeholder */}
+                <div className="flex items-start gap-3 justify-end">
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-slate-400 text-xs font-medium">You</span>
+                    </div>
+                    <div className="rounded-2xl rounded-tr-sm bg-indigo-900/40 border border-indigo-700/40 px-4 py-2.5 max-w-xs">
+                      <p className="text-slate-300 text-sm leading-relaxed italic">
+                        (Your message will appear here)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat Input (Disabled) */}
+              <div className="px-5 py-4 border-t border-slate-700/50 bg-slate-900/40">
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 rounded-full bg-slate-900/80 border border-slate-700/60 px-4 py-2.5 text-slate-500 text-sm opacity-60">
+                    Type your message...
+                  </div>
+                  <button
+                    disabled
+                    className="flex-shrink-0 w-10 h-10 rounded-full bg-slate-800/60 border border-slate-700/50 flex items-center justify-center opacity-50 cursor-not-allowed"
+                    aria-label="Send message (disabled)"
+                  >
+                    <Send className="w-4 h-4 text-slate-400" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Alternative Contact Methods */}
+          <div className="flex flex-col gap-5 text-left">
+            <div>
+              <h3 className="text-slate-100 font-semibold text-lg mb-3 tracking-tight">
+                Other ways to reach us
+              </h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                While we're building our live chat, you can still get help through these channels:
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {/* Email */}
+              <div className="rounded-xl bg-slate-900/50 border border-slate-700/40 p-4 hover:border-slate-600/60 transition-colors">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/60 border border-slate-700/40 flex items-center justify-center mt-0.5">
+                    <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-slate-200 font-medium text-sm mb-1">Email Support</h4>
+                    <a 
+                      href="mailto:swift.send.marketing@gmail.com"
+                      className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors"
+                    >
+                      swift.send.marketing@gmail.com
+                    </a>
+                    <p className="text-slate-500 text-xs mt-1">
+                      We respond within 24 hours
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Build Request */}
+              <div className="rounded-xl bg-slate-900/50 border border-slate-700/40 p-4 hover:border-slate-600/60 transition-colors">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/60 border border-slate-700/40 flex items-center justify-center mt-0.5">
+                    <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-slate-200 font-medium text-sm mb-1">Start a Build Request</h4>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      Submit a detailed project request and we'll follow up with a scoped plan and timeline
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Schedule */}
+              <div className="rounded-xl bg-slate-900/50 border border-slate-700/40 p-4 hover:border-slate-600/60 transition-colors">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/60 border border-slate-700/40 flex items-center justify-center mt-0.5">
+                    <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-slate-200 font-medium text-sm mb-1">Schedule a Call</h4>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      Book a discovery session to discuss your project needs in detail
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
