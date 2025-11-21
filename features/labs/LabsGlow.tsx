@@ -13,6 +13,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
+import { GradientPillButton } from "@/components/ui/GradientPillButton";
 
 type LabStatus = "Live" | "Beta" | "Prototype" | "Coming Soon";
 type LabAccent = "orange" | "purple" | "blue" | "teal" | "rose";
@@ -387,9 +388,9 @@ export default function Labs() {
 
 
         <div className="blueprint-cta" data-reveal data-reveal-index="13">
-          <a className="blueprint-cta-button" href="#contact">
+          <GradientPillButton href="#contact">
             <span className="ss-text-gradient">Join the Labs Beta Program</span>
-          </a>
+          </GradientPillButton>
         </div>
       </div>
     </section>
