@@ -479,7 +479,6 @@ export default function SupportPage() {
         @keyframes cometSlide {
           0%, 100% {
             opacity: 0;
-            transform: translateX(0) rotate(-28deg);
           }
           10% {
             opacity: 0.4;
