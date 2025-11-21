@@ -4,6 +4,7 @@ import BackgroundStarfield from "@/components/chrome/BackgroundStarfield";
 import Labs from "@/features/labs/LabsGlow";
 import { Process } from "@/app/(site)/sections/Process";
 import { Services } from "@/app/(site)/sections/Services";
+import { GradientPillButton } from "@/components/ui/GradientPillButton";
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
@@ -1615,7 +1616,7 @@ function Packs() {
     const unbinders: Array<() => void> = [];
     section.querySelectorAll(".pack, .packs__addon").forEach((n) => unbinders.push(bindHover(n)));
 
-    section.querySelectorAll<HTMLAnchorElement>(".pack__cta, .packs__addons-button").forEach((a) => {
+    section.querySelectorAll<HTMLAnchorElement>(".pack__cta, .blueprint-cta-button").forEach((a) => {
       if (a.getAttribute("href") !== "#contact") a.setAttribute("href", "#contact");
     });
 
@@ -1732,10 +1733,10 @@ function Packs() {
 
           <div className="packs__addons-cta">
             <p>Need a custom solution? Let’s talk about your specific requirements.</p>
-            <a href="#contact" className="packs__addons-button">
-              <span>Get Custom Quote</span>
+            <GradientPillButton href="#contact">
+              <span className="ss-text-gradient">Get Custom Quote</span>
               <span aria-hidden className="pack__cta-arrow">↗</span>
-            </a>
+            </GradientPillButton>
           </div>
         </section>
       </div>
