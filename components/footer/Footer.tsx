@@ -271,17 +271,18 @@ const Footer = ({
             </li>
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
-                <path
+                <rect
+                  x="5"
+                  y="2"
+                  width="14"
+                  height="20"
+                  rx="2"
                   fill="currentColor"
-                  d="M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z"
                   opacity="0.08"
                 />
                 <path
                   fill="currentColor"
-                  d="M8 2v4M16 2v4M4 8h16M9 12h2M9 16h2"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
+                  d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zm5 14a1 1 0 100 2 1 1 0 000-2z"
                 />
               </svg>
               {phoneHref ? (
