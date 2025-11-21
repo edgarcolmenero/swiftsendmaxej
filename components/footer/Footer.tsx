@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Instagram, Music } from "lucide-react";
 
 import Logo from "@/components/shared/Logo";
 import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
@@ -22,8 +23,8 @@ export interface FooterProps {
   tagline?: string;
   description?: string;
   email?: string;
-  instagramHandle?: string;
-  instagramHref?: string;
+  phone?: string;
+  phoneHref?: string;
   quickLinks?: FooterLink[];
   legalLinks?: FooterLink[];
   className?: string;
@@ -33,9 +34,9 @@ const DEFAULT_BRAND_NAME = BRAND_NAME;
 const DEFAULT_BRAND_INITIAL = BRAND_PLACEHOLDER_LETTER || "S";
 const DEFAULT_TAGLINE = "Never Stay Satisfied.";
 const DEFAULT_DESCRIPTION = "Building the future of digital solutions, one project at a time.";
-const DEFAULT_EMAIL = "hello@swiftsend.dev";
-const DEFAULT_INSTAGRAM_HANDLE = "@swiftsend.dev";
-const DEFAULT_INSTAGRAM_HREF = "https://instagram.com/swiftsend.dev";
+const DEFAULT_EMAIL = "swift.send.marketing@gmail.com";
+const DEFAULT_PHONE = "+1 510-519-1128";
+const DEFAULT_PHONE_HREF = "tel:+15105191128";
 
 const DEFAULT_QUICK_LINKS: FooterLink[] = [
   { label: "Home", href: "/#home" },
@@ -60,8 +61,8 @@ const Footer = ({
   tagline = DEFAULT_TAGLINE,
   description = DEFAULT_DESCRIPTION,
   email = DEFAULT_EMAIL,
-  instagramHandle = DEFAULT_INSTAGRAM_HANDLE,
-  instagramHref = DEFAULT_INSTAGRAM_HREF,
+  phone = DEFAULT_PHONE,
+  phoneHref = DEFAULT_PHONE_HREF,
   quickLinks = DEFAULT_QUICK_LINKS,
   legalLinks = DEFAULT_LEGAL_LINKS,
   className,
@@ -272,17 +273,21 @@ const Footer = ({
               <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
                 <path
                   fill="currentColor"
-                  d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z"
+                  d="M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z"
                   opacity="0.08"
                 />
-                <circle cx="12" cy="12" r="3" fill="currentColor" />
+                <path
+                  fill="currentColor"
+                  d="M8 2v4M16 2v4M4 8h16M9 12h2M9 16h2"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
               </svg>
-              {instagramHref ? (
-                <a href={instagramHref} target="_blank" rel="noopener noreferrer">
-                  {instagramHandle}
-                </a>
+              {phoneHref ? (
+                <a href={phoneHref}>{phone}</a>
               ) : (
-                <span>{instagramHandle}</span>
+                <span>{phone}</span>
               )}
             </li>
           </ul>
@@ -290,22 +295,22 @@ const Footer = ({
           <div className={styles["f-social"]}>
             <a
               className={styles["f-icn"]}
-              aria-label="Email"
-              href={`mailto:${email}`}
+              aria-label="TikTok @swiftsendofficial"
+              href="https://www.tiktok.com/@swiftsendofficial"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span>✉️</span>
+              <Music size={18} />
             </a>
-            {instagramHref ? (
-              <a
-                className={styles["f-icn"]}
-                aria-label="Instagram"
-                href={instagramHref}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>◎</span>
-              </a>
-            ) : null}
+            <a
+              className={styles["f-icn"]}
+              aria-label="Instagram @swiftsend.inc"
+              href="https://www.instagram.com/swiftsend.inc"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Instagram size={18} />
+            </a>
           </div>
         </section>
       </div>
