@@ -56,7 +56,7 @@ const starsLayerOneStyle: CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
-    // White stars
+    // White stars (original + new)
     "radial-gradient(1.2px 1.2px at 12% 18%, rgba(244, 240, 255, 0.72) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 88% 24%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 34% 42%, rgba(244, 240, 255, 0.65) 0%, transparent 100%), " +
@@ -72,12 +72,55 @@ const starsLayerOneStyle: CSSProperties = {
     "radial-gradient(0.9px 0.9px at 48% 65%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
     "radial-gradient(1.3px 1.3px at 15% 82%, rgba(244, 240, 255, 0.64) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 82% 72%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    // Additional white stars for 3x density
+    "radial-gradient(0.9px 0.9px at 5% 5%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 20% 12%, rgba(244, 240, 255, 0.64) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 42% 6%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 65% 10%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 82% 14%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 94% 8%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 10% 22%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 28% 26%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 50% 20%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 70% 18%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 86% 22%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 15% 35%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 40% 38%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 58% 33%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 75% 40%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 90% 36%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 4% 50%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 25% 48%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 55% 52%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 68% 46%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 84% 50%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 96% 48%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 12% 60%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 30% 62%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 52% 58%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 76% 64%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 88% 60%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 6% 75%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 35% 72%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 50% 80%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 70% 76%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 90% 70%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 22% 90%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 38% 92%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 58% 94%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 74% 88%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
     // Orange accent stars
     "radial-gradient(1.1px 1.1px at 38% 12%, rgba(255, 138, 61, 0.58) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 68% 28%, rgba(255, 138, 61, 0.48) 0%, transparent 100%), " +
     "radial-gradient(1.2px 1.2px at 22% 55%, rgba(255, 138, 61, 0.54) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 85% 68%, rgba(255, 138, 61, 0.52) 0%, transparent 100%), " +
-    "radial-gradient(0.8px 0.8px at 58% 85%, rgba(255, 138, 61, 0.46) 0%, transparent 100%)",
+    "radial-gradient(0.8px 0.8px at 58% 85%, rgba(255, 138, 61, 0.46) 0%, transparent 100%), " +
+    // Additional orange accent stars
+    "radial-gradient(1px 1px at 16% 30%, rgba(255, 138, 61, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 44% 48%, rgba(255, 138, 61, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 78% 44%, rgba(255, 138, 61, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 32% 76%, rgba(255, 138, 61, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 92% 82%, rgba(255, 138, 61, 0.5) 0%, transparent 100%)",
   animation: "twinkle 8s ease-in-out infinite",
 };
 
@@ -85,7 +128,7 @@ const starsLayerTwoStyle: CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
-    // White stars
+    // White stars (original + new)
     "radial-gradient(1px 1px at 56% 14%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 24% 36%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
     "radial-gradient(1.2px 1.2px at 78% 48%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
@@ -100,12 +143,54 @@ const starsLayerTwoStyle: CSSProperties = {
     "radial-gradient(1.3px 1.3px at 74% 92%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 52% 72%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 28% 88%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    // Additional white stars for 3x density
+    "radial-gradient(1px 1px at 3% 10%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 18% 14%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 36% 8%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 60% 12%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 80% 6%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 94% 16%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 8% 28%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 26% 32%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 48% 24%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 64% 30%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 82% 26%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 96% 32%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 12% 44%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 34% 40%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 54% 46%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 72% 42%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 88% 44%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 6% 56%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 20% 58%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 38% 54%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 58% 60%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 76% 56%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 90% 58%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 10% 70%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 28% 68%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 44% 76%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 60% 70%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 80% 78%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 94% 72%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 4% 86%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 22% 82%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 38% 90%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 56% 86%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 70% 94%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 86% 88%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
     // Purple accent stars
     "radial-gradient(1.1px 1.1px at 65% 8%, rgba(196, 107, 247, 0.56) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 18% 42%, rgba(196, 107, 247, 0.52) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 82% 58%, rgba(196, 107, 247, 0.48) 0%, transparent 100%), " +
     "radial-gradient(1.2px 1.2px at 42% 75%, rgba(196, 107, 247, 0.54) 0%, transparent 100%), " +
-    "radial-gradient(1px 1px at 12% 92%, rgba(196, 107, 247, 0.5) 0%, transparent 100%)",
+    "radial-gradient(1px 1px at 12% 92%, rgba(196, 107, 247, 0.5) 0%, transparent 100%), " +
+    // Additional purple accent stars
+    "radial-gradient(1px 1px at 30% 20%, rgba(196, 107, 247, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 50% 34%, rgba(196, 107, 247, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 74% 28%, rgba(196, 107, 247, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 14% 64%, rgba(196, 107, 247, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 88% 76%, rgba(196, 107, 247, 0.52) 0%, transparent 100%)",
   animation: "twinkle 10s ease-in-out infinite 1.5s",
 };
 
@@ -113,7 +198,7 @@ const starsLayerThreeStyle: CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
-    // More white stars for depth
+    // More white stars for depth (original + new)
     "radial-gradient(0.8px 0.8px at 32% 6%, rgba(244, 240, 255, 0.48) 0%, transparent 100%), " +
     "radial-gradient(1.1px 1.1px at 76% 12%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 14% 28%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
@@ -124,12 +209,58 @@ const starsLayerThreeStyle: CSSProperties = {
     "radial-gradient(1.1px 1.1px at 22% 78%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 64% 88%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 48% 95%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    // Additional white stars for 3x density
+    "radial-gradient(1px 1px at 6% 4%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 22% 8%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 40% 10%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 56% 6%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 72% 14%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 86% 10%, rgba(244, 240, 255, 0.64) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 96% 6%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 4% 24%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 18% 20%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 34% 26%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 50% 22%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 66% 28%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 82% 24%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 94% 20%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 10% 38%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 26% 42%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 44% 36%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 62% 40%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 78% 38%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 92% 42%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 6% 54%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 20% 50%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 36% 56%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 54% 52%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 70% 58%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 84% 54%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 98% 50%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 12% 70%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 28% 66%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 46% 72%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 60% 68%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 76% 74%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 90% 70%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 8% 86%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 24% 82%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 42% 90%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 58% 84%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 74% 92%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 88% 88%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
     // Blue accent stars
     "radial-gradient(1.1px 1.1px at 8% 18%, rgba(77, 163, 255, 0.54) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 52% 25%, rgba(77, 163, 255, 0.5) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 92% 48%, rgba(77, 163, 255, 0.48) 0%, transparent 100%), " +
     "radial-gradient(1.2px 1.2px at 28% 68%, rgba(77, 163, 255, 0.56) 0%, transparent 100%), " +
-    "radial-gradient(1px 1px at 78% 82%, rgba(77, 163, 255, 0.52) 0%, transparent 100%)",
+    "radial-gradient(1px 1px at 78% 82%, rgba(77, 163, 255, 0.52) 0%, transparent 100%), " +
+    // Additional blue accent stars
+    "radial-gradient(1px 1px at 16% 36%, rgba(77, 163, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 40% 44%, rgba(77, 163, 255, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 68% 32%, rgba(77, 163, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 84% 62%, rgba(77, 163, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 46% 78%, rgba(77, 163, 255, 0.5) 0%, transparent 100%)",
   animation: "twinkle 12s ease-in-out infinite 3s",
 };
 
