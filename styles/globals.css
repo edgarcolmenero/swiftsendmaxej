@@ -5412,60 +5412,16 @@ body.is-about-js .about [data-reveal].is-in {
   --process-progress-duration: 0.7s;
   --process-sweep-duration: 22s;
   color: #edf3ff;
-  padding: clamp(64px, 8vw, 96px) 0 clamp(72px, 9vw, 108px);
+  padding: clamp(52px, 7vw, 84px) 0 clamp(56px, 8vw, 92px);
   isolation: isolate;
   overflow: hidden;
-  background:
-    radial-gradient(65% 80% at 18% 20%, rgba(70, 46, 120, 0.3) 0%, rgba(70, 46, 120, 0) 60%),
-    radial-gradient(75% 90% at 80% 24%, rgba(24, 92, 140, 0.18) 0%, rgba(24, 92, 140, 0) 62%),
-    radial-gradient(85% 100% at 50% 8%, rgba(108, 68, 164, 0.2) 0%, rgba(108, 68, 164, 0) 64%),
-    radial-gradient(60% 70% at 50% 70%, rgba(21, 38, 72, 0.22) 0%, rgba(21, 38, 72, 0) 65%),
-    linear-gradient(180deg, #050915 0%, #050a18 50%, #040816 100%);
+  background: linear-gradient(180deg, #02030c 0%, #020510 45%, #01030a 100%);
 }
 
 .process::before,
 .process::after,
 .process-stars::before,
 .process-stars::after {
-  pointer-events: none;
-}
-
-.process::before {
-  content: "";
-  position: absolute;
-  bottom: 12%;
-  left: 12%;
-  width: 2px;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(218, 202, 255, 0.85);
-  box-shadow:
-    6vw 42vh 0 rgba(238, 230, 255, 0.82),
-    18vw 48vh 0 rgba(193, 169, 255, 0.78),
-    28vw 56vh 0 rgba(230, 222, 255, 0.9),
-    42vw 44vh 0 rgba(214, 224, 255, 0.78),
-    58vw 52vh 0 rgba(194, 170, 255, 0.9),
-    72vw 60vh 0 rgba(234, 255, 255, 0.76),
-    86vw 50vh 0 rgba(205, 180, 255, 0.88),
-    94vw 64vh 0 rgba(195, 242, 255, 0.82),
-    12vw 70vh 0 rgba(232, 232, 255, 0.8),
-    32vw 74vh 0 rgba(210, 184, 255, 0.82),
-    52vw 68vh 0 rgba(190, 210, 255, 0.78),
-    68vw 74vh 0 rgba(174, 146, 255, 0.88),
-    82vw 80vh 0 rgba(228, 236, 255, 0.82),
-    24vw 60vh 0 rgba(168, 132, 255, 0.78),
-    76vw 66vh 0 rgba(150, 225, 255, 0.78),
-    58vw 78vh 0 rgba(176, 140, 255, 0.82);
-  opacity: 0.8;
-  animation: processTwinkleB 7.6s ease-in-out infinite;
-  animation-delay: -3.2s;
-  z-index: 0;
-}
-
-.process::after {
-  content: "";
-  position: absolute;
-  inset: 0;
   display: none;
 }
 
@@ -5473,62 +5429,13 @@ body.is-about-js .about [data-reveal].is-in {
   position: absolute;
   inset: 0;
   z-index: 0;
-}
-
-.process-stars::before {
-  content: "";
-  position: absolute;
-  top: 12%;
-  left: 8%;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: rgba(234, 226, 255, 0.85);
-  box-shadow:
-    4vw 8vh 0 rgba(255, 255, 255, 0.85),
-    16vw 6vh 0 rgba(210, 188, 255, 0.9),
-    32vw 10vh 0 rgba(236, 220, 255, 0.82),
-    46vw 14vh 0 rgba(188, 162, 255, 0.78),
-    62vw 6vh 0 rgba(195, 246, 255, 0.88),
-    74vw 18vh 0 rgba(226, 208, 255, 0.82),
-    88vw 12vh 0 rgba(186, 152, 255, 0.8),
-    20vw 24vh 0 rgba(224, 255, 255, 0.84),
-    38vw 20vh 0 rgba(178, 150, 255, 0.8),
-    56vw 26vh 0 rgba(218, 240, 255, 0.76),
-    68vw 22vh 0 rgba(168, 132, 255, 0.86),
-    82vw 28vh 0 rgba(214, 230, 255, 0.8),
-    94vw 18vh 0 rgba(160, 132, 255, 0.86),
-    28vw 16vh 0 rgba(194, 240, 255, 0.8),
-    58vw 8vh 0 rgba(176, 142, 255, 0.82),
-    70vw 30vh 0 rgba(236, 228, 255, 0.76),
-    14vw 18vh 0 rgba(146, 120, 255, 0.78);
-  opacity: 0.75;
-  animation: processTwinkleA 6.9s ease-in-out infinite;
-  animation-delay: -1.8s;
-}
-
-.process-stars::after {
-  content: "";
-  position: absolute;
-  top: 24%;
-  right: 8%;
-  width: 3px;
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(126, 92, 255, 0.82);
-  box-shadow:
-    -10vw -6vh 0 rgba(120, 255, 200, 0.82),
-    -2vw 6vh 0 rgba(126, 92, 255, 0.82),
-    -16vw 10vh 0 rgba(82, 176, 255, 0.82),
-    -24vw -2vh 0 rgba(165, 126, 255, 0.8),
-    -32vw 14vh 0 rgba(90, 196, 255, 0.78),
-    -40vw 4vh 0 rgba(170, 132, 255, 0.82),
-    -52vw 16vh 0 rgba(86, 212, 202, 0.75),
-    -20vw 2vh 0 rgba(152, 110, 255, 0.78),
-    -8vw 14vh 0 rgba(112, 200, 255, 0.78);
+  mix-blend-mode: screen;
   opacity: 0.7;
-  animation: processTwinkleC 7.8s ease-in-out infinite;
-  animation-delay: -2.6s;
+}
+
+.process-stars__canvas {
+  width: 100%;
+  height: 100%;
 }
 
 .process__inner {
