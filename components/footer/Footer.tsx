@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Instagram, Music } from "lucide-react";
+import { Instagram, Music, Smartphone, Mail } from "lucide-react";
 
 import Logo from "@/components/shared/Logo";
 import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
@@ -262,29 +262,11 @@ const Footer = ({
           </h4>
           <ul className={styles["f-connect"]}>
             <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
-                <path fill="currentColor" d="M4 4h16v16H4z" opacity="0.08" />
-                <path fill="currentColor" d="M4 6l8 5 8-5v12H4z" />
-                <path fill="currentColor" d="M20 6H4l8 5z" />
-              </svg>
+              <Mail size={28} />
               <a href={`mailto:${email}`}>{email}</a>
             </li>
             <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
-                <rect
-                  x="5"
-                  y="2"
-                  width="14"
-                  height="20"
-                  rx="2"
-                  fill="currentColor"
-                  opacity="0.08"
-                />
-                <path
-                  fill="currentColor"
-                  d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zm5 14a1 1 0 100 2 1 1 0 000-2z"
-                />
-              </svg>
+              <Smartphone size={28} />
               {phoneHref ? (
                 <a href={phoneHref}>{phone}</a>
               ) : (
