@@ -104,7 +104,7 @@ export function Process() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const starsRef = useRef<HTMLCanvasElement | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [expandedPhaseId, setExpandedPhaseId] = useState<number>(1);
+  const [expandedPhaseId, setExpandedPhaseId] = useState<number | null>(1);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -206,10 +206,6 @@ export function Process() {
             </span>
           </h2>
           <p className="mt-3 text-sm text-white/70 sm:text-base">How we work, from spark to ship.</p>
-          <p className="mt-2 text-xs leading-relaxed text-white/55 sm:text-sm sm:leading-relaxed">
-            Every engagement follows the same four-part cadence so you always know what comes next. Each phase hands off cleanly
-            to the next with clear artifacts, owners, and success metrics.
-          </p>
         </header>
 
         <div className="relative mt-8 space-y-3 sm:mt-10" data-process-reveal>
@@ -245,7 +241,7 @@ export function Process() {
                   type="button"
                   aria-expanded={isExpanded}
                   className="relative z-10 flex w-full items-start justify-between gap-4 px-6 pb-4 pt-5 text-left sm:px-8"
-                  onClick={() => setExpandedPhaseId(phase.id)}
+                  onClick={() => setExpandedPhaseId((prev) => (prev === phase.id ? null : phase.id))}
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     <div
