@@ -154,28 +154,28 @@ export function Services() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, #020518 0%, rgba(7, 20, 41, 0.95) 36%, rgba(52, 16, 86, 0.92) 63%, rgba(110, 39, 10, 0.94) 100%)",
+              "linear-gradient(180deg, #020021 0%, #020617 50%, #020021 100%)",
           }}
         />
         <div
-          className="absolute -left-32 -top-40 h-[24rem] w-[24rem] rounded-full opacity-25 blur-3xl"
+          className="absolute -left-32 -top-40 h-[24rem] w-[24rem] rounded-full opacity-10 blur-3xl"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.7) 0%, rgba(59, 130, 246, 0) 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 70%)",
           }}
         />
         <div
-          className="absolute left-1/2 top-[30%] h-[520px] w-[520px] -translate-x-1/2 rounded-full opacity-15 blur-3xl"
+          className="absolute left-1/2 top-[30%] h-[520px] w-[520px] -translate-x-1/2 rounded-full opacity-8 blur-3xl"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.6) 0%, rgba(168, 85, 247, 0) 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0) 70%)",
           }}
         />
         <div
-          className="absolute -bottom-32 -right-24 h-[24rem] w-[24rem] rounded-full opacity-25 blur-3xl"
+          className="absolute -bottom-32 -right-24 h-[24rem] w-[24rem] rounded-full opacity-10 blur-3xl"
           style={{
             background:
-              "radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.68) 0%, rgba(249, 115, 22, 0) 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0) 70%)",
           }}
         />
       </div>
