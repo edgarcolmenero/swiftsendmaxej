@@ -1846,7 +1846,7 @@ const achievementGradients: Record<AchievementVariant, string> = {
 const leaders: Record<LeaderKey, LeaderProfile> = {
   edgar: {
     name: "Edgar Colmenero",
-    title: "FOUNDER & FULL-STACK DEVELOPER",
+    title: "FOUNDER & POLYMATH DEVELOPER",
     toggleTitle: "FOUNDER & SCHOLAR",
     avatar: "/me1.jpg",
     bio: "Edgar Colmenero is a founder and full-stack developer with a data-science bent, building systems that connect real-time data, AI automations, and clean product experiences. He focuses on calm, resilient infrastructure so operators can make better decisions, move faster, and quietly out-perform bigger teams.",
@@ -1876,31 +1876,31 @@ const leaders: Record<LeaderKey, LeaderProfile> = {
   },
   jaden: {
     name: "Jaden Padilla",
-    title: "Co-Founder & Systems Architect",
-    toggleTitle: "Systems Architect",
+    title: "Full-Stack Developer",
+    toggleTitle: "Full-Stack Engineer",
     avatar: "/me2.jpg",
-    bio: "Jaden architects SwiftSend's technical runway, pairing infrastructure rigor with a brand-first mindset. He connects product strategy to platform decisions so every release stays fast, stable, and unmistakably polished.",
+    bio: "Jaden Padilla is a full-stack developer who turns messy business workflows into clean, reliable software. He moves comfortably between modern frontends, API layers, and data models, and cares about maintainable code, observability, and shipping features that actually move the numbers. At SwiftSend, he pairs fast prototyping with thoughtful engineering so clients get both velocity and stability.",
     mantra: "Design Momentum. Deliver Proof.",
     achievements: [
       {
         variant: "honors",
-        title: "Global Hackathon Finalist",
-        subtitle: "Piloted AI logistics tools recognized across three product summits.",
+        title: "UTA Scholar",
+        subtitle: "Computer Science student at The University of Texas at Arlington, building a foundation in software systems and full-stack engineering.",
       },
       {
         variant: "stem",
-        title: "SaaS Platform Architect",
-        subtitle: "Stabilized multi-tenant stacks serving millions of on-demand requests.",
-      },
-      {
-        variant: "adidas",
-        title: "Creative Systems Builder",
-        subtitle: "Unified brand and engineering workflows for Fortune 500 concept labs.",
+        title: "STEM Organization",
+        subtitle: "Computer Science & Engineering track focused on modern full-stack development, data structures, and AI-assisted tooling.",
       },
       {
         variant: "consult",
-        title: "Fractional CTO Partner",
-        subtitle: "Guides founders through go-to-market readiness and technical audits.",
+        title: "Colmenero Consulting Full-Stack Engineer",
+        subtitle: "Built digital infrastructure powering a high-growth, nine-figure retail operation.",
+      },
+      {
+        variant: "adidas",
+        title: "SwiftSend Full-Stack Developer",
+        subtitle: "Designs and ships client-facing systems, automations, and analytics within SwiftSend's full-stack engineering practice.",
       },
     ],
   },
@@ -1913,10 +1913,10 @@ const orbitMoons = [
 ];
 
 const capabilityTiles = [
-  { label: "Platform Velocity", variant: "warm-violet" },
-  { label: "Creative Systems", variant: "violet-aqua" },
-  { label: "Delivery Ops", variant: "warm-aqua" },
-  { label: "R&D Sprint Labs", variant: "violet-warm" },
+  { label: "End-to-end ownership", subtitle: "From UI to database, ships features across the entire stack.", variant: "warm-violet" },
+  { label: "Production-first mindset", subtitle: "Builds systems that are observable, debuggable, and easy to maintain.", variant: "violet-aqua" },
+  { label: "API & integration native", subtitle: "Comfortable stitching together third-party APIs, webhooks, and internal services.", variant: "warm-aqua" },
+  { label: "Design-aware engineering", subtitle: "Collaborates with designers so polished UI and solid architecture ship together.", variant: "violet-warm" },
 ] as const;
 
 const colorStripImages = [
@@ -2235,7 +2235,8 @@ function AboutSection() {
                     data-variant={tile.variant}
                     role="listitem"
                   >
-                    {tile.label}
+                    <div className="about__capability-title">{tile.label}</div>
+                    <div className="about__capability-desc">{tile.subtitle}</div>
                   </div>
                 ))}
               </div>
