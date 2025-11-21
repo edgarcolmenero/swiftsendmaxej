@@ -1624,20 +1624,202 @@ body.is-packs-reduced .packs::before { animation: none; opacity: 0.32; }
 
 @media (max-width: 768px) {
   .packs__inner { padding: 48px 16px; gap: 24px; }
-  .packs__list { margin-bottom: 32px; }
-  .pack { gap: 16px; padding: 20px; }
-  .pack__features { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
-  .pack__right { width: 100%; align-items: flex-start; }
-  .packs__addons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .packs__addon { padding: 16px; }
+  .packs__list { margin-bottom: 32px; gap: 24px; }
+  
+  /* Pack cards - mobile-first single column layout */
+  .pack { 
+    gap: 20px; 
+    padding: 24px 20px; 
+    flex-direction: column;
+  }
+  
+  /* Pack left section - icon and ID in row at top */
+  .pack__left { 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 14px;
+    width: 100%;
+  }
+  
+  .pack__id { 
+    font-size: 11px;
+    width: 28px;
+  }
+  
+  .pack__icon { 
+    width: 52px; 
+    height: 52px; 
+  }
+  
+  /* Pack middle section - full width */
+  .pack__middle { 
+    width: 100%;
+    gap: 16px;
+  }
+  
+  /* Heading row - stack status badge below title on very small screens if needed */
+  .pack__heading-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .pack__title-text { 
+    font-size: 20px; 
+  }
+  
+  .pack__tagline { 
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  
+  .pack__badge {
+    font-size: 9px;
+    padding: 3px 10px;
+  }
+  
+  .pack__status {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  
+  /* Features - 2 columns on tablet-sized mobile */
+  .pack__features { 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    column-gap: 16px;
+    row-gap: 12px;
+  }
+  
+  .pack__feature { 
+    font-size: 13px; 
+  }
+  
+  .pack__feature-dot {
+    width: 5px;
+    height: 5px;
+    margin-top: 6px;
+  }
+  
+  /* Pack right section - price and CTA */
+  .pack__right { 
+    width: 100%; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .pack__price {
+    align-items: flex-start;
+  }
+  
+  .pack__price-value { 
+    font-size: 22px; 
+  }
+  
+  .pack__price-unit { 
+    font-size: 12px; 
+  }
+  
+  .pack__cta {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  /* Add-ons grid - 2 columns on tablet */
+  .packs__addons-grid { 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 14px; 
+  }
+  
+  .packs__addon { 
+    padding: 18px 16px; 
+  }
+  
+  .packs__addon-title { 
+    font-size: 15px; 
+  }
+  
+  .packs__addon-price { 
+    font-size: 15px; 
+  }
+  
+  .packs__addon-helper { 
+    font-size: 13px; 
+  }
 }
 
 @media (max-width: 560px) {
   .packs__inner { padding: 40px 16px; }
-  .pack__features { grid-template-columns: 1fr; }
-  .pack__left { gap: 12px; }
-  .pack__icon.service-card__icon { width: 48px; height: 48px; }
-  .packs__addons-grid { grid-template-columns: 1fr; }
+  .packs__list { gap: 20px; }
+  
+  /* Single column for everything on small mobile */
+  .pack { 
+    padding: 20px 16px;
+    gap: 18px;
+  }
+  
+  .pack__left { 
+    gap: 12px; 
+  }
+  
+  .pack__id {
+    font-size: 10px;
+    width: 26px;
+  }
+  
+  .pack__icon { 
+    width: 48px; 
+    height: 48px; 
+  }
+  
+  .pack__title-text {
+    font-size: 18px;
+  }
+  
+  .pack__tagline {
+    font-size: 13px;
+  }
+  
+  /* Single column features list for small mobile */
+  .pack__features { 
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .pack__feature {
+    font-size: 13px;
+  }
+  
+  .pack__right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .pack__price-value {
+    font-size: 20px;
+  }
+  
+  .pack__cta {
+    font-size: 12px;
+  }
+  
+  /* Single column add-ons on small mobile */
+  .packs__addons-grid { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .packs__addon {
+    padding: 16px;
+  }
+  
+  .packs__addon-title {
+    font-size: 14px;
+  }
+  
+  .packs__addon-price {
+    font-size: 14px;
+  }
 }
 
 /* Animations */
