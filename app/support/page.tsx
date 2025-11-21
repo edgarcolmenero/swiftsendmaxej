@@ -51,18 +51,33 @@ const starfieldStyle: CSSProperties = {
   pointerEvents: "none",
 };
 
-// Individual star layers
+// Individual star layers - significantly increased density for spacey feel
 const starsLayerOneStyle: CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
+    // White stars
     "radial-gradient(1.2px 1.2px at 12% 18%, rgba(244, 240, 255, 0.72) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 88% 24%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(1px 1px at 34% 42%, rgba(244, 240, 255, 0.65) 0%, transparent 100%), " +
     "radial-gradient(1.1px 1.1px at 72% 58%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
     "radial-gradient(0.8px 0.8px at 18% 68%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
     "radial-gradient(1.3px 1.3px at 62% 78%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
-    "radial-gradient(1px 1px at 45% 88%, rgba(244, 240, 255, 0.6) 0%, transparent 100%)",
+    "radial-gradient(1px 1px at 45% 88%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 26% 8%, rgba(244, 240, 255, 0.55) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 54% 15%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 78% 32%, rgba(244, 240, 255, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 8% 45%, rgba(244, 240, 255, 0.68) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 92% 52%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 48% 65%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(1.3px 1.3px at 15% 82%, rgba(244, 240, 255, 0.64) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 82% 72%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    // Orange accent stars
+    "radial-gradient(1.1px 1.1px at 38% 12%, rgba(255, 138, 61, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 68% 28%, rgba(255, 138, 61, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 22% 55%, rgba(255, 138, 61, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 85% 68%, rgba(255, 138, 61, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 58% 85%, rgba(255, 138, 61, 0.46) 0%, transparent 100%)",
   animation: "twinkle 8s ease-in-out infinite",
 };
 
@@ -70,13 +85,98 @@ const starsLayerTwoStyle: CSSProperties = {
   position: "absolute",
   inset: 0,
   background:
+    // White stars
     "radial-gradient(1px 1px at 56% 14%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
     "radial-gradient(0.9px 0.9px at 24% 36%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
     "radial-gradient(1.2px 1.2px at 78% 48%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
     "radial-gradient(1.1px 1.1px at 42% 62%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
     "radial-gradient(0.8px 0.8px at 68% 74%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
-    "radial-gradient(1px 1px at 92% 84%, rgba(244, 240, 255, 0.6) 0%, transparent 100%)",
+    "radial-gradient(1px 1px at 92% 84%, rgba(244, 240, 255, 0.6) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 14% 22%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 46% 18%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 32% 52%, rgba(244, 240, 255, 0.64) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 86% 38%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 8% 78%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.3px 1.3px at 74% 92%, rgba(244, 240, 255, 0.66) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 52% 72%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 28% 88%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    // Purple accent stars
+    "radial-gradient(1.1px 1.1px at 65% 8%, rgba(196, 107, 247, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 18% 42%, rgba(196, 107, 247, 0.52) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 82% 58%, rgba(196, 107, 247, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 42% 75%, rgba(196, 107, 247, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 12% 92%, rgba(196, 107, 247, 0.5) 0%, transparent 100%)",
   animation: "twinkle 10s ease-in-out infinite 1.5s",
+};
+
+const starsLayerThreeStyle: CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  background:
+    // More white stars for depth
+    "radial-gradient(0.8px 0.8px at 32% 6%, rgba(244, 240, 255, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 76% 12%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 14% 28%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 58% 35%, rgba(244, 240, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 88% 45%, rgba(244, 240, 255, 0.62) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 38% 58%, rgba(244, 240, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(0.8px 0.8px at 72% 68%, rgba(244, 240, 255, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.1px 1.1px at 22% 78%, rgba(244, 240, 255, 0.58) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 64% 88%, rgba(244, 240, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 48% 95%, rgba(244, 240, 255, 0.52) 0%, transparent 100%), " +
+    // Blue accent stars
+    "radial-gradient(1.1px 1.1px at 8% 18%, rgba(77, 163, 255, 0.54) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 52% 25%, rgba(77, 163, 255, 0.5) 0%, transparent 100%), " +
+    "radial-gradient(0.9px 0.9px at 92% 48%, rgba(77, 163, 255, 0.48) 0%, transparent 100%), " +
+    "radial-gradient(1.2px 1.2px at 28% 68%, rgba(77, 163, 255, 0.56) 0%, transparent 100%), " +
+    "radial-gradient(1px 1px at 78% 82%, rgba(77, 163, 255, 0.52) 0%, transparent 100%)",
+  animation: "twinkle 12s ease-in-out infinite 3s",
+};
+
+// Comet/shooting star streaks (CSS-only, very subtle)
+const cometOneStyle: CSSProperties = {
+  position: "absolute",
+  top: "12%",
+  right: "15%",
+  width: "120px",
+  height: "1.5px",
+  background:
+    "linear-gradient(90deg, transparent 0%, rgba(255, 138, 61, 0.08) 20%, rgba(255, 138, 61, 0.32) 50%, rgba(255, 138, 61, 0.08) 80%, transparent 100%)",
+  transform: "rotate(-25deg)",
+  filter: "blur(1px)",
+  opacity: 0.6,
+  animation: "cometSlide 18s ease-in-out infinite",
+  pointerEvents: "none",
+};
+
+const cometTwoStyle: CSSProperties = {
+  position: "absolute",
+  top: "58%",
+  left: "8%",
+  width: "95px",
+  height: "1.2px",
+  background:
+    "linear-gradient(90deg, transparent 0%, rgba(196, 107, 247, 0.06) 20%, rgba(196, 107, 247, 0.28) 50%, rgba(196, 107, 247, 0.06) 80%, transparent 100%)",
+  transform: "rotate(-32deg)",
+  filter: "blur(1.2px)",
+  opacity: 0.5,
+  animation: "cometSlide 22s ease-in-out infinite 5s",
+  pointerEvents: "none",
+};
+
+const cometThreeStyle: CSSProperties = {
+  position: "absolute",
+  bottom: "18%",
+  right: "22%",
+  width: "110px",
+  height: "1.3px",
+  background:
+    "linear-gradient(90deg, transparent 0%, rgba(77, 163, 255, 0.07) 20%, rgba(77, 163, 255, 0.3) 50%, rgba(77, 163, 255, 0.07) 80%, transparent 100%)",
+  transform: "rotate(-28deg)",
+  filter: "blur(1.1px)",
+  opacity: 0.55,
+  animation: "cometSlide 20s ease-in-out infinite 8s",
+  pointerEvents: "none",
 };
 
 // Central glassmorphic card - wider to accommodate two columns
@@ -149,7 +249,13 @@ export default function SupportPage() {
       <div style={starfieldStyle} aria-hidden="true">
         <div style={starsLayerOneStyle} />
         <div style={starsLayerTwoStyle} />
+        <div style={starsLayerThreeStyle} />
       </div>
+
+      {/* Comet/shooting star streaks */}
+      <div style={cometOneStyle} aria-hidden="true" />
+      <div style={cometTwoStyle} aria-hidden="true" />
+      <div style={cometThreeStyle} aria-hidden="true" />
 
       {/* Central glass card */}
       <section
@@ -359,7 +465,7 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Inline styles for twinkle animation (respects prefers-reduced-motion) */}
+      {/* Inline styles for animations (respects prefers-reduced-motion) */}
       <style jsx>{`
         @keyframes twinkle {
           0%, 100% {
@@ -367,6 +473,31 @@ export default function SupportPage() {
           }
           50% {
             opacity: 1;
+          }
+        }
+
+        @keyframes cometSlide {
+          0%, 100% {
+            opacity: 0;
+            transform: translateX(0) rotate(-28deg);
+          }
+          10% {
+            opacity: 0.4;
+          }
+          20% {
+            opacity: 0.6;
+          }
+          40% {
+            opacity: 0.3;
+          }
+          60% {
+            opacity: 0.5;
+          }
+          80% {
+            opacity: 0.2;
+          }
+          90% {
+            opacity: 0;
           }
         }
 
