@@ -1054,79 +1054,72 @@ export default function HomePage() {
       const estimatorPlaceholder = sectionEl.querySelector<HTMLElement>('.est__placeholder');
       const estimatorResult = sectionEl.querySelector<HTMLElement>('.est__result');
       const estimatorPill = sectionEl.querySelector<HTMLElement>('[data-est-pill]');
-      const estimatorBar = sectionEl.querySelector<HTMLElement>('[data-est-bar]');
 
-      const savingsMap: Record<
-        string,
-        { text?: string; tone?: 'gold' | 'green'; barGradientClasses: string; selectAccentClasses: string; barFill: string }
-      > = {
-        idle: { barGradientClasses: 'est__barFill--idle', selectAccentClasses: '', barFill: '0%' },
+      const PROJECT_TYPES = ['Starter', 'Builder', 'Engine', 'Growth'] as const;
+      type ProjectType = (typeof PROJECT_TYPES)[number];
+
+      const DEFAULT_PILL_GRADIENT = 'from-emerald-300 via-emerald-400 to-emerald-500';
+
+      const savingsConfig: Record<ProjectType, { label: string; gradientClass: string; selectAccentClasses: string }> = {
         Starter: {
-          text: 'Save ~10–20%',
-          tone: 'gold',
-          barGradientClasses: 'est__barFill--starter',
+          label: 'Save ~10–20%',
+          gradientClass: 'from-amber-300 via-amber-400 to-amber-500',
           selectAccentClasses: 'cform__selectAccent cform__selectAccent--starter',
-          barFill: '32%',
         },
         Builder: {
-          text: 'Save ~25–35%',
-          tone: 'green',
-          barGradientClasses: 'est__barFill--builder',
+          label: 'Save ~25–35%',
+          gradientClass: 'from-fuchsia-400 via-purple-400 to-violet-500',
           selectAccentClasses: 'cform__selectAccent cform__selectAccent--builder',
-          barFill: '68%',
         },
         Engine: {
-          text: 'Save ~20–30%',
-          tone: 'green',
-          barGradientClasses: 'est__barFill--engine',
+          label: 'Save ~20–30%',
+          gradientClass: 'from-sky-400 via-blue-400 to-cyan-400',
           selectAccentClasses: 'cform__selectAccent cform__selectAccent--engine',
-          barFill: '56%',
         },
         Growth: {
-          text: 'Save ~15–25%',
-          tone: 'gold',
-          barGradientClasses: 'est__barFill--growth',
+          label: 'Save ~15–25%',
+          gradientClass: 'from-emerald-300 via-emerald-400 to-lime-400',
           selectAccentClasses: 'cform__selectAccent cform__selectAccent--growth',
-          barFill: '48%',
         },
       };
 
-      const selectAccentClasses = Object.values(savingsMap)
+      const selectAccentClasses = Object.values(savingsConfig)
         .flatMap((config) => config.selectAccentClasses?.split(' ') ?? [])
         .filter(Boolean);
-      const barAccentClasses = Object.values(savingsMap)
-        .map((config) => config.barGradientClasses)
-        .filter(Boolean);
+      const pillGradientClasses = [
+        ...DEFAULT_PILL_GRADIENT.split(' '),
+        ...Object.values(savingsConfig)
+          .flatMap((config) => config.gradientClass.split(' '))
+          .filter(Boolean),
+      ];
+
+      const isProjectType = (value: string): value is ProjectType =>
+        PROJECT_TYPES.includes(value as ProjectType);
 
       function updateEstimator(value: string): void {
         if (!estimatorPlaceholder || !estimatorResult || !estimatorPill) return;
-        const config = savingsMap[value] ?? savingsMap.idle;
 
-        if (estimatorBar) {
-          estimatorBar.classList.remove(...barAccentClasses);
-          estimatorBar.classList.add(config.barGradientClasses);
-          estimatorBar.style.setProperty('--est-bar-fill', config.barFill);
-        }
+        const config = isProjectType(value) ? savingsConfig[value] : null;
 
         if (estimatorSelect) {
           estimatorSelect.classList.remove(...selectAccentClasses);
-          if (config.selectAccentClasses) {
+          if (config?.selectAccentClasses) {
             estimatorSelect.classList.add(...config.selectAccentClasses.split(' '));
           }
         }
 
-        if (!config.text || !config.tone) {
+        estimatorPill.classList.remove(...pillGradientClasses);
+
+        if (!config) {
           estimatorPlaceholder.hidden = false;
           estimatorResult.hidden = true;
           estimatorPill.textContent = '';
-          estimatorPill.classList.remove('est__pill--gold', 'est__pill--green');
           return;
         }
         estimatorPlaceholder.hidden = true;
         estimatorResult.hidden = false;
-        estimatorPill.textContent = config.text;
-        estimatorPill.classList.remove('est__pill--gold', 'est__pill--green');
-        estimatorPill.classList.add(config.tone === 'green' ? 'est__pill--green' : 'est__pill--gold');
+        estimatorPill.textContent = config.label;
+        estimatorPill.classList.add(...config.gradientClass.split(' '));
       }
 
       if (estimatorSelect) {
@@ -1367,7 +1360,7 @@ export default function HomePage() {
 
               <p id="form-status" className="cform__status" aria-live="polite" />
 
-              <button className="cform__submit" type="submit">
+              <button className="cform__submit btn btn-primary btn-primary--purple-blue w-full" type="submit">
                 <span>Start a Build</span>
                 <svg viewBox="0 0 24 24" className="cform__spark" aria-hidden="true">
                   <path
@@ -1405,10 +1398,12 @@ export default function HomePage() {
                     Select a project type above to estimate your savings
                   </p>
                   <div className="est__result" hidden>
-                    <div className="est__bar" aria-hidden="true">
-                      <div className="est__barFill est__barFill--idle" data-est-bar />
+                    <div className="est__pillWrap">
+                      <span
+                        className="est__pill bg-gradient-to-r from-emerald-300 via-emerald-400 to-emerald-500"
+                        data-est-pill
+                      />
                     </div>
-                    <span className="est__pill" data-est-pill />
                     <p className="est__note">Estimated savings vs. typical agency rates</p>
                   </div>
                 </div>
