@@ -145,31 +145,22 @@ export function Process() {
     >
       <div className="process-stars" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-20 md:py-24 lg:py-28">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-14 md:py-18 lg:py-20">
         <header className="mx-auto max-w-4xl text-center" data-process-reveal>
-          <p className="mb-2 text-xs uppercase tracking-[0.2em] text-white/40">Process</p>
           <h2 id="process-heading" className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
             <span className="text-white">Our </span>
             <span className="bg-gradient-to-r from-orange-400 via-pink-500 to-blue-500 bg-clip-text text-transparent">
               Process
             </span>
           </h2>
-          <p className="mt-4 text-base text-white/70 sm:text-lg">How we work, from spark to ship.</p>
-          <p className="mt-3 text-sm leading-relaxed text-white/50 sm:text-base sm:leading-relaxed">
+          <p className="mt-3 text-sm text-white/70 sm:text-base">How we work, from spark to ship.</p>
+          <p className="mt-2 text-xs leading-relaxed text-white/50 sm:text-sm sm:leading-relaxed">
             Every engagement follows the same four-part cadence so you always know what comes next. Each phase hands off cleanly
             to the next with clear artifacts, owners, and success metrics.
           </p>
         </header>
 
-        <div className="relative mt-12 space-y-4 sm:mt-14" data-process-reveal>
-          <div
-            className="pointer-events-none absolute left-8 top-8 bottom-8 w-px"
-            style={{
-              background:
-                "linear-gradient(180deg, rgb(34,211,238) 0%, rgb(139,92,246) 35%, rgb(251,146,60) 70%, rgb(52,211,153) 100%)",
-            }}
-          />
-
+        <div className="relative mt-10 space-y-3 sm:mt-12" data-process-reveal>
           {phases.map((phase) => {
             const isExpanded = expandedPhaseId === phase.id;
 
@@ -192,7 +183,7 @@ export function Process() {
                 <button
                   type="button"
                   aria-expanded={isExpanded}
-                  className="flex w-full items-start justify-between gap-4 px-10 pb-6 pt-6 text-left sm:px-12"
+                  className="flex w-full items-start justify-between gap-4 px-9 pb-5 pt-5 text-left sm:px-10"
                   onClick={() => setExpandedPhaseId(phase.id)}
                 >
                   <div className="flex flex-col gap-2">
@@ -206,8 +197,8 @@ export function Process() {
                         {phase.duration}
                       </span>
                     </div>
-                    <h3 className="text-lg font-semibold text-white sm:text-xl">{phase.title}</h3>
-                    <p className="text-sm text-white/60 sm:text-base">{phase.summary}</p>
+                    <h3 className="text-base font-semibold text-white sm:text-lg">{phase.title}</h3>
+                    <p className="text-xs text-white/60 sm:text-sm">{phase.summary}</p>
                   </div>
 
                   <ChevronRight
@@ -217,10 +208,10 @@ export function Process() {
                 </button>
 
                 {isExpanded && (
-                  <div className="px-10 pb-8 pt-1 sm:px-12">
-                    <ul className="mt-3 space-y-3">
+                  <div className="px-9 pb-7 pt-1 sm:px-10">
+                    <ul className="mt-3 space-y-2">
                       {phase.bullets.map((bullet) => (
-                        <li key={bullet} className="flex items-start gap-3 text-sm text-white/70">
+                        <li key={bullet} className="flex items-start gap-3 text-xs text-white/70 sm:text-sm">
                           <span className={`mt-1 h-2 w-2 rounded-full bg-gradient-to-r ${phase.colorClass}`} aria-hidden="true" />
                           <span>{bullet}</span>
                         </li>
@@ -233,7 +224,7 @@ export function Process() {
           })}
         </div>
 
-        <div className="mt-10 flex justify-center sm:mt-12" data-process-reveal>
+        <div className="mt-8 flex justify-center sm:mt-10" data-process-reveal>
           <a
             href="#contact"
             className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-transparent shadow-[0_0_25px_rgba(255,150,43,0.15)] transition duration-300 hover:shadow-[0_0_40px_rgba(255,150,43,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 bg-clip-text bg-gradient-to-r from-orange-400 via-pink-500 to-blue-500"
