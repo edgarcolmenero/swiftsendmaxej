@@ -1735,7 +1735,6 @@ function Packs() {
             <p>Need a custom solution? Let’s talk about your specific requirements.</p>
             <GradientPillButton href="#contact">
               <span className="ss-text-gradient">Get Custom Quote</span>
-              <span aria-hidden className="pack__cta-arrow">↗</span>
             </GradientPillButton>
           </div>
         </section>
