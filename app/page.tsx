@@ -1054,18 +1054,68 @@ export default function HomePage() {
       const estimatorPlaceholder = sectionEl.querySelector<HTMLElement>('.est__placeholder');
       const estimatorResult = sectionEl.querySelector<HTMLElement>('.est__result');
       const estimatorPill = sectionEl.querySelector<HTMLElement>('[data-est-pill]');
+      const estimatorBar = sectionEl.querySelector<HTMLElement>('[data-est-bar]');
 
-      const savingsMap: Record<string, { text: string; tone: 'gold' | 'green' }> = {
-        Starter: { text: 'Save ~10–20%', tone: 'gold' },
-        Builder: { text: 'Save ~25–35%', tone: 'green' },
-        Engine: { text: 'Save ~20–30%', tone: 'green' },
-        Growth: { text: 'Save ~15–25%', tone: 'gold' },
+      const savingsMap: Record<
+        string,
+        { text?: string; tone?: 'gold' | 'green'; barGradientClasses: string; selectAccentClasses: string; barFill: string }
+      > = {
+        idle: { barGradientClasses: 'est__barFill--idle', selectAccentClasses: '', barFill: '0%' },
+        Starter: {
+          text: 'Save ~10–20%',
+          tone: 'gold',
+          barGradientClasses: 'est__barFill--starter',
+          selectAccentClasses: 'cform__selectAccent cform__selectAccent--starter',
+          barFill: '32%',
+        },
+        Builder: {
+          text: 'Save ~25–35%',
+          tone: 'green',
+          barGradientClasses: 'est__barFill--builder',
+          selectAccentClasses: 'cform__selectAccent cform__selectAccent--builder',
+          barFill: '68%',
+        },
+        Engine: {
+          text: 'Save ~20–30%',
+          tone: 'green',
+          barGradientClasses: 'est__barFill--engine',
+          selectAccentClasses: 'cform__selectAccent cform__selectAccent--engine',
+          barFill: '56%',
+        },
+        Growth: {
+          text: 'Save ~15–25%',
+          tone: 'gold',
+          barGradientClasses: 'est__barFill--growth',
+          selectAccentClasses: 'cform__selectAccent cform__selectAccent--growth',
+          barFill: '48%',
+        },
       };
+
+      const selectAccentClasses = Object.values(savingsMap)
+        .flatMap((config) => config.selectAccentClasses?.split(' ') ?? [])
+        .filter(Boolean);
+      const barAccentClasses = Object.values(savingsMap)
+        .map((config) => config.barGradientClasses)
+        .filter(Boolean);
 
       function updateEstimator(value: string): void {
         if (!estimatorPlaceholder || !estimatorResult || !estimatorPill) return;
-        const info = savingsMap[value];
-        if (!info) {
+        const config = savingsMap[value] ?? savingsMap.idle;
+
+        if (estimatorBar) {
+          estimatorBar.classList.remove(...barAccentClasses);
+          estimatorBar.classList.add(config.barGradientClasses);
+          estimatorBar.style.setProperty('--est-bar-fill', config.barFill);
+        }
+
+        if (estimatorSelect) {
+          estimatorSelect.classList.remove(...selectAccentClasses);
+          if (config.selectAccentClasses) {
+            estimatorSelect.classList.add(...config.selectAccentClasses.split(' '));
+          }
+        }
+
+        if (!config.text || !config.tone) {
           estimatorPlaceholder.hidden = false;
           estimatorResult.hidden = true;
           estimatorPill.textContent = '';
@@ -1074,9 +1124,9 @@ export default function HomePage() {
         }
         estimatorPlaceholder.hidden = true;
         estimatorResult.hidden = false;
-        estimatorPill.textContent = info.text;
+        estimatorPill.textContent = config.text;
         estimatorPill.classList.remove('est__pill--gold', 'est__pill--green');
-        estimatorPill.classList.add(info.tone === 'green' ? 'est__pill--green' : 'est__pill--gold');
+        estimatorPill.classList.add(config.tone === 'green' ? 'est__pill--green' : 'est__pill--gold');
       }
 
       if (estimatorSelect) {
@@ -1223,7 +1273,7 @@ export default function HomePage() {
         <div className="contact__inner">
           <header className="contact__head">
             <h2 id="contact-title" className="contact__title">
-              Let’s Build <span className="grad-word">Together</span>
+              Let’s Build <span className="grad-word ss-text-gradient">Together</span>
             </h2>
             <p className="contact__lede">
               Ready to transform your vision into reality? Get in touch and let’s start building.
@@ -1336,8 +1386,11 @@ export default function HomePage() {
                   <span className="est__iconWrap">
                     <svg viewBox="0 0 24 24">
                       <path
-                        fill="currentColor"
-                        d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 4v2h8V6H8zm0 4v2h8v-2H8zm0 4v2h5v-2H8z"
+                        d="M12 3v18m3.5-13.5c0-2-1.8-3.5-4.1-3.5-2 0-3.4 1.1-3.4 2.8 0 3.1 7.5 2.1 7.5 6 0 2.1-1.9 3.4-4.3 3.4-1.8 0-3.6-.7-4.3-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="1.7"
                       />
                     </svg>
                   </span>
@@ -1352,6 +1405,9 @@ export default function HomePage() {
                     Select a project type above to estimate your savings
                   </p>
                   <div className="est__result" hidden>
+                    <div className="est__bar" aria-hidden="true">
+                      <div className="est__barFill est__barFill--idle" data-est-bar />
+                    </div>
                     <span className="est__pill" data-est-pill />
                     <p className="est__note">Estimated savings vs. typical agency rates</p>
                   </div>
