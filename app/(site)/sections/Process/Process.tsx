@@ -213,8 +213,9 @@ export function Process() {
         </header>
 
         <div className="relative mt-8 space-y-3 sm:mt-10" data-process-reveal>
-          {phases.map((phase) => {
+          {phases.map((phase, idx) => {
             const isExpanded = expandedPhaseId === phase.id;
+            const stepNumber = `${(idx + 1).toString().padStart(2, "0")}`;
 
             const accentStyles = {
               "--accent-start": phase.accentStart,
@@ -259,12 +260,10 @@ export function Process() {
                       >
                         <div className="relative flex h-full w-full items-center justify-center rounded-[18px] border border-white/10 bg-[#050915]">
                           <span
-                            className="block h-2 w-2 rounded-full"
-                              style={{
-                                background: `radial-gradient(circle at 50% 50%, ${phase.accentDot}, ${phase.accentShadow})`,
-                                boxShadow: `0 0 14px ${phase.accentShadow}`,
-                              }}
-                            />
+                            className={`bg-gradient-to-r ${phase.accentGradient} bg-clip-text text-sm font-semibold text-transparent`}
+                          >
+                            {stepNumber}
+                          </span>
                         </div>
                       </div>
 
@@ -281,7 +280,7 @@ export function Process() {
 
                     <div className="flex items-center gap-3 sm:ml-auto">
                       <span
-                        className="inline-flex items-center gap-1 rounded-full border bg-[#0b1226]/70 px-3 py-1 text-[11px] font-semibold text-transparent shadow-sm backdrop-blur"
+                        className="inline-flex items-center gap-1 rounded-full border bg-[#0b1226]/70 px-3 py-1 text-[11px] font-medium text-white shadow-sm backdrop-blur sm:text-xs"
                         style={{
                           borderColor: `${phase.accentStart}66`,
                           backgroundImage: `linear-gradient(120deg, ${phase.accentStart}, ${phase.accentEnd})`,
