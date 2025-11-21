@@ -165,7 +165,7 @@ export function Services() {
           }}
         />
         <div
-          className="absolute left-1/2 top-[30%] h-[520px] w-[520px] -translate-x-1/2 rounded-full opacity-8 blur-3xl"
+          className="absolute left-1/2 top-[30%] h-[520px] w-[520px] -translate-x-1/2 rounded-full opacity-10 blur-3xl"
           style={{
             background:
               "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0) 70%)",
