@@ -1846,31 +1846,31 @@ const achievementGradients: Record<AchievementVariant, string> = {
 const leaders: Record<LeaderKey, LeaderProfile> = {
   edgar: {
     name: "Edgar Colmenero",
-    title: "Founder & Delivery Principal",
-    toggleTitle: "Delivery Principal",
+    title: "FOUNDER & FULL-STACK DEVELOPER",
+    toggleTitle: "FOUNDER & SCHOLAR",
     avatar: "/me1.jpg",
-    bio: "Edgar guides SwiftSend's delivery practice, helping multi-disciplinary squads ship resilient platforms across fintech, retail, and consumer tech. He blends systems thinking with rapid prototyping to align product vision and velocity.",
+    bio: "Edgar Colmenero is a founder and full-stack developer with a data-science bent, building systems that connect real-time data, AI automations, and clean product experiences. He focuses on calm, resilient infrastructure so operators can make better decisions, move faster, and quietly out-perform bigger teams.",
     mantra: "Never Stay Satisfied.",
     achievements: [
       {
         variant: "honors",
         title: "National Honors Scholar",
-        subtitle: "Top 1% recognition for computational design research.",
+        subtitle: "Top 10% recognition for academic success.",
       },
       {
         variant: "stem",
-        title: "STEM Innovation Fellow",
-        subtitle: "Launched robotics programs empowering 200+ emerging builders.",
+        title: "STEM Organization Scholar",
+        subtitle: "Data Science & Engineering track focused on statistics, machine learning, and automation.",
       },
       {
         variant: "consult",
-        title: "Adidas Future Lab Partner",
-        subtitle: "Engineered personalization pilots across global product drops.",
+        title: "Colmenero Consulting Full-Stack Engineer",
+        subtitle: "Built digital infrastructure powering a high-growth, nine-figure retail operation.",
       },
       {
         variant: "adidas",
-        title: "Fractional Product Consultant",
-        subtitle: "Scaled delivery rituals for fintech, health, and climate ventures.",
+        title: "SwiftSend Founder",
+        subtitle: "Founder & CEO of SwiftSend, leading AI automations, data pipelines, and full-stack builds for modern operators.",
       },
     ],
   },
