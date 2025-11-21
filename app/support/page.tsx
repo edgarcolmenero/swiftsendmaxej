@@ -212,8 +212,8 @@ export default function SupportPage() {
         {/* CTA row */}
         <div style={ctaRowStyle}>
           {/* Primary button: Start a build (matching hero button style) */}
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="btn btn-primary btn-primary--purple-blue"
             style={{
               scrollMarginTop: "calc(var(--header-h, 96px) + 8px)",
@@ -234,7 +234,7 @@ export default function SupportPage() {
                 fill="currentColor"
               />
             </svg>
-          </a>
+          </Link>
 
           {/* Secondary email link */}
           <a
@@ -264,7 +264,7 @@ export default function SupportPage() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          [style*="animation"] {
+          main * {
             animation: none !important;
           }
           .support-card {
