@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Instagram, Music, Smartphone, Mail } from "lucide-react";
+import { Instagram, Music, Youtube, Linkedin } from "lucide-react";
 
 import Logo from "@/components/shared/Logo";
 import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
@@ -262,37 +262,47 @@ const Footer = ({
           </h4>
           <ul className={styles["f-connect"]}>
             <li>
-              <Mail size={28} />
-              <a href={`mailto:${email}`}>{email}</a>
+              <a
+                href="https://www.instagram.com/swiftsend.inc"
+                target="_blank"
+                rel="noreferrer noopener"
+                style={{ display: 'contents' }}
+              >
+                <Instagram size={28} />
+                <span>@swiftsend.inc</span>
+              </a>
             </li>
             <li>
-              <Smartphone size={28} />
-              {phoneHref ? (
-                <a href={phoneHref}>{phone}</a>
-              ) : (
-                <span>{phone}</span>
-              )}
+              <a
+                href="https://www.tiktok.com/@swiftsendofficial"
+                target="_blank"
+                rel="noreferrer noopener"
+                style={{ display: 'contents' }}
+              >
+                <Music size={28} />
+                <span>@swiftsendofficial</span>
+              </a>
             </li>
           </ul>
 
           <div className={styles["f-social"]}>
             <a
               className={styles["f-icn"]}
-              aria-label="TikTok @swiftsendofficial"
-              href="https://www.tiktok.com/@swiftsendofficial"
+              aria-label="YouTube @SwiftSendOfficial"
+              href="https://www.youtube.com/@SwiftSendOfficial"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer noopener"
             >
-              <Music size={18} />
+              <Youtube size={18} />
             </a>
             <a
               className={styles["f-icn"]}
-              aria-label="Instagram @swiftsend.inc"
-              href="https://www.instagram.com/swiftsend.inc"
+              aria-label="LinkedIn Edgar Colmenero"
+              href="https://www.linkedin.com/in/edgar-colmenero-385b6125b"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer noopener"
             >
-              <Instagram size={18} />
+              <Linkedin size={18} />
             </a>
           </div>
         </section>
