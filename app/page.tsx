@@ -7,6 +7,7 @@ import { Services } from "@/app/(site)/sections/Services";
 import { GradientPillButton } from "@/components/ui/GradientPillButton";
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const LaunchVelocityIcon = () => (
   <svg viewBox="0 0 32 32" fill="none" strokeWidth="1.45" role="presentation" aria-hidden="true">
@@ -145,6 +146,23 @@ const HERO_STATS: HeroStatDefinition[] = [
 
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 export default function HomePage() {
+  // Rotating words for hero heading
+  const rotatingWords = ["Future", "Playbook", "Engine", "Stack"] as const;
+  const [wordIndex, setWordIndex] = useState(0);
+  const currentWord = rotatingWords[wordIndex];
+  const prefersReducedMotion = useReducedMotion();
+
+  // Rotate words every ~2.6 seconds
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    
+    const intervalId = window.setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2600);
+    
+    return () => window.clearInterval(intervalId);
+  }, [prefersReducedMotion, rotatingWords.length]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -1182,7 +1200,12 @@ export default function HomePage() {
               <br />
               <span className="hero__accent hero__accent--violet">Your</span> Savings.
               <br />
-              <span className="hero__accent hero__accent--aqua">Your</span> Future.
+              <span className="hero__accent hero__accent--aqua">Your</span>{" "}
+              <span className="hero__rotating-word-container">
+                <span key={currentWord} className="hero__rotating-word hero__accent hero__accent--aqua">
+                  {prefersReducedMotion ? "Future." : `${currentWord}.`}
+                </span>
+              </span>
             </h1>
             <div className="hero__lede-block" data-hero-reveal data-hero-order="3">
               <p className="lede hero__lede">
