@@ -147,7 +147,7 @@ const HERO_STATS: HeroStatDefinition[] = [
 // SwiftSend: placeholder scaffold added 2025-10-07T23:34:08Z — real implementation to follow
 export default function HomePage() {
   // Rotating words for hero heading
-  const rotatingWords = ["Future", "Playbook", "Engine", "Stack"] as const;
+  const rotatingWords = ["Future", "Engine", "Stack"] as const;
   const [wordIndex, setWordIndex] = useState(0);
   const currentWord = rotatingWords[wordIndex];
   const prefersReducedMotion = useReducedMotion();
