@@ -2688,13 +2688,14 @@ main {
 .hero__rotating-word-container {
   display: inline-block;
   position: relative;
+  vertical-align: baseline;
   min-width: 9ch; /* Reserve space for longest word + period (Playbook = 8 chars + 1 period = 9ch) */
-  text-align: left;
 }
 
 .hero__rotating-word {
   display: inline-block;
   animation: rotateWordFade 0.4s ease-out;
+  filter: drop-shadow(0 0 22px rgba(175, 145, 255, 0.35));
 }
 
 @keyframes rotateWordFade {
