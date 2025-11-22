@@ -2695,7 +2695,7 @@ main {
 .hero__rotating-word {
   display: inline-block;
   animation: rotateWordFade 0.4s ease-out;
-  filter: drop-shadow(0 0 22px rgba(175, 145, 255, 0.35));
+  color: #ffffff;
 }
 
 @keyframes rotateWordFade {
