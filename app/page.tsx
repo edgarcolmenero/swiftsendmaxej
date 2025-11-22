@@ -1200,12 +1200,10 @@ export default function HomePage() {
               <br />
               <span className="hero__accent hero__accent--violet">Your</span> Savings.
               <br />
-              <span className="flex items-baseline justify-center gap-2">
-                <span className="hero__accent hero__accent--aqua">Your</span>
-                <span className="hero__rotating-word-container">
-                  <span key={currentWord} className="hero__rotating-word">
-                    {prefersReducedMotion ? "Future." : `${currentWord}.`}
-                  </span>
+              <span className="hero__accent hero__accent--aqua">Your</span>{' '}
+              <span className="hero__rotating-word-container">
+                <span key={currentWord} className="hero__rotating-word">
+                  {prefersReducedMotion ? "Future." : `${currentWord}.`}
                 </span>
               </span>
             </h1>
