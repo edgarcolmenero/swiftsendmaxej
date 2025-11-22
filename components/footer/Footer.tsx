@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Instagram, Music, Youtube, Linkedin } from "lucide-react";
+import { Instagram, Youtube, Linkedin } from "lucide-react";
 
 import Logo from "@/components/shared/Logo";
+import TikTokIcon from "@/components/shared/TikTokIcon";
 import { BRAND_NAME, BRAND_PLACEHOLDER_LETTER } from "@/config/site";
 
 import styles from "./Footer.module.css";
@@ -266,9 +267,11 @@ const Footer = ({
                 href="https://www.instagram.com/swiftsend.inc"
                 target="_blank"
                 rel="noreferrer noopener"
-                style={{ display: 'contents' }}
+                className={styles["f-connect-link"]}
               >
-                <Instagram size={28} />
+                <span className={styles["f-icn"]}>
+                  <Instagram size={18} />
+                </span>
                 <span>@swiftsend.inc</span>
               </a>
             </li>
@@ -277,9 +280,11 @@ const Footer = ({
                 href="https://www.tiktok.com/@swiftsendofficial"
                 target="_blank"
                 rel="noreferrer noopener"
-                style={{ display: 'contents' }}
+                className={styles["f-connect-link"]}
               >
-                <Music size={28} />
+                <span className={styles["f-icn"]}>
+                  <TikTokIcon size={18} />
+                </span>
                 <span>@swiftsendofficial</span>
               </a>
             </li>
