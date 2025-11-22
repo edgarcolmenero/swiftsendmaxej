@@ -2684,6 +2684,38 @@ main {
   line-height: 1.04;
 }
 
+/* Rotating word animation */
+.hero__rotating-word-container {
+  display: inline-block;
+  position: relative;
+  min-width: 7ch; /* Reserve space for longest word (Playbook = 8 chars, Engine = 6, Stack = 5, Future = 6) */
+  text-align: left;
+}
+
+.hero__rotating-word {
+  display: inline-block;
+  animation: rotateWordFade 0.4s ease-out;
+}
+
+@keyframes rotateWordFade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Disable animation for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .hero__rotating-word {
+    animation: none;
+    transform: none;
+  }
+}
+
 .hero__lede {
   margin: 0;
   color: rgba(237, 232, 255, 0.82);
