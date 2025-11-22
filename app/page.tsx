@@ -1203,7 +1203,7 @@ export default function HomePage() {
               <span className="hero__accent hero__accent--aqua">Your</span>{" "}
               <span className="hero__rotating-word-container">
                 <span key={currentWord} className="hero__rotating-word hero__accent hero__accent--aqua">
-                  {prefersReducedMotion ? "Future" : currentWord}.
+                  {prefersReducedMotion ? "Future." : `${currentWord}.`}
                 </span>
               </span>
             </h1>

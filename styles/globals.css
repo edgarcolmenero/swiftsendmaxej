@@ -2688,7 +2688,7 @@ main {
 .hero__rotating-word-container {
   display: inline-block;
   position: relative;
-  min-width: 7ch; /* Reserve space for longest word (Playbook = 8 chars, Engine = 6, Stack = 5, Future = 6) */
+  min-width: 9ch; /* Reserve space for longest word + period (Playbook = 8 chars + 1 period = 9ch) */
   text-align: left;
 }
 
