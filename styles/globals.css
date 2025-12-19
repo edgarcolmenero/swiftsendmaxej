@@ -2686,22 +2686,11 @@ main {
 
 /* Rotating word animation */
 .hero__rotating-word-container {
-  display: inline-block;
-  position: relative;
-  vertical-align: baseline;
-  margin-left: 0.28em;
-}
-
-.hero__rotating-word-container::after {
-  content: attr(data-reserve);
-  visibility: hidden;
-  display: block;
-  height: 0;
-  overflow: hidden;
+  display: inline;
 }
 
 .hero__rotating-word {
-  display: inline-block;
+  display: inline;
   animation: rotateWordFade 0.4s ease-out;
   color: #ffffff;
 }
@@ -2709,11 +2698,9 @@ main {
 @keyframes rotateWordFade {
   0% {
     opacity: 0;
-    transform: translateY(12px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
