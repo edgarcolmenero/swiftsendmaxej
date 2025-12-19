@@ -148,6 +148,10 @@ const HERO_STATS: HeroStatDefinition[] = [
 export default function HomePage() {
   // Rotating words for hero heading
   const rotatingWords = ["Future", "Playbook", "Engine", "Stack"] as const;
+  const rotatingWordReserve = `${rotatingWords.reduce(
+    (longest, word) => (word.length > longest.length ? word : longest),
+    rotatingWords[0]
+  )}.`;
   const [wordIndex, setWordIndex] = useState(0);
   const currentWord = rotatingWords[wordIndex];
   const prefersReducedMotion = useReducedMotion();
@@ -1200,8 +1204,8 @@ export default function HomePage() {
               <br />
               <span className="hero__accent hero__accent--violet">Your</span> Savings.
               <br />
-              <span className="hero__accent hero__accent--aqua">Your</span>{' '}
-              <span className="hero__rotating-word-container">
+              <span className="hero__accent hero__accent--aqua">Your</span>
+              <span className="hero__rotating-word-container" data-reserve={rotatingWordReserve}>
                 <span key={currentWord} className="hero__rotating-word">
                   {prefersReducedMotion ? "Future." : `${currentWord}.`}
                 </span>

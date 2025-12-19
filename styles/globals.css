@@ -2689,7 +2689,15 @@ main {
   display: inline-block;
   position: relative;
   vertical-align: baseline;
-  min-width: 9ch; /* Reserve space for longest word + period (Playbook = 8 chars + 1 period = 9ch) */
+  margin-left: 0.28em;
+}
+
+.hero__rotating-word-container::after {
+  content: attr(data-reserve);
+  visibility: hidden;
+  display: block;
+  height: 0;
+  overflow: hidden;
 }
 
 .hero__rotating-word {
@@ -6194,4 +6202,3 @@ body.is-about-js .about [data-reveal].is-in {
     transform: translateY(0.4px);
   }
 }
-
